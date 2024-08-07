@@ -16,23 +16,18 @@
                 Gestion de Informacion
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#" target="_blank">
+                <a class="sidebar-link" href="../ViewsAdministrador/HomeRedArea.jsp">
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Red y Area</span>
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#" target="_blank">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Administrador</span>
+                <a class="sidebar-link" href="../ViewsAdministrador/HomeClimaSexo.jsp">
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Sexo y Clima</span>
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" data-bs-toggle="modal" data-bs-target="#GuardadoUsuarios" target="_blank">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Registro de usuarios</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="#" target="_blank">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Aprendiz</span>
+                <a class="sidebar-link" href="../ViewsAdministrador/HomeRegionaCentro.jsp" >
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Regiona y Centro </span>
                 </a>
             </li>
             <li class="sidebar-item">

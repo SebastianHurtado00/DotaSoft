@@ -1,3 +1,5 @@
+<%@page import="Entidades.Regional"%>
+<%@page import="Controladores.RegionalJpaController"%>
 <%@page import="Entidades.Red"%>
 <%@page import="java.util.List"%>
 <%@page import="Controladores.RedJpaController"%>
@@ -79,48 +81,138 @@
     </div>
 </div>
 <!-- MODALES DE AREA GUARDAR FINAL -->
-
-<!-- MODAL PARA GUARDAR USUARIOS INICIO -->
-<div class="modal fade" id="GuardadoUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="<%=request.getContextPath()%>/logica_usuarios" method="post">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Registro de Usuarios</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12 form-floating">
-                            <input name="CedulaUsuario" type="number" class="form-control" id="InputCedula" placeholder="Ingrese el numero de cedula" required>
-                            <label class="text-small mx-2" style="font-size: 15px" for="InputCedula">N° Cedula Usuario</label>
-                        </div>
-                        <div class="col-md-6 col-sm-12 form-floating">
-                            <input name="NombreCompleto" type="text" class="form-control mb-2" id="InputNombre" placeholder="Ingrese el nombre completo del usuario" required>
-                            <label class="text-small mx-2" style="font-size: 15px" for="InputNombre">Nombres y apellidos</label>
-                        </div>
-                        <div class="col-12 form-floating text-center mt-2">
-                           
-                                <div class="form-floating">
-                                    <select name="rolUsuario" class="form-select" id="Roles" required>
-                                        <option value="" disabled selected hidden></option>
-                                        <option value="0">Administrador</option>
-                                        <option value="1">Coordinador</option>
-                                        <option value="2">Instructor</option>
-                                        <option value="3">Recursos Humanos</option>
-                                    </select>
-                                    <label for="Roles" class="text-small" style="font-size: 15px;">Rol</label>
-                                </div>
-                      
-
+<!-- MODALES DE REGIONAL GUARDAR INICIO -->
+<div class="modal fade" id="ModalRegional" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="FormularioRegional" class="row g-2">
+                    <h2 class="pt-3 pb-2 text-center">Registrar Regional</h2>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Codigo:</b></div>
+                            <input type="number" class="form-control" id="codigoGdReg" name="codigoReg" required min="1" max="2147483647">
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="" name="action" value="guaradarUsuarios" class="btn btn-success">Registrar</button>
-                </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Nombre:</b></div>
+                            <input type="text" class="form-control" id="nombreGdReg" name="nombreReg" required min="1" maxlength="45">
+                        </div>
+                    </div>
+                    <div class="col-12 text-center py-3 pt-3">
+                        <button type="submit" class="btn botones text-white px-4" id="btnGuardarReg" style="background-color: #018E42;"><b>Guardar</b></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
-<!-- MODALE PARA GUARDAR USUARIOS FINAL -->
+<!-- MODALES DE REGIONAL GUARDAR FINAL -->
+<!-- MODALES DE CENTRO GUARDAR INICIO -->
+<div class="modal fade" id="ModalCentro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="FormularioCentro" class="row g-2">
+                    <h2 class="pt-3 pb-2 text-center">Registrar Centro</h2>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Codigo:</b></div>
+                            <input type="number" class="form-control" id="codigoGdCent" name="codigoCent" required min="1" max="2147483647">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Nombre:</b></div>
+                            <input type="text" class="form-control" id="nombreGdCent" name="nombreCent" required min="1" maxlength="45">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Red</b></div>
+                            <select name="CentroListaGd" id="CentroListaForGd"
+                                    class="from-selec col-8"  required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                                <%
+                                    RegionalJpaController regional = new RegionalJpaController();
+                                    List listaRegional = regional.findRegionalEntities();
+                                    for (int i = 0; i < listaRegional.size(); i++) {
+                                        Regional obj_cr = (Regional) listaRegional.get(i);
+                                        out.print("<option value='" + obj_cr.getIdregional() + "'>");
+                                        out.print((obj_cr.getNombre()));
+                                        out.print("</option>");
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center py-3 pt-3">
+                        <button type="submit" class="btn botones text-white px-4" id="btnGuardarCentro" style="background-color: #018E42;"><b>Guardar</b></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALES DE CENTRO GUARDAR FINAL -->
+<!-- MODALES DE SEXO GUARDAR INICIO -->
+<div class="modal fade" id="ModalSexo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="FormularioSexo" class="row g-2">
+                    <h2 class="pt-3 pb-2 text-center">Registrar Sexo</h2>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Codigo:</b></div>
+                            <input type="number" class="form-control" id="codigoGdSexo" name="codigoSexo" required min="1" max="2147483647">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Nombre:</b></div>
+                            <input type="text" class="form-control" id="nombreGdSexo" name="nombreSexo" required min="1" maxlength="45">
+                        </div>
+                    </div>
+                    <div class="col-12 text-center py-3 pt-3">
+                        <button type="submit" class="btn botones text-white px-4" id="btnGuardarSexo" style="background-color: #018E42;"><b>Guardar</b></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALES DE SEXO GUARDAR FINAL -->
+<!-- MODALES DE SEXO GUARDAR INICIO -->
+<div class="modal fade" id="ModalClima" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="FormularioClima" class="row g-2">
+                    <h2 class="pt-3 pb-2 text-center">Registrar Clima</h2>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Codigo:</b></div>
+                            <input type="number" class="form-control" id="codigoGdCli" name="codigoCli" required min="1" max="2147483647">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Nombre:</b></div>
+                            <input type="text" class="form-control" id="nombreGdCli" name="nombreCli" required min="1" maxlength="45">
+                        </div>
+                    </div>
+                    <div class="col-12 text-center py-3 pt-3">
+                        <button type="submit" class="btn botones text-white px-4" id="btnGuardarCli" style="background-color: #018E42;"><b>Guardar</b></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALES DE SEXO GUARDAR FINAL -->

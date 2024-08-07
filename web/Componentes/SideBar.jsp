@@ -1,14 +1,14 @@
 <nav id="sidebar" class="sidebar js-sidebar ">
     <div class="sidebar-content js-simplebar ">
-        <a class="sidebar-brand mt-2" href="#"> 
+        <a class="sidebar-brand mt-3" href="">
+            <span class="align-middle" style="font-family: sans-serif ">Gestion de Dotaciones</span>
         </a>
-        <h5 class="text-center">Gestion De Aprendices</h5>
         <ul class="sidebar-nav">
             <li class="sidebar-header">
                 Menu
             </li>
             <li class="sidebar-item active">
-                <a class="sidebar-link" href="../vistas/menuPrincipal.jsp">
+                <a class="sidebar-link" href="">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Menu Principal</span>
                 </a>
             </li>

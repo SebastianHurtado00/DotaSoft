@@ -21,6 +21,20 @@
                 </a>
             </li>
             <li class="sidebar-item">
+
+                <a class="sidebar-link" href="../ViewsAdministrador/HomeClimaSexo.jsp" >
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Clima y Sexo</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="../ViewsAdministrador/GestionUsuarios.jsp" >
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Registro de usuarios</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="../ViewsAdministrador/HomeRegionaCentro.jsp">
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Regional y centro</span>
+
                 <a class="sidebar-link" href="../ViewsAdministrador/HomeClimaSexo.jsp">
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Sexo y Clima</span>
                 </a>
@@ -28,6 +42,7 @@
             <li class="sidebar-item">
                 <a class="sidebar-link" href="../ViewsAdministrador/HomeRegionaCentro.jsp" >
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Regiona y Centro </span>
+
                 </a>
             </li>
             <li class="sidebar-item">

@@ -1,3 +1,7 @@
+<%@page import="Entidades.Coordinador"%>
+<%@page import="Controladores.CoordinadorJpaController"%>
+<%@page import="Entidades.Centro"%>
+<%@page import="Controladores.CentroJpaController"%>
 <%@page import="Entidades.Regional"%>
 <%@page import="Controladores.RegionalJpaController"%>
 <%@page import="Entidades.Red"%>
@@ -137,7 +141,7 @@
                                 <option value="" disabled selected hidden>-- Elija --</option>
                                 <%
                                     RegionalJpaController regional = new RegionalJpaController();
-                                    List listaRegional = regional.findRegionalEntities();
+                                    List<Regional> listaRegional = regional.findRegionalEntities();
                                     for (int i = 0; i < listaRegional.size(); i++) {
                                         Regional obj_cr = (Regional) listaRegional.get(i);
                                         out.print("<option value='" + obj_cr.getIdregional() + "'>");
@@ -216,3 +220,117 @@
     </div>
 </div>
 <!-- MODALES DE SEXO GUARDAR FINAL -->
+
+<!-- MODAL REGISTRO USUARIOS INICIO -->
+<div class="modal fade" id="ModalGuardarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registros de usuarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="action">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 form-floating">
+                            <input type="number" class="form-control" id="InputCedula" required>
+                            <label class="text-small mx-2" style="font-size: 12px" for="InputCedula">N° Cedula Usuario</label>
+                        </div>
+                        <div class="col-md-6 col-sm-12 form-floating">
+                            <input type="text" class="form-control mb-2" id="InputNombre" required>
+                            <label class="text-small mx-2" style="font-size: 12px" for="InputNombre">Nombres y apellidos</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating">
+                            <input type="email" class="form-control mb-2" id="InputCorreo" required>
+                            <label class="text-small mx-2" style="font-size: 12px" for="InputNombre">Correo</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating text-center">
+                            <select name="rolUsuario" class="form-select mx-auto" id="Roles" onchange="roles()" required>
+                                <option value="" disabled selected hidden></option>
+                                <option value="0">Administrador</option>
+                                <option value="1">Coordinador</option>
+                                <option value="2">Instructor</option>
+                                <option value="3">Recursos Humanos</option>
+                            </select>
+                            <label class="text-small mx-2" style="font-size: 15px" for="Roles">Rol</label>
+                        </div>
+
+
+                        <%
+                            CentroJpaController controlCentro = new CentroJpaController();
+                            List<Centro> listaCentro = controlCentro.findCentroEntities();
+
+                        %>
+                        <div class="col-md-6 col-sm-12 form-floating text-center" id="Centro" style="display: none">
+                            <select name="centro" class="form-select mx-auto" id="Centro" required>
+                                <option value="" disabled selected hidden>Seleccione un centro</option>
+                                <% for (Centro centro : listaCentro) {%>
+                                <option value="<%=centro.getIdcentro()%>"><%=centro.getNombre()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Centro</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating text-center" id="Regional" style="display: none">
+                            <select name="regional" class="form-select mx-auto" id="Regional" required>
+                                <option value="" disabled selected hidden>Seleccione una regional</option>
+                                <% for (Regional regi : listaRegional) {%>
+                                <option value="<%=regi.getIdregional()%>"><%=regi.getNombre()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Regional</label>
+                        </div>
+
+                        <%
+                            CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
+                            List<Coordinador> coordinadorList = controlCoordinador.findCoordinadorEntities();
+                        %>
+                        <div class="col-md-12 col-sm-12 form-floating text-center mt-2" id="Coordinador" style="display: none">
+                            <select name="Coordinador" class="form-select mx-auto" id="Centro" required>
+                                <option value="" disabled selected hidden>Seleccione un coordinador</option>
+                                <% for (Coordinador coordinador : coordinadorList) {%>
+                                <option value="<%=coordinador.getIdcoordinador()%>"><%=coordinador.getNombres() + " " + coordinador.getApellidos()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- MODAL REGISTRO USUARIOS FINAL -->
+
+<script>
+
+    function roles() {
+        let select = document.getElementById("Roles");
+        let selectedValue = select.options[select.selectedIndex].value;
+        let cajaCentro = document.getElementById("Centro");
+        let cajaRegional = document.getElementById("Regional");
+        let cajaCoordinador = document.getElementById("Coordinador");
+
+
+        if (selectedValue == 1) {
+            cajaCentro.style.display = "block";
+            cajaRegional.style.display = "block";
+
+            cajaCoordinador.style.display = "none";
+        } else if (selectedValue == 2) {
+            cajaCoordinador.style.display = "block";
+
+            cajaCentro.style.display = "none";
+            cajaRegional.style.display = "none";
+        } else {
+            cajaCoordinador.style.display = "none";
+            cajaCentro.style.display = "none";
+            cajaRegional.style.display = "none";
+        }
+    }
+</script>

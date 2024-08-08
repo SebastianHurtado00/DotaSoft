@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="card-body px-4">
                                         <div class="input-group mb-3 mt-2 p-2">
-                                            <button class="btn btn-success py-2" style="background: #018E42 ; font-size: 13px">Registrar nuevo usuario</button>
+                                            <button class="btn btn-success py-2" style="background: #018E42 ; font-size: 13px" data-bs-toggle="modal" data-bs-target="#ModalGuardarUsuario">Registrar nuevo usuario</button>
                                             <input type="text" class="form-control" placeholder="Busqueda de Registros"
                                                    name="Dato_User" id="filtro" style="font-size: 13px">
                                         </div>

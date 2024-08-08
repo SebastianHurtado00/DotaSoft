@@ -9,7 +9,7 @@
               integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" >
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
         <%--ESTILO-MAQUETA--%>
-        <link rel="stylesheet" href="../css/styleMaqueta.css"/>
+        <link rel="stylesheet" href="../css/app.css"/>
         <%--TIPOS-LETRAS--%>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -246,11 +246,11 @@
                     <div class="container">
                         <div class="row">
                             <%--CONTENIDO RED INICIO --%> 
-                             <div class="col-12">  
+                            <div class="col-12">  
                                 <div class="container">
                                     <section class="section-0 d-flex justify-content-between">
                                         <h2 class="letra py-3">Informacion de Regional</h2>
-                                         <img src="../assests/LogoSena.webp" width="150px" height="150px" class="align-self-end  img-fluid" style="margin-top: -45px"/> 
+                                        <img src="../assests/LogoSena.webp" width="150px" height="150px" class="align-self-end  img-fluid" style="margin-top: -45px"/> 
                                     </section>
                                 </div>
                                 <div class="container">

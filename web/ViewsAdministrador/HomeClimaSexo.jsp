@@ -18,7 +18,7 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <%--TRANSICIONES--%>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+        <%--SEXO--%>
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
@@ -97,7 +97,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaSexo() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaSexo',
@@ -113,8 +113,8 @@
                                             '<td>' + sexo.codigo + '</td>' +
                                             '<td>' + sexo.nombre + '</td>' +
                                             '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreasOpciones" ' +
-                                            'onclick="obtenerDatosAreas(' + sexo.codigo + ', \'' + sexo.nombre + '\')">Opciones</button>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalSexoOpciones" ' +
+                                            'onclick="obtenerDatosSexo(' + sexo.codigo + ', \'' + sexo.nombre + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaSexo tbody').append(row);
@@ -126,9 +126,10 @@
                         }
                     });
                 }
-                cargarTablaSexo();
+                cargarTabla();
             });
         </script>
+        <%--CLIMA--%>
         <script>
             $(document).ready(function () {
                 $('#btnGuardarArea').click(function (event) {
@@ -206,7 +207,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaClima() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaClima',
@@ -222,8 +223,8 @@
                                             '<td>' + clima.codigo + '</td>' +
                                             '<td>' + clima.nombre + '</td>' +
                                             '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreasOpciones" ' +
-                                            'onclick="obtenerDatosAreas(' + clima.codigo + ', \'' + clima.nombre + '\')">Opciones</button>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalClimaOpciones" ' +
+                                            'onclick="obtenerDatosClima(' + clima.codigo + ', \'' + clima.nombre + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaClima tbody').append(row);
@@ -235,7 +236,7 @@
                         }
                     });
                 }
-                cargarTablaClima();
+                cargarTabla();
             });
         </script>
         <script>
@@ -356,9 +357,11 @@
                 </div>
             </div>
         <jsp:include page="../Componentes/modalGuardar.jsp" ></jsp:include>  
+        <jsp:include page="../Componentes/modalOpciones.jsp" ></jsp:include> 
 
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
+        <script src="../js/DatosTablas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

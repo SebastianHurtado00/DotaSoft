@@ -18,7 +18,7 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <%--TRANSICIONES--%>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+        <%--RED--%>
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
@@ -97,7 +97,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaRegional() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaRed',
@@ -113,8 +113,8 @@
                                             '<td>' + red.codigo + '</td>' +
                                             '<td>' + red.nombre + '</td>' +
                                             '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreasOpciones" ' +
-                                            'onclick="obtenerDatosAreas(' + red.codigo + ', \'' + red.nombre + '\')">Opciones</button>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalRedOpciones" ' +
+                                            'onclick="obtenerDatosArea(' + red.codigo + ', \'' + red.nombre + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaRed tbody').append(row);
@@ -126,9 +126,10 @@
                         }
                     });
                 }
-                cargarTablaRegional();
+                cargarTabla();
             });
         </script>
+        <%--AREA--%>
         <script>
             $(document).ready(function () {
                 $('#btnGuardarArea').click(function (event) {
@@ -206,7 +207,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaAreas() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaAreas',
@@ -223,8 +224,8 @@
                                             '<td>' + areas.nombre + '</td>' +
                                             '<td>' + areas.redNombre + '</td>' +
                                             '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreasOpciones" ' +
-                                            'onclick="obtenerDatosAreas(' + areas.codigo + ', \'' + areas.nombre + '\', \'' + areas.redlId + '\')">Opciones</button>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreaOpciones" ' +
+                                            'onclick="obtenerDatosArea(' + areas.codigo + ', \'' + areas.nombre + '\', \'' + areas.redlId + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaArea tbody').append(row);
@@ -236,7 +237,7 @@
                         }
                     });
                 }
-                cargarTablaAreas();
+                cargarTabla();
             });
         </script>
         <script>
@@ -357,10 +358,12 @@
                 <jsp:include page="/Componentes/footer2.jsp" ></jsp:include>
                 </div>
             </div>
-        <jsp:include page="../Componentes/modalGuardar.jsp" ></jsp:include>  
+        <jsp:include page="../Componentes/modalGuardar.jsp" ></jsp:include> 
+        <jsp:include page="../Componentes/modalOpciones.jsp" ></jsp:include> 
 
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
+        <script src="../js/DatosTablas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

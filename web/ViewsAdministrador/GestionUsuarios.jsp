@@ -34,7 +34,7 @@
                 <jsp:include page="/Componentes/nav.jsp" ></jsp:include>
                     <main class="content">
                         <section class="section-0 d-flex justify-content-between">
-                            <h3><strong>Usuarios Registrados</strong></h3>
+                            <h3><strong>Gestion y control de usuarios</strong></h3>
                             <img src="../assests/LogoSena.webp" width="150px" height="150px" class="align-self-end  img-fluid" style="margin-top: -45px"/> 
                         </section>
 
@@ -42,11 +42,11 @@
                             <div class="col-12 col-md-12 col-xxl-12 d-flex order-3 order-xxl-2">
                                 <div class="card flex-fill w-100">
                                     <div class="card-header">
-                                        <h5 class="card-title mb-0">Usuarios Registrados</h5>
+                                        <h5 class="card-title mb-0">Usuarios Registrados: </h5>
                                     </div>
                                     <div class="card-body px-4">
                                         <div class="input-group mb-3 mt-2 p-2">
-                                            <button class="btn btn-success py-2" style="background: #018E42 ; font-size: 13px" data-bs-toggle="modal" data-bs-target="#ModalGuardarUsuario">Registrar nuevo usuario</button>
+                                            <button class="btn btn-success hover py-2" style="background: #018E42 ; font-size: 12px" data-bs-toggle="modal" data-bs-target="#ModalGuardarUsuario"><a>Añadir Usuario </a></button>
                                             <input type="text" class="form-control" placeholder="Busqueda de Registros"
                                                    name="Dato_User" id="filtro" style="font-size: 13px">
                                         </div>

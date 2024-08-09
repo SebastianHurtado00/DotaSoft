@@ -233,17 +233,18 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 col-sm-12 form-floating">
-                            <input type="number" class="form-control" id="InputCedula" required>
-                            <label class="text-small mx-2" style="font-size: 12px" for="InputCedula">N° Cedula Usuario</label>
-                        </div>
-                        <div class="col-md-6 col-sm-12 form-floating">
-                            <input type="text" class="form-control mb-2" id="InputNombre" required>
-                            <label class="text-small mx-2" style="font-size: 12px" for="InputNombre">Nombres y apellidos</label>
+                            <input name="CedulaUsuario" type="number" class="form-control" id="InputCedula" required>
+                            <label class="text-small text-black mx-2" style="font-size: 15px" for="InputCedula">N° Cedula Usuario</label>
                         </div>
 
                         <div class="col-md-6 col-sm-12 form-floating">
-                            <input type="email" class="form-control mb-2" id="InputCorreo" required>
-                            <label class="text-small mx-2" style="font-size: 12px" for="InputNombre">Correo</label>
+                            <input name="nombre" type="text" class="form-control mb-2" id="InputNombre" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputNombre">Nombres </label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating">
+                            <input name="apellido" type="text" class="form-control mb-2" id="InputApellido" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputNombre">Apellidos</label>
                         </div>
 
                         <div class="col-md-6 col-sm-12 form-floating text-center">
@@ -254,7 +255,7 @@
                                 <option value="2">Instructor</option>
                                 <option value="3">Recursos Humanos</option>
                             </select>
-                            <label class="text-small mx-2" style="font-size: 15px" for="Roles">Rol</label>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="Roles">Rol</label>
                         </div>
 
 
@@ -263,24 +264,24 @@
                             List<Centro> listaCentro = controlCentro.findCentroEntities();
 
                         %>
-                        <div class="col-md-6 col-sm-12 form-floating text-center" id="Centro" style="display: none">
+                        <div class="col-md-6 col-sm-12 form-floating text-center mt-2" id="Centro" style="display: none">
                             <select name="centro" class="form-select mx-auto" id="Centro" required>
                                 <option value="" disabled selected hidden>Seleccione un centro</option>
                                 <% for (Centro centro : listaCentro) {%>
                                 <option value="<%=centro.getIdcentro()%>"><%=centro.getNombre()%></option>
                                 <% }%>
                             </select>
-                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Centro</label>
+                            <label class="text-small text-black mx-2 " style="font-size: 15px" for="Centro">Centro</label>
                         </div>
 
-                        <div class="col-md-6 col-sm-12 form-floating text-center" id="Regional" style="display: none">
+                        <div class="col-md-6 col-sm-12 form-floating text-center mt-2" id="Regional" style="display: none">
                             <select name="regional" class="form-select mx-auto" id="Regional" required>
                                 <option value="" disabled selected hidden>Seleccione una regional</option>
                                 <% for (Regional regi : listaRegional) {%>
                                 <option value="<%=regi.getIdregional()%>"><%=regi.getNombre()%></option>
                                 <% }%>
                             </select>
-                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Regional</label>
+                            <label class="text-small text-black mx-2 " style="font-size: 15px" for="Centro">Regional</label>
                         </div>
 
                         <%
@@ -294,7 +295,17 @@
                                 <option value="<%=coordinador.getIdcoordinador()%>"><%=coordinador.getNombres() + " " + coordinador.getApellidos()%></option>
                                 <% }%>
                             </select>
-                            <label class="text-small mx-2" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
+                            <label class="text-small text-black mx-2" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="Email" style="display: none">
+                            <input name="email" type="email" class="form-control mb-2" id="InputCorreo" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Correo</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating mt-2" id="Telefono" style="display: none">
+                            <input name="telefono" type="number" class="form-control mb-2" id="InputTelefono" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Telefono</label>
                         </div>
                     </div>
                 </div>
@@ -309,28 +320,45 @@
 
 <script>
 
-    function roles() {
-        let select = document.getElementById("Roles");
-        let selectedValue = select.options[select.selectedIndex].value;
-        let cajaCentro = document.getElementById("Centro");
-        let cajaRegional = document.getElementById("Regional");
-        let cajaCoordinador = document.getElementById("Coordinador");
+ function roles() {
+    let select = document.getElementById("Roles");
+    let selectedValue = select.options[select.selectedIndex].value;
+    let cajaCentro = document.getElementById("Centro");
+    let cajaRegional = document.getElementById("Regional");
+    let cajaCoordinador = document.getElementById("Coordinador");
+    let cajaEmil = document.getElementById("Email");
+    let cajaTelefono = document.getElementById("Telefono");
 
+    if (selectedValue == 1) {
+        cajaCentro.style.display = "block";
+        cajaRegional.style.display = "block";
+        cajaEmil.style.display = "block";
+        cajaCoordinador.style.display = "none";
+        cajaTelefono.style.display = "none";
+        
+        // Restaurar la clase a `col-md-12` si fue cambiada anteriormente
+        cajaEmil.classList.remove("col-md-6");
+        cajaEmil.classList.add("col-md-12");
 
-        if (selectedValue == 1) {
-            cajaCentro.style.display = "block";
-            cajaRegional.style.display = "block";
+    } else if (selectedValue == 2) {
+        cajaCoordinador.style.display = "block";
+        cajaEmil.style.display = "block";
+        cajaTelefono.style.display = "block";
 
-            cajaCoordinador.style.display = "none";
-        } else if (selectedValue == 2) {
-            cajaCoordinador.style.display = "block";
+        cajaCentro.style.display = "none";
+        cajaRegional.style.display = "none";
 
-            cajaCentro.style.display = "none";
-            cajaRegional.style.display = "none";
-        } else {
-            cajaCoordinador.style.display = "none";
-            cajaCentro.style.display = "none";
-            cajaRegional.style.display = "none";
-        }
+        // Cambiar las clases de `cajaEmil`
+        cajaEmil.classList.remove("col-md-12");
+        cajaEmil.classList.add("col-md-6");
+        
+    } else {
+        cajaCoordinador.style.display = "none";
+        cajaCentro.style.display = "none";
+        cajaRegional.style.display = "none";
+        cajaEmil.style.display = "none";
+        cajaTelefono.style.display = "none";
     }
+}
+
 </script>

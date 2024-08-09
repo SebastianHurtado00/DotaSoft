@@ -12,7 +12,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,27 +39,34 @@ public class ConsultaUsuarios extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        
         cargarTabla(request, response);
     }
-
+    
     private void cargarTabla(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         response.setContentType("application/json;charset=UTF-8");
-
+        
         UsuariosJpaController userController = new UsuariosJpaController();
         List<Usuarios> userList = userController.findUsuariosEntities();
-        List<JsonObject> userJson = new ArrayList<>();
+        
+        List<Map<String, String>> userJsonList = new ArrayList<>();
         for (Usuarios usuario : userList) {
-            JsonObject jsonUsuario = new JsonObject();
-            jsonUsuario.addProperty("NumeroCC", usuario.getIdusuario());
-            jsonUsuario.addProperty("NombreCompleto", usuario.getNombreCompleto());
-            jsonUsuario.addProperty("Rol", usuario.getRol());
-            jsonUsuario.addProperty("Estado", usuario.getEstado());
-            userJson.add(jsonUsuario);
+            Map<String, String> jsonUsuario = new HashMap<>();
+            jsonUsuario.put("NumeroCC", usuario.getIdusuario().toString());
+            jsonUsuario.put("NombreCompleto", usuario.getNombreCompleto());
+            jsonUsuario.put("Rol", String.valueOf(usuario.getRol()));
+            jsonUsuario.put("Estado", String.valueOf(usuario.getEstado()));
+            
+            userJsonList.add(jsonUsuario);
         }
+        
+        String json = new Gson().toJson(userJsonList);
 
-        String json = new Gson().toJson(userJson);
+        // Imprimir JSON generado para depuración
+        System.out.println("JSON generado: " + json);
+        
         response.getWriter().write(json);
     }
 

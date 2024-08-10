@@ -47,13 +47,13 @@
                     <div class="col-12">
                         <div class="input-group">
                             <div class="input-group-text col-4"><b>Codigo:</b></div>
-                            <input type="number" class="form-control" id="codigoGdSe" name="codigoSe" required min="1" max="2147483647">
+                            <input type="number" class="form-control" id="codigoGdSe" name="codigoAre" required min="1" max="2147483647">
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="input-group">
                             <div class="input-group-text col-4"><b>Nombre:</b></div>
-                            <input type="text" class="form-control" id="nombreGdSe" name="nombreSe" required min="1" maxlength="45">
+                            <input type="text" class="form-control" id="nombreGdSe" name="nombreAre" required min="1" maxlength="45">
                         </div>
                     </div>
                     <div class="col-12">
@@ -191,7 +191,7 @@
     </div>
 </div>
 <!-- MODALES DE SEXO GUARDAR FINAL -->
-<!-- MODALES DE SEXO GUARDAR INICIO -->
+<!-- MODALES DE CLIMA GUARDAR INICIO -->
 <div class="modal fade" id="ModalClima" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -219,7 +219,7 @@
         </div>
     </div>
 </div>
-<!-- MODALES DE SEXO GUARDAR FINAL -->
+<!-- MODALES DE CLIMA GUARDAR FINAL -->
 
 
 

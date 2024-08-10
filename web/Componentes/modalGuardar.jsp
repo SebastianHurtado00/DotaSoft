@@ -220,6 +220,7 @@
     </div>
 </div>
 <!-- MODALES DE CLIMA GUARDAR FINAL -->
+
 <!-- MODALES DE ELEMENTOS GUARDAR INICIO -->
 <div class="modal fade" id="ModalElementos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -262,7 +263,7 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12 form-floating">
                             <input type="number" class="form-control" id="InputCedula" required>
-                            <label class="text-small mx-2" style="font-size: 12px" for="InputCedula">N° Cedula Usuario</label>
+                            <label class="text-small mx-2" style="font-size: 12px" for="InputCedula">Nï¿½ Cedula Usuario</label>
                         </div>
                         <div class="col-md-6 col-sm-12 form-floating">
                             <input type="text" class="form-control mb-2" id="InputNombre" required>
@@ -348,17 +349,8 @@
         if (selectedValue == 1) {
             cajaCentro.style.display = "block";
             cajaRegional.style.display = "block";
+=======
 
-            cajaCoordinador.style.display = "none";
-        } else if (selectedValue == 2) {
-            cajaCoordinador.style.display = "block";
 
-            cajaCentro.style.display = "none";
-            cajaRegional.style.display = "none";
-        } else {
-            cajaCoordinador.style.display = "none";
-            cajaCentro.style.display = "none";
-            cajaRegional.style.display = "none";
-        }
-    }
-</script>
+
+

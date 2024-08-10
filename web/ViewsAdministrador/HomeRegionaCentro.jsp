@@ -18,7 +18,7 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <%--TRANSICIONES--%>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+        <%--REGIONAL--%>
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
@@ -97,7 +97,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaRegional() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaRegional',
@@ -113,8 +113,8 @@
                                             '<td>' + regio.codigo + '</td>' +
                                             '<td>' + regio.nombre + '</td>' +
                                             '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreasOpciones" ' +
-                                            'onclick="obtenerDatosAreas(' + regio.codigo + ', \'' + regio.nombre + '\')">Opciones</button>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalRegionalOpciones" ' +
+                                            'onclick="obtenerDatosRegional(' + regio.codigo + ', \'' + regio.nombre + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaRegional tbody').append(row);
@@ -126,9 +126,10 @@
                         }
                     });
                 }
-                cargarTablaRegional();
+                cargarTabla();
             });
         </script>
+        <%--CENTRO--%>
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
@@ -206,7 +207,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaCentro() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaCentro',
@@ -222,6 +223,10 @@
                                             '<td>' + centro.codigo + '</td>' +
                                             '<td>' + centro.nombre + '</td>' +
                                             '<td>' + centro.regNombre + '</td>' +
+                                             '<td>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalCentroOpciones" ' +
+                                            'onclick="obtenerDatosCentro(' + centro.codigo + ', \'' + centro.nombre + '\', \'' + centro.reglId + '\')">Opciones</button>' +
+                                            '</td>' +
                                             '</tr>';
                                     $('#tablaCentro tbody').append(row);
                                 });
@@ -232,7 +237,7 @@
                         }
                     });
                 }
-                cargarTablaCentro();
+                cargarTabla();
             });
         </script>
     </head>
@@ -350,9 +355,11 @@
                 </div>
             </div>
         <jsp:include page="../Componentes/modalGuardar.jsp" ></jsp:include>  
+        <jsp:include page="../Componentes/modalOpciones.jsp" ></jsp:include> 
 
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
+        <script src="../js/DatosTablas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

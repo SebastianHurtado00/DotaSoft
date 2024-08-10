@@ -221,3 +221,33 @@
     </div>
 </div>
 <!-- MODALES DE CLIMA OPCINES FINAL -->
+<!-- MODALES DE ELEMENTOS GUARDAR OPCINES INICIO -->
+<div class="modal fade" id="ModalElementosOpciones" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="FormularioElementosOpciones" class="row g-2">
+                    <h2 class="pt-3 pb-2 text-center">Opciones Elemento</h2>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Codigo:</b></div>
+                            <input type="number" class="form-control" id="codigoElementoOp" name="codigoElElm" required min="1" max="2147483647" readonly>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Nombre:</b></div>
+                            <input type="text" class="form-control" id="nombreElementoOp" name="nombreElElm" required min="1" maxlength="45">
+                        </div>
+                    </div>
+                    <div class="col-12 text-center py-3 pt-3">
+                        <button type="submit" class="btn botones text-white px-4" id="btnEditarElm" style="background-color: #018E42;"><b>Actualizar</b></button>
+                        <button type="submit" class="btn text-white bg-danger" id="btnEliminarElm" ><b>Eliminar</b></button>
+                        <button type="button" class="btn btn-secondary" id="btnCerrarElm" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALES DE ELEMENTOS OPCINES FINAL -->

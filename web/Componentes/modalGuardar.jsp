@@ -258,24 +258,25 @@
                 <h5 class="modal-title">Registros de usuarios</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="action">
+            <form method="post" action="<%=request.getContextPath()%>/logica_usuarios">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6 col-sm-12 form-floating">
-                            <input type="number" class="form-control" id="InputCedula" required>
-                            <label class="text-small mx-2" style="font-size: 12px" for="InputCedula">Nï¿½ Cedula Usuario</label>
-                        </div>
-                        <div class="col-md-6 col-sm-12 form-floating">
-                            <input type="text" class="form-control mb-2" id="InputNombre" required>
-                            <label class="text-small mx-2" style="font-size: 12px" for="InputNombre">Nombres y apellidos</label>
+                        <div class="col-md-6 col-sm-12 mb-2 form-floating">
+                            <input name="CedulaUsuario" type="number" class="form-control" id="InputCedula" required>
+                            <label class="text-small text-black mx-2" style="font-size: 15px" for="InputCedula">N° Cedula Usuario</label>
                         </div>
 
                         <div class="col-md-6 col-sm-12 form-floating">
-                            <input type="email" class="form-control mb-2" id="InputCorreo" required>
-                            <label class="text-small mx-2" style="font-size: 12px" for="InputNombre">Correo</label>
+                            <input name="nombre" type="text" class="form-control mb-2" id="InputNombre" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputNombre">Nombres </label>
                         </div>
 
-                        <div class="col-md-6 col-sm-12 form-floating text-center">
+                        <div class="col-md-6 col-sm-12 form-floating">
+                            <input name="apellido" type="text" class="form-control mb-2" id="InputApellido" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputNombre">Apellidos</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating text-center mb-2">
                             <select name="rolUsuario" class="form-select mx-auto" id="Roles" onchange="roles()" required>
                                 <option value="" disabled selected hidden></option>
                                 <option value="0">Administrador</option>
@@ -292,18 +293,9 @@
                             List<Centro> listaCentro = controlCentro.findCentroEntities();
 
                         %>
-                        <div class="col-md-6 col-sm-12 form-floating text-center" id="Centro" style="display: none">
-                            <select name="centro" class="form-select mx-auto" id="Centro" required>
-                                <option value="" disabled selected hidden>Seleccione un centro</option>
-                                <% for (Centro centro : listaCentro) {%>
-                                <option value="<%=centro.getIdcentro()%>"><%=centro.getNombre()%></option>
-                                <% }%>
-                            </select>
-                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Centro</label>
-                        </div>
 
-                        <div class="col-md-6 col-sm-12 form-floating text-center" id="Regional" style="display: none">
-                            <select name="regional" class="form-select mx-auto" id="Regional" required>
+                        <div class="col-md-6 col-sm-12 form-floating text-center mb-2" id="Regional" style="display: none">
+                            <select name="regional" class="form-select mx-auto" id="RegionalSelect" onchange="filtradoEntreDosSelects('RegionalSelect', 'CentroSelect', 'data-fk')" required>
                                 <option value="" disabled selected hidden>Seleccione una regional</option>
                                 <% for (Regional regi : listaRegional) {%>
                                 <option value="<%=regi.getIdregional()%>"><%=regi.getNombre()%></option>
@@ -312,23 +304,42 @@
                             <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Regional</label>
                         </div>
 
+
+                        <div class="col-md-6 col-sm-12 form-floating text-center mb-2" id="Centro" style="display: none">
+                            <select name="centro" class="form-select mx-auto" id="CentroSelect" onchange="filtradoEntreDosSelects('CentroSelect', 'CoordinadorSelect', 'data-centro-fk')" required>
+                                <option value="" disabled selected hidden>Seleccione un centro</option>
+                                <% for (Centro centro : listaCentro) {%>
+                                <option value="<%=centro.getIdcentro()%>" data-fk="<%=centro.getRegionalIdregional()%>" ><%=centro.getNombre()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Centro</label>
+                        </div>
                         <%
                             CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
                             List<Coordinador> coordinadorList = controlCoordinador.findCoordinadorEntities();
                         %>
-                        <div class="col-md-12 col-sm-12 form-floating text-center mt-2" id="Coordinador" style="display: none">
-                            <select name="Coordinador" class="form-select mx-auto" id="Centro" required>
+                        <div class="col-md-12 col-sm-12 form-floating text-center mt-2 mb-2" id="Coordinador" style="display: none">
+                            <select name="Coordinador" class="form-select mx-auto" id="CoordinadorSelect"  required >
                                 <option value="" disabled selected hidden>Seleccione un coordinador</option>
                                 <% for (Coordinador coordinador : coordinadorList) {%>
-                                <option value="<%=coordinador.getIdcoordinador()%>"><%=coordinador.getNombres() + " " + coordinador.getApellidos()%></option>
+                                <option value="<%=coordinador.getIdcoordinador()%>" data-centro-fk="<%=coordinador.getCentroIdcentro()%>" ><%=coordinador.getNombres() + " " + coordinador.getApellidos()%></option>
                                 <% }%>
                             </select>
                             <label class="text-small mx-2" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
                         </div>
+                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="Email" style="display: none">
+                            <input name="email" type="email" class="form-control mb-2" id="InputCorreo" >
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Correo</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating mt-2" id="Telefono" style="display: none">
+                            <input name="telefono" type="number" class="form-control mb-2" id="InputTelefono" >
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Telefono</label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Guardar</button>
+                    <button name="action" value="guaradarUsuarios"  class="btn btn-success">Guardar</button>
                 </div>
             </form>
         </div>
@@ -338,19 +349,5 @@
 
 <script>
 
-    function roles() {
-        let select = document.getElementById("Roles");
-        let selectedValue = select.options[select.selectedIndex].value;
-        let cajaCentro = document.getElementById("Centro");
-        let cajaRegional = document.getElementById("Regional");
-        let cajaCoordinador = document.getElementById("Coordinador");
 
-
-        if (selectedValue == 1) {
-            cajaCentro.style.display = "block";
-            cajaRegional.style.display = "block";
-=======
-
-
-
-
+</script>

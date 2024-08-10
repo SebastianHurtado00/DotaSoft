@@ -101,7 +101,7 @@ public class Regional implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Regional[ idregional=" + idregional + " ]";
+        return  "" + idregional ;
     }
     
 }

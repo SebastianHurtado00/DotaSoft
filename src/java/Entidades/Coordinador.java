@@ -140,7 +140,7 @@ public class Coordinador implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Coordinador[ idcoordinador=" + idcoordinador + " ]";
+        return "" + idcoordinador;
     }
     
 }

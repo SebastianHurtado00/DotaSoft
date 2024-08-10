@@ -171,7 +171,7 @@ public class Instructor implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Instructor[ idinstructor=" + idinstructor + " ]";
+        return "" + idinstructor;
     }
     
 }

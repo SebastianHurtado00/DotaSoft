@@ -53,7 +53,7 @@ public class logica_usuarios extends HttpServlet {
 
     }
 
-    private void SaveUsuario(HttpServletRequest request, HttpServletResponse response) {
+private void SaveUsuario(HttpServletRequest request, HttpServletResponse response) {
         UsuariosJpaController usuarioController = new UsuariosJpaController();
         CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
         InstructorJpaController ControlInstructor = new InstructorJpaController();

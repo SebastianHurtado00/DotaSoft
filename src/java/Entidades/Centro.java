@@ -125,7 +125,7 @@ public class Centro implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Centro[ idcentro=" + idcentro + " ]";
+        return "" + idcentro;
     }
     
 }

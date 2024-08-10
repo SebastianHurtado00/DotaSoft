@@ -92,7 +92,7 @@
                     <div class="col-12">
                         <div class="input-group">
                             <div class="input-group-text col-4"><b>Codigo:</b></div>
-                            <input type="number" class="form-control" id="codigoOpReg" name="codigoElReg" required min="1" max="2147483647">
+                            <input type="number" class="form-control" id="codigoOpReg" name="codigoElReg" required min="1" max="2147483647" readonly>
                         </div>
                     </div>
                     <div class="col-12">

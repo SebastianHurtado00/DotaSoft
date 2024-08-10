@@ -114,7 +114,7 @@
                                             '<td>' + red.nombre + '</td>' +
                                             '<td>' +
                                             '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalRedOpciones" ' +
-                                            'onclick="obtenerDatosArea(' + red.codigo + ', \'' + red.nombre + '\')">Opciones</button>' +
+                                            'onclick="obtenerDatosRed(' + red.codigo + ', \'' + red.nombre + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaRed tbody').append(row);

@@ -13,7 +13,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,19 +50,23 @@ public class ConsultaClima extends HttpServlet {
 
         // Lógica para consultar los datos
         ClimaJpaController controlador = new ClimaJpaController();
-        List<Clima> cli = controlador.findClimaEntities();
-        List<JsonObject> areasJson = new ArrayList<>();
+        List<Clima> climaList = controlador.findClimaEntities();
 
-        for (Clima clima : cli) {
-            JsonObject aJson = new JsonObject();
-            aJson.addProperty("codigo", clima.getIdclima());
-            aJson.addProperty("nombre", clima.getNombre());
+        // Crear una lista para almacenar los mapas de los climas
+        List<Map<String, String>> climaJsonList = new ArrayList<>();
 
-            areasJson.add(aJson);
+        for (Clima clima : climaList) {
+            // Crear un nuevo mapa para almacenar los datos del clima
+            Map<String, String> jsonClima = new HashMap<>();
+            jsonClima.put("codigo", clima.getIdclima().toString());
+            jsonClima.put("nombre", clima.getNombre());
+
+            // Agregar el mapa a la lista de climas JSON
+            climaJsonList.add(jsonClima);
         }
 
-        // Crear la respuesta JSON
-        String json = new Gson().toJson(areasJson);
+        // Convertir la lista de mapas a una cadena JSON
+        String json = new Gson().toJson(climaJsonList);
 
         // Enviar la respuesta JSON al cliente
         response.getWriter().write(json);

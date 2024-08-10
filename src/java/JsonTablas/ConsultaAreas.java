@@ -13,7 +13,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,36 +45,39 @@ public class ConsultaAreas extends HttpServlet {
 
     protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("application/json;charset=UTF-8");
 
-        // Lógica para consultar los datos de los estudiantes
+// Lógica para consultar los datos de las áreas
         AreaJpaController areaController = new AreaJpaController();
-        List<Area> area = areaController.findAreaEntities();
+        List<Area> areaList = areaController.findAreaEntities();
         RedJpaController redController = new RedJpaController();
-        // Crear una lista para almacenar objetos JSON personalizados de estudiantes
-        List<JsonObject> redJson = new ArrayList<>();
 
-        for (Area areas : area) {
-            // Crear un nuevo objeto JSON personalizado con los datos
-            JsonObject objetoFormacionesJson = new JsonObject();
-            objetoFormacionesJson.addProperty("codigo", areas.getIdarea());
-            objetoFormacionesJson.addProperty("nombre", areas.getNombre());
+// Crear una lista para almacenar los mapas de las áreas
+        List<Map<String, String>> areaJsonList = new ArrayList<>();
 
-            // Obtener el objeto de sede del estudiante y agregar sus datos al JSON
-            Red sede = redController.findRed(areas.getRedIdred().getIdred());
-            if (sede != null) {
-                objetoFormacionesJson.addProperty("redlId", sede.getIdred());
-                objetoFormacionesJson.addProperty("redNombre", sede.getNombre());
+        for (Area area : areaList) {
+            // Crear un nuevo mapa para almacenar los datos del área
+            Map<String, String> jsonArea = new HashMap<>();
+            jsonArea.put("codigo", area.getIdarea().toString());
+            jsonArea.put("nombre", area.getNombre());
+
+            // Obtener la red asociada al área y agregar sus datos al mapa si existe
+            Red red = redController.findRed(area.getRedIdred().getIdred());
+            if (red != null) {
+                jsonArea.put("redId", red.getIdred().toString());
+                jsonArea.put("redNombre", red.getNombre());
             }
-            // Agregar el objeto JSON personalizado a la lista
-            redJson.add(objetoFormacionesJson);
+
+            // Agregar el mapa a la lista de áreas JSON
+            areaJsonList.add(jsonArea);
         }
-        // Convertir la lista de objetos JSON personalizados a una cadena JSON
-        String json = new Gson().toJson(redJson);
+
+        // Convertir la lista de mapas a una cadena JSON
+        String json = new Gson().toJson(areaJsonList);
 
         // Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

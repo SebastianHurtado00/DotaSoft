@@ -13,7 +13,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,29 +42,34 @@ public class ConsultaRed extends HttpServlet {
             throws ServletException, IOException {
         cargarTabla(request, response);
     }
-    
+
     protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
 
-        // Lógica para consultar los datos
+// Lógica para consultar los datos
         RedJpaController controlador = new RedJpaController();
-        List<Red> red = controlador.findRedEntities();
-        List<JsonObject> areasJson = new ArrayList<>();
+        List<Red> redList = controlador.findRedEntities();
 
-        for (Red redes : red) {
-            JsonObject aJson = new JsonObject();
-            aJson.addProperty("codigo", redes.getIdred());
-            aJson.addProperty("nombre", redes.getNombre());
+// Crear una lista para almacenar los mapas de las redes
+        List<Map<String, String>> redJsonList = new ArrayList<>();
 
-            areasJson.add(aJson);
+        for (Red red : redList) {
+            // Crear un nuevo mapa para almacenar los datos de la red
+            Map<String, String> jsonRed = new HashMap<>();
+            jsonRed.put("codigo", red.getIdred().toString());
+            jsonRed.put("nombre", red.getNombre());
+
+            // Agregar el mapa a la lista de redes JSON
+            redJsonList.add(jsonRed);
         }
 
-        // Crear la respuesta JSON
-        String json = new Gson().toJson(areasJson);
+// Convertir la lista de mapas a una cadena JSON
+        String json = new Gson().toJson(redJsonList);
 
-        // Enviar la respuesta JSON al cliente
+// Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

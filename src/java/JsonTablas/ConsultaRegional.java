@@ -11,7 +11,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,29 +40,35 @@ public class ConsultaRegional extends HttpServlet {
             throws ServletException, IOException {
         cargarTabla(request, response);
     }
-    
-      protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
+
+    protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("application/json;charset=UTF-8");
 
-        // Lógica para consultar los datos
+// Lógica para consultar los datos
         RegionalJpaController controlador = new RegionalJpaController();
-        List<Regional> red = controlador.findRegionalEntities();
-        List<JsonObject> areasJson = new ArrayList<>();
+        List<Regional> regionalList = controlador.findRegionalEntities();
 
-        for (Regional regio : red) {
-            JsonObject aJson = new JsonObject();
-            aJson.addProperty("codigo", regio.getIdregional());
-            aJson.addProperty("nombre", regio.getNombre());
+// Crear una lista para almacenar los mapas de las regiones
+        List<Map<String, String>> regionalJsonList = new ArrayList<>();
 
-            areasJson.add(aJson);
+        for (Regional regional : regionalList) {
+            // Crear un nuevo mapa para almacenar los datos de la región
+            Map<String, String> jsonRegional = new HashMap<>();
+            jsonRegional.put("codigo", regional.getIdregional().toString());
+            jsonRegional.put("nombre", regional.getNombre());
+
+            // Agregar el mapa a la lista de regiones JSON
+            regionalJsonList.add(jsonRegional);
         }
 
-        // Crear la respuesta JSON
-        String json = new Gson().toJson(areasJson);
+// Convertir la lista de mapas a una cadena JSON
+        String json = new Gson().toJson(regionalJsonList);
 
-        // Enviar la respuesta JSON al cliente
+// Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

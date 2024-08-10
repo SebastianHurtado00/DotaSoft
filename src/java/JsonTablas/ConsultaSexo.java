@@ -13,7 +13,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,24 +48,29 @@ public class ConsultaSexo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
 
-        // Lógica para consultar los datos
+// Lógica para consultar los datos
         SexoJpaController controlador = new SexoJpaController();
-        List<Sexo> sex = controlador.findSexoEntities();
-        List<JsonObject> areasJson = new ArrayList<>();
+        List<Sexo> sexoList = controlador.findSexoEntities();
 
-        for (Sexo sexo : sex) {
-            JsonObject aJson = new JsonObject();
-            aJson.addProperty("codigo", sexo.getIdsexo());
-            aJson.addProperty("nombre", sexo.getNombre());
+// Crear una lista para almacenar los mapas de los sexos
+        List<Map<String, String>> sexoJsonList = new ArrayList<>();
 
-            areasJson.add(aJson);
+        for (Sexo sexo : sexoList) {
+            // Crear un nuevo mapa para almacenar los datos del sexo
+            Map<String, String> jsonSexo = new HashMap<>();
+            jsonSexo.put("codigo", sexo.getIdsexo().toString());
+            jsonSexo.put("nombre", sexo.getNombre());
+
+            // Agregar el mapa a la lista de sexos JSON
+            sexoJsonList.add(jsonSexo);
         }
 
-        // Crear la respuesta JSON
-        String json = new Gson().toJson(areasJson);
+// Convertir la lista de mapas a una cadena JSON
+        String json = new Gson().toJson(sexoJsonList);
 
-        // Enviar la respuesta JSON al cliente
+// Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

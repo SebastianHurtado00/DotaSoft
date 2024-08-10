@@ -11,7 +11,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,31 +41,35 @@ public class ConsultaElementos extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         cargarTabla(request, response);
     }
-    
-      
+
     protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
 
-        // Lógica para consultar los datos
+// Lógica para consultar los datos
         ElementosJpaController controlador = new ElementosJpaController();
-        List<Elementos> elem = controlador.findElementosEntities();
-        List<JsonObject> elementoJson = new ArrayList<>();
+        List<Elementos> elementosList = controlador.findElementosEntities();
 
-        for (Elementos elemento : elem) {
-            JsonObject aJson = new JsonObject();
-            aJson.addProperty("codigo", elemento.getIdelemento());
-            aJson.addProperty("nombre", elemento.getNombre());
-            aJson.addProperty("cantidades", elemento.getCantidades());
+// Crear una lista para almacenar los mapas de los elementos
+        List<Map<String, String>> elementoJsonList = new ArrayList<>();
 
-            elementoJson.add(aJson);
+        for (Elementos elemento : elementosList) {
+            // Crear un nuevo mapa para almacenar los datos del elemento
+            Map<String, String> jsonElemento = new HashMap<>();
+            jsonElemento.put("codigo", elemento.getIdelemento().toString());
+            jsonElemento.put("nombre", elemento.getNombre());
+            jsonElemento.put("cantidades", elemento.getCantidades().toString());
+
+            // Agregar el mapa a la lista de elementos JSON
+            elementoJsonList.add(jsonElemento);
         }
 
-        // Crear la respuesta JSON
-        String json = new Gson().toJson(elementoJson);
+// Convertir la lista de mapas a una cadena JSON
+        String json = new Gson().toJson(elementoJsonList);
 
-        // Enviar la respuesta JSON al cliente
+// Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

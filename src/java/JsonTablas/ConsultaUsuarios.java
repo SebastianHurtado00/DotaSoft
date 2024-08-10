@@ -63,9 +63,6 @@ public class ConsultaUsuarios extends HttpServlet {
         }
         
         String json = new Gson().toJson(userJsonList);
-
-        // Imprimir JSON generado para depuración
-        System.out.println("JSON generado: " + json);
         
         response.getWriter().write(json);
     }

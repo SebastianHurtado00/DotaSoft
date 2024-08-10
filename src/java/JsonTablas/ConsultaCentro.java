@@ -12,7 +12,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,30 +47,36 @@ public class ConsultaCentro extends HttpServlet {
 
         response.setContentType("application/json;charset=UTF-8");
 
-        // Lógica para consultar los datos de los estudiantes
+// Lógica para consultar los datos de los centros
         CentroJpaController centroController = new CentroJpaController();
-        List<Centro> centro = centroController.findCentroEntities();
-        RegionalJpaController redController = new RegionalJpaController();
-        // Crear una lista para almacenar objetos JSON personalizados de estudiantes
-        List<JsonObject> redJson = new ArrayList<>();
+        List<Centro> centroList = centroController.findCentroEntities();
+        RegionalJpaController regionalController = new RegionalJpaController();
 
-        for (Centro centros : centro) {
-            // Crear un nuevo objeto JSON personalizado con los datos
-            JsonObject objetoFormacionesJson = new JsonObject();
-            objetoFormacionesJson.addProperty("codigo", centros.getIdcentro());
-            objetoFormacionesJson.addProperty("nombre", centros.getNombre());
+// Crear una lista para almacenar los mapas de los centros
+        List<Map<String, String>> centroJsonList = new ArrayList<>();
 
-            // Obtener el objeto de sede del estudiante y agregar sus datos al JSON
-            Regional reg = redController.findRegional(centros.getRegionalIdregional().getIdregional());
-            if (reg != null) {
-                objetoFormacionesJson.addProperty("reglId", reg.getIdregional());
-                objetoFormacionesJson.addProperty("regNombre", reg.getNombre());
+        for (Centro centro : centroList) {
+            // Crear un nuevo mapa para almacenar los datos del centro
+            Map<String, String> jsonCentro = new HashMap<>();
+            jsonCentro.put("codigo", centro.getIdcentro().toString());
+            jsonCentro.put("nombre", centro.getNombre());
+
+            // Obtener la regional asociada al centro y agregar sus datos al mapa si existe
+            Regional regional = regionalController.findRegional(centro.getRegionalIdregional().getIdregional());
+            if (regional != null) {
+                jsonCentro.put("reglId", regional.getIdregional().toString());
+                jsonCentro.put("regNombre", regional.getNombre());
             }
-            // Agregar el objeto JSON personalizado a la lista
-            redJson.add(objetoFormacionesJson);
+
+            // Agregar el mapa a la lista de centros JSON
+            centroJsonList.add(jsonCentro);
         }
-        // Convertir la lista de objetos JSON personalizados a una cadena JSON
-        String json = new Gson().toJson(redJson);
+
+         // Convertir la lista de mapas a una cadena JSON
+        String json = new Gson().toJson(centroJsonList);
+
+        // Imprimir JSON generado para depuración
+        System.out.println("JSON generado: " + json);
 
         // Enviar la respuesta JSON al cliente
         response.getWriter().write(json);

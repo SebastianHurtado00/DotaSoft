@@ -18,27 +18,27 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <%--TRANSICIONES--%>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+        <%--REGIONAL--%>
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
-                $('#btnGuardarArea').click(function (event) {
+                $('#btnGuardarReg').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioArea').serialize();
+                    var formData = $('#FormularioRegional').serialize();
                     formData += '&accion=guardar';
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarArea').click(function (event) {
+                $('#btnEliminarReg').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioRegionalOpciones').serialize();
                     formData += '&accion=eliminar';
                     enviarPeticion(formData, handleSuccessEliminar, handleError);
                 });
 
-                $('#btnEditarArea').click(function (event) {
+                $('#btnEditarReg').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioRegionalOpciones').serialize();
                     formData += '&accion=actualizar';
                     enviarPeticion(formData, handleSuccessActualizar, handleError);
                 });
@@ -46,7 +46,7 @@
                 function enviarPeticion(formData, successCallback, errorCallback) {
                     $.ajax({
                         type: 'POST',
-                        url: '../AreaTrabajoServlet',
+                        url: '../RegionalServlet',
                         data: formData,
                         success: function (response) {
                             successCallback(response);
@@ -64,7 +64,7 @@
                 function handleSuccessGuardar(response) {
                     if (response.estado === "exito") {
                         mostrarExito(response.mensaje);
-                        limpiarFormulario('FormularioArea');
+                        limpiarFormulario('FormularioRegional');
                         cargarTabla();
                     } else {
                         mostrarError(response.mensaje);
@@ -73,7 +73,7 @@
 
                 function handleSuccessEliminar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarReg");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -84,7 +84,7 @@
 
                 function handleSuccessActualizar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarReg");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -97,7 +97,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaRegional() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaRegional',
@@ -113,8 +113,8 @@
                                             '<td>' + regio.codigo + '</td>' +
                                             '<td>' + regio.nombre + '</td>' +
                                             '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreasOpciones" ' +
-                                            'onclick="obtenerDatosAreas(' + regio.codigo + ', \'' + regio.nombre + '\')">Opciones</button>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalRegionalOpciones" ' +
+                                            'onclick="obtenerDatosRegional(' + regio.codigo + ', \'' + regio.nombre + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaRegional tbody').append(row);
@@ -126,29 +126,30 @@
                         }
                     });
                 }
-                cargarTablaRegional();
+                cargarTabla();
             });
         </script>
+        <%--CENTRO--%>
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
-                $('#btnGuardarArea').click(function (event) {
+                $('#btnGuardarCentro').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioArea').serialize();
+                    var formData = $('#FormularioCentro').serialize();
                     formData += '&accion=guardar';
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarArea').click(function (event) {
+                $('#btnEliminarCent').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioCentroOpciones').serialize();
                     formData += '&accion=eliminar';
                     enviarPeticion(formData, handleSuccessEliminar, handleError);
                 });
 
-                $('#btnEditarArea').click(function (event) {
+                $('#btnEditarCent').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioCentroOpciones').serialize();
                     formData += '&accion=actualizar';
                     enviarPeticion(formData, handleSuccessActualizar, handleError);
                 });
@@ -156,7 +157,7 @@
                 function enviarPeticion(formData, successCallback, errorCallback) {
                     $.ajax({
                         type: 'POST',
-                        url: '../AreaTrabajoServlet',
+                        url: '../CentroServlet',
                         data: formData,
                         success: function (response) {
                             successCallback(response);
@@ -173,7 +174,7 @@
                 function handleSuccessGuardar(response) {
                     if (response.estado === "exito") {
                         mostrarExito(response.mensaje);
-                        limpiarFormulario('FormularioArea');
+                        limpiarFormulario('FormularioCentro');
                         cargarTabla();
                     } else {
                         mostrarError(response.mensaje);
@@ -182,7 +183,7 @@
 
                 function handleSuccessEliminar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarCent");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -193,7 +194,7 @@
 
                 function handleSuccessActualizar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarCent");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -206,7 +207,7 @@
                     mostrarError(errorMessage);
                 }
 
-                function cargarTablaCentro() {
+                function cargarTabla() {
                     $.ajax({
                         type: 'GET',
                         url: '../ConsultaCentro',
@@ -222,6 +223,10 @@
                                             '<td>' + centro.codigo + '</td>' +
                                             '<td>' + centro.nombre + '</td>' +
                                             '<td>' + centro.regNombre + '</td>' +
+                                             '<td>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalCentroOpciones" ' +
+                                            'onclick="obtenerDatosCentro(' + centro.codigo + ', \'' + centro.nombre + '\', \'' + centro.reglId + '\')">Opciones</button>' +
+                                            '</td>' +
                                             '</tr>';
                                     $('#tablaCentro tbody').append(row);
                                 });
@@ -232,7 +237,7 @@
                         }
                     });
                 }
-                cargarTablaCentro();
+                cargarTabla();
             });
         </script>
     </head>
@@ -350,9 +355,12 @@
                 </div>
             </div>
         <jsp:include page="../Componentes/modalGuardar.jsp" ></jsp:include>  
+        <jsp:include page="../Componentes/modalOpciones.jsp" ></jsp:include> 
 
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
+        <script src="../js/DatosTablas.js"></script>
+        <script src="../js/alertas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

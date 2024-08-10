@@ -14,8 +14,8 @@ function obtenerDatosRed(codigoRed, nombreRed) {
 }
 
 function obtenerDatosArea(codigoAre, nombreAre, ListaReds) {
-    $('#codigoOpCli').val(codigoAre);
-    $('#nombreOpCli').val(nombreAre);
+    $('#codigoOpArea').val(codigoAre);
+    $('#nombreOpArea').val(nombreAre);
     $("#RedesListaEl").val(ListaReds);
 
     $.ajax({
@@ -29,5 +29,31 @@ function obtenerDatosArea(codigoAre, nombreAre, ListaReds) {
     });
 }
 
+function obtenerDatosRegional(codigoRegi, nombreRegi) {
+    $('#codigoOpReg').val(codigoRegi);
+    $('#nombreOpReg').val(nombreRegi);
+}
 
+
+function obtenerDatosCentro(codigoCen, nombreCen, ListaRegio) {
+    $('#codigoOpCent').val(codigoCen);
+    $('#nombreOpCent').val(nombreCen);
+    $("#CentroListaEl").val(ListaRegio);
+
+    $.ajax({
+        type: "POST",
+        url: "../Busquedas/obtenerCentro.jsp",
+        data: {centro: ListaRegio},
+        dataType: "html",
+        success: function (data) {
+            $("#CentroListaEl").empty().append(data);
+        }
+    });
+}
+
+function obtenerDatosElem(codigoElem, nombreElem,cantidadElem) {
+    $('#codigoElementoOp').val(codigoElem);
+    $('#nombreElementoOp').val(nombreElem);
+    $('#cantidadElementoOp').val(cantidadElem);
+}
 

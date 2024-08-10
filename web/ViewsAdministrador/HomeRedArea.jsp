@@ -22,23 +22,23 @@
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
-                $('#btnGuardarArea').click(function (event) {
+                $('#btnGuardarRed').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioArea').serialize();
+                    var formData = $('#FormularioRed').serialize();
                     formData += '&accion=guardar';
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarArea').click(function (event) {
+                $('#btnEliminarRed').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioRedOpciones').serialize();
                     formData += '&accion=eliminar';
                     enviarPeticion(formData, handleSuccessEliminar, handleError);
                 });
 
-                $('#btnEditarArea').click(function (event) {
+                $('#btnEditarRed').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioRedOpciones').serialize();
                     formData += '&accion=actualizar';
                     enviarPeticion(formData, handleSuccessActualizar, handleError);
                 });
@@ -46,7 +46,7 @@
                 function enviarPeticion(formData, successCallback, errorCallback) {
                     $.ajax({
                         type: 'POST',
-                        url: '../AreaTrabajoServlet',
+                        url: '../RedServlet',
                         data: formData,
                         success: function (response) {
                             successCallback(response);
@@ -64,7 +64,7 @@
                 function handleSuccessGuardar(response) {
                     if (response.estado === "exito") {
                         mostrarExito(response.mensaje);
-                        limpiarFormulario('FormularioArea');
+                        limpiarFormulario('FormularioRed');
                         cargarTabla();
                     } else {
                         mostrarError(response.mensaje);
@@ -73,7 +73,7 @@
 
                 function handleSuccessEliminar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarRed");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -84,7 +84,7 @@
 
                 function handleSuccessActualizar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarRed");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -114,7 +114,7 @@
                                             '<td>' + red.nombre + '</td>' +
                                             '<td>' +
                                             '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalRedOpciones" ' +
-                                            'onclick="obtenerDatosArea(' + red.codigo + ', \'' + red.nombre + '\')">Opciones</button>' +
+                                            'onclick="obtenerDatosRed(' + red.codigo + ', \'' + red.nombre + '\')">Opciones</button>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaRed tbody').append(row);
@@ -156,7 +156,7 @@
                 function enviarPeticion(formData, successCallback, errorCallback) {
                     $.ajax({
                         type: 'POST',
-                        url: '../AreaTrabajoServlet',
+                        url: '../AreaServlet',
                         data: formData,
                         success: function (response) {
                             successCallback(response);
@@ -183,7 +183,7 @@
 
                 function handleSuccessEliminar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarArea");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -194,7 +194,7 @@
 
                 function handleSuccessActualizar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarArea");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -239,9 +239,6 @@
                 }
                 cargarTabla();
             });
-        </script>
-        <script>
-
         </script>
     </head>
     <body>
@@ -364,6 +361,7 @@
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/DatosTablas.js"></script>
+        <script src="../js/alertas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

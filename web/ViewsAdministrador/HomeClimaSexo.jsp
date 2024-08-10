@@ -22,23 +22,23 @@
         <script>
             $(document).ready(function () {
                 // Manejador de evento para el botón de guardar en el formulario
-                $('#btnGuardarArea').click(function (event) {
+                $('#btnGuardarSexo').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioArea').serialize();
+                    var formData = $('#FormularioSexo').serialize();
                     formData += '&accion=guardar';
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarArea').click(function (event) {
+                $('#btnEliminarSexo').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioSexoOpciones').serialize();
                     formData += '&accion=eliminar';
                     enviarPeticion(formData, handleSuccessEliminar, handleError);
                 });
 
-                $('#btnEditarArea').click(function (event) {
+                $('#btnEditarSexo').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioSexoOpciones').serialize();
                     formData += '&accion=actualizar';
                     enviarPeticion(formData, handleSuccessActualizar, handleError);
                 });
@@ -46,7 +46,7 @@
                 function enviarPeticion(formData, successCallback, errorCallback) {
                     $.ajax({
                         type: 'POST',
-                        url: '../AreaTrabajoServlet',
+                        url: '../SexoServlet',
                         data: formData,
                         success: function (response) {
                             successCallback(response);
@@ -64,7 +64,7 @@
                 function handleSuccessGuardar(response) {
                     if (response.estado === "exito") {
                         mostrarExito(response.mensaje);
-                        limpiarFormulario('FormularioArea');
+                        limpiarFormulario('FormularioSexo');
                         cargarTabla();
                     } else {
                         mostrarError(response.mensaje);
@@ -73,7 +73,7 @@
 
                 function handleSuccessEliminar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarSexo");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -84,7 +84,7 @@
 
                 function handleSuccessActualizar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarSexo");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -132,23 +132,23 @@
         <%--CLIMA--%>
         <script>
             $(document).ready(function () {
-                $('#btnGuardarArea').click(function (event) {
+                $('#btnGuardarCli').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioArea').serialize();
+                    var formData = $('#FormularioClima').serialize();
                     formData += '&accion=guardar';
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarArea').click(function (event) {
+                $('#btnEliminarClima').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioClimaOpciones').serialize();
                     formData += '&accion=eliminar';
                     enviarPeticion(formData, handleSuccessEliminar, handleError);
                 });
 
-                $('#btnEditarArea').click(function (event) {
+                $('#btnEditarClima').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
+                    var formData = $('#FormularioClimaOpciones').serialize();
                     formData += '&accion=actualizar';
                     enviarPeticion(formData, handleSuccessActualizar, handleError);
                 });
@@ -156,7 +156,7 @@
                 function enviarPeticion(formData, successCallback, errorCallback) {
                     $.ajax({
                         type: 'POST',
-                        url: '../AreaTrabajoServlet',
+                        url: '../ClimaServlet',
                         data: formData,
                         success: function (response) {
                             successCallback(response);
@@ -174,7 +174,7 @@
                 function handleSuccessGuardar(response) {
                     if (response.estado === "exito") {
                         mostrarExito(response.mensaje);
-                        limpiarFormulario('FormularioArea');
+                        limpiarFormulario('FormularioClima');
                         cargarTabla();
                     } else {
                         mostrarError(response.mensaje);
@@ -183,7 +183,7 @@
 
                 function handleSuccessEliminar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarClima");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -194,7 +194,7 @@
 
                 function handleSuccessActualizar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarAreas");
+                        var boton = document.getElementById("btnCerrarClima");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -362,6 +362,7 @@
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/DatosTablas.js"></script>
+        <script src="../js/alertas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

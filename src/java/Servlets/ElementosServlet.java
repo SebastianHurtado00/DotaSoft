@@ -4,8 +4,8 @@
  */
 package Servlets;
 
-import Controladores.ClimaJpaController;
-import Entidades.Clima;
+import Controladores.ElementosJpaController;
+import Entidades.Elementos;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Peralta
  */
-@WebServlet(name = "ClimaServlet", urlPatterns = {"/ClimaServlet"})
-public class ClimaServlet extends HttpServlet {
+@WebServlet(name = "ElementosServlet", urlPatterns = {"/ElementosServlet"})
+public class ElementosServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,23 +58,24 @@ public class ClimaServlet extends HttpServlet {
     public void botonGuardar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int codigo = Integer.parseInt(request.getParameter("codigoCli"));
-        String nombre = request.getParameter("nombreCli");
+        int codigo = Integer.parseInt(request.getParameter("codigoElm"));
+        String nombre = request.getParameter("nombreELm");
 
-        ClimaJpaController se = new ClimaJpaController();
-        Clima guardarClima = new Clima();
+        ElementosJpaController se = new ElementosJpaController();
+        Elementos guardar = new Elementos();
 
         try {
             // Verificar si el código ya existe en la base de datos
-            if (se.findClima(codigo) != null) {
+            if (se.findElementos(codigo) != null) {
                 // El código ya existe, enviar notificación
                 enviarRespuestaError(response, "¡Error! Ya existe un registro con ese Codigo.");
             } else {
                 // El código no existe, proceder con la creación de la sede
-                guardarClima.setIdclima(codigo);
-                guardarClima.setNombre(nombre);
+                guardar.setIdelemento(codigo);
+                guardar.setNombre(nombre);
+                guardar.setCantidades(0);
 
-                se.create(guardarClima);
+                se.create(guardar);
                 enviarRespuestaExito(response, "¡Registro guardado exitosamente!");
             }
         } catch (Exception e) {
@@ -87,9 +88,9 @@ public class ClimaServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            int codigo = Integer.parseInt(request.getParameter("codigoElCli"));
-            ClimaJpaController climaController = new ClimaJpaController();
-            climaController.destroy(codigo);
+            int codigo = Integer.parseInt(request.getParameter("codigoElElm"));
+            ElementosJpaController Controller = new ElementosJpaController();
+            Controller.destroy(codigo);
             enviarRespuestaExito(response, "¡Registro Eliminado exitosamente!");
         } catch (Exception e) {
             enviarRespuestaError(response, "¡Error!");
@@ -100,17 +101,17 @@ public class ClimaServlet extends HttpServlet {
     public void botonEditar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int codigo = Integer.parseInt(request.getParameter("codigoElCli"));
-        String nombre = request.getParameter("nombreElCli");
+        int codigo = Integer.parseInt(request.getParameter("codigoElElm"));
+        String nombre = request.getParameter("nombreElElm");
 
-        ClimaJpaController climaController = new ClimaJpaController();
-        Clima climaExistente = climaController.findClima(codigo);
+        ElementosJpaController Controller = new ElementosJpaController();
+        Elementos Existente = Controller.findElementos(codigo);
 
         try {
-            if (climaExistente != null) {
+            if (Existente != null) {
                 // La sede existe, proceder con la edición
-                climaExistente.setNombre(nombre);
-                climaController.edit(climaExistente);
+                Existente.setNombre(nombre);
+                Controller.edit(Existente);
 
                 enviarRespuestaExito(response, "¡Registro Editado exitosamente!");
             }

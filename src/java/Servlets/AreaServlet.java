@@ -4,8 +4,15 @@
  */
 package Servlets;
 
+import Controladores.AreaJpaController;
+import Controladores.RedJpaController;
+import Entidades.Area;
+import Entidades.Red;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,18 +38,121 @@ public class AreaServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AreaServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AreaServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String accion = request.getParameter("accion");
+        if (accion != null) {
+            switch (accion) {
+                case "guardar":
+                    botonGuardar(request, response);
+                    break;
+                case "actualizar":
+                    botonEdicion(request, response);
+                    break;
+                case "eliminar":
+                    botonElimina(request, response);
+                    break;
+                default:
+                    // Acción no válida
+                    break;
+            }
         }
+    }
+
+    public void botonGuardar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int codigo = Integer.parseInt(request.getParameter("codigoAre"));
+        String nombre = request.getParameter("nombreAre");
+        int Lista = Integer.parseInt(request.getParameter("RedesListaGd"));
+
+        AreaJpaController Controlador = new AreaJpaController();
+        Area guarda = new Area();
+        RedJpaController redControlador = new RedJpaController();
+
+        try {
+
+            if (Controlador.findArea(codigo) != null) {
+                enviarRespuestaError(response, "¡Error! Ya existe un registro con ese Codigo.");
+            } else {
+
+                guarda.setIdarea(codigo);
+                guarda.setNombre(nombre);
+                Red des = redControlador.findRed(Lista);
+                guarda.setRedIdred(des);
+
+                Controlador.create(guarda);
+
+                enviarRespuestaExito(response, "¡Registro guardado exitosamente!");
+            }
+
+        } catch (Exception e) {
+            enviarRespuestaError(response, "¡Error!");
+        }
+
+    }
+
+    public void botonElimina(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int codigo = Integer.parseInt(request.getParameter("codigoElArea"));
+        AreaJpaController fo = new AreaJpaController();
+
+        try {
+            fo.destroy(codigo);
+            enviarRespuestaExito(response, "¡Registro Eliminado exitosamente!");
+        } catch (Exception e) {
+            enviarRespuestaError(response, "¡Error!");
+        }
+
+    }
+
+    public void botonEdicion(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int codigo = Integer.parseInt(request.getParameter("codigoElArea"));
+        String nombre = request.getParameter("nombreElArea");
+        int Lsita = Integer.parseInt(request.getParameter("RedesListaOp"));
+
+        AreaJpaController Controlador = new AreaJpaController();
+        Area editado = Controlador.findArea(codigo);
+        RedJpaController redControlador = new RedJpaController();
+
+        if (editado != null) {
+            // Actualizar los datos de la sede
+            editado.setNombre(nombre);
+            Red des = redControlador.findRed(Lsita);
+            editado.setRedIdred(des);
+            try {
+                Controlador.edit(editado);
+                enviarRespuestaExito(response, "¡Registro Editado exitosamente!");
+            } catch (Exception e) {
+
+                enviarRespuestaError(response, "¡Error!");
+            }
+        }
+    }
+
+    // Método para enviar una respuesta JSON de éxito
+    private void enviarRespuestaExito(HttpServletResponse response, String mensaje) throws IOException {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", "exito");
+        respuesta.put("mensaje", mensaje);
+
+        String json = new Gson().toJson(respuesta);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+    }
+
+    // Método para enviar una respuesta JSON de error
+    private void enviarRespuestaError(HttpServletResponse response, String mensaje) throws IOException {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", "error");
+        respuesta.put("mensaje", mensaje);
+
+        String json = new Gson().toJson(respuesta);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

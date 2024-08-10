@@ -240,9 +240,6 @@
                 cargarTabla();
             });
         </script>
-        <script>
-
-        </script>
     </head>
     <body>
         <div class="wrapper">

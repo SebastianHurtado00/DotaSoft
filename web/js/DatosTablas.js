@@ -50,3 +50,10 @@ function obtenerDatosCentro(codigoCen, nombreCen, ListaRegio) {
         }
     });
 }
+
+function obtenerDatosElem(codigoElem, nombreElem,cantidadElem) {
+    $('#codigoElementoOp').val(codigoElem);
+    $('#nombreElementoOp').val(nombreElem);
+    $('#cantidadElementoOp').val(cantidadElem);
+}
+

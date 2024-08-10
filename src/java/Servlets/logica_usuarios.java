@@ -114,11 +114,12 @@ public class logica_usuarios extends HttpServlet {
                 int idCoordinador = Integer.parseInt(request.getParameter("Coordinador"));
                 Coordinador cordinadorSeleccionado = controlCoordinador.findCoordinador(idCoordinador);
                 String Telefono = request.getParameter("telefono");
-
+           
                 newInstructor.setIdinstructor(userId);
                 newInstructor.setNombres(nombre);
                 newInstructor.setApellidos(apellido);
                 newInstructor.setTelefono(Telefono);
+                newInstructor.setCorreo(email);
                 newInstructor.setCentroIdcentro(cordinadorSeleccionado.getCentroIdcentro());
                 newInstructor.setCoordinadorIdcoordinador(cordinadorSeleccionado);
                 try {

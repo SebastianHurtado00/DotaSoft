@@ -4,8 +4,13 @@
  */
 package Servlets;
 
+import Controladores.RedJpaController;
+import Entidades.Red;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,18 +36,111 @@ public class RedServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RedServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RedServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String accion = request.getParameter("accion");
+        if (accion != null) {
+            switch (accion) {
+                case "guardar":
+                    botonGuardar(request, response);
+                    break;
+                case "actualizar":
+                    botonEditar(request, response);
+                    break;
+                case "eliminar":
+                    botonEliminar(request, response);
+                    break;
+                default:
+                    // Acción no válida
+                    break;
+            }
         }
+    }
+
+    public void botonGuardar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int codigo = Integer.parseInt(request.getParameter("codigoRe"));
+        String nombre = request.getParameter("nombreRe");
+
+        RedJpaController se = new RedJpaController();
+        Red guardar = new Red();
+
+        try {
+            // Verificar si el código ya existe en la base de datos
+            if (se.findRed(codigo) != null) {
+                // El código ya existe, enviar notificación
+                enviarRespuestaError(response, "¡Error! Ya existe un registro con ese Codigo.");
+            } else {
+                // El código no existe, proceder con la creación de la sede
+                guardar.setIdred(codigo);
+                guardar.setNombre(nombre);
+
+                se.create(guardar);
+                enviarRespuestaExito(response, "¡Registro guardado exitosamente!");
+            }
+        } catch (Exception e) {
+            // Error al guardar el registro, enviar notificación de error
+            enviarRespuestaError(response, "¡Error!");
+        }
+    }
+
+    protected void botonEliminar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int codigo = Integer.parseInt(request.getParameter("codigoElRe"));
+            RedJpaController Controller = new RedJpaController();
+            Controller.destroy(codigo);
+            enviarRespuestaExito(response, "¡Registro Eliminado exitosamente!");
+        } catch (Exception e) {
+            enviarRespuestaError(response, "¡Error!");
+        }
+
+    }
+
+    public void botonEditar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int codigo = Integer.parseInt(request.getParameter("codigoElRe"));
+        String nombre = request.getParameter("nombreElRe");
+
+        RedJpaController Controller = new RedJpaController();
+        Red Existente = Controller.findRed(codigo);
+
+        try {
+            if (Existente != null) {
+                // La sede existe, proceder con la edición
+                Existente.setNombre(nombre);
+                Controller.edit(Existente);
+
+                enviarRespuestaExito(response, "¡Registro Editado exitosamente!");
+            }
+        } catch (Exception e) {
+            enviarRespuestaError(response, "¡Error!");
+        }
+    }
+
+    // Método para enviar una respuesta JSON de éxito
+    private void enviarRespuestaExito(HttpServletResponse response, String mensaje) throws IOException {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", "exito");
+        respuesta.put("mensaje", mensaje);
+
+        String json = new Gson().toJson(respuesta);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+    }
+
+    // Método para enviar una respuesta JSON de error
+    private void enviarRespuestaError(HttpServletResponse response, String mensaje) throws IOException {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", "error");
+        respuesta.put("mensaje", mensaje);
+
+        String json = new Gson().toJson(respuesta);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

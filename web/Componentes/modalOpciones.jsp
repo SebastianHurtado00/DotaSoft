@@ -201,13 +201,13 @@
                     <div class="col-12">
                         <div class="input-group">
                             <div class="input-group-text col-4"><b>Codigo:</b></div>
-                            <input type="number" class="form-control" id="codigoOpCli" name="codigoCli" required min="1" max="2147483647" readonly>
+                            <input type="number" class="form-control" id="codigoOpCli" name="codigoElCli" required min="1" max="2147483647" readonly>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="input-group">
                             <div class="input-group-text col-4"><b>Nombre:</b></div>
-                            <input type="text" class="form-control" id="nombreOpCli" name="nombreCli" required min="1" maxlength="45">
+                            <input type="text" class="form-control" id="nombreOpCli" name="nombreElCli" required min="1" maxlength="45">
                         </div>
                     </div>
                     <div class="col-12 text-center py-3 pt-3">

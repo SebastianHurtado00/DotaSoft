@@ -8,12 +8,17 @@ import Controladores.CentroJpaController;
 import Controladores.CoordinadorJpaController;
 import Controladores.InstructorJpaController;
 import Controladores.UsuariosJpaController;
+import Controladores.exceptions.IllegalOrphanException;
+import Controladores.exceptions.NonexistentEntityException;
 import Entidades.Centro;
 import Entidades.Coordinador;
 import Entidades.Instructor;
 import Entidades.Usuarios;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -40,12 +45,19 @@ public class logica_usuarios extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String button = request.getParameter("action");
+        String button = request.getParameter("accion");
         PrintWriter n = response.getWriter();
 
         switch (button) {
             case "guaradarUsuarios":
                 SaveUsuario(request, response);
+                break;
+            case "actualizar":
+                actualizarUsuario(request, response);
+                break;
+
+            case "eliminar":
+                deleteUser(request, response);
                 break;
             default:
                 break;
@@ -53,7 +65,7 @@ public class logica_usuarios extends HttpServlet {
 
     }
 
-private void SaveUsuario(HttpServletRequest request, HttpServletResponse response) {
+    private void SaveUsuario(HttpServletRequest request, HttpServletResponse response) {
         UsuariosJpaController usuarioController = new UsuariosJpaController();
         CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
         InstructorJpaController ControlInstructor = new InstructorJpaController();
@@ -74,7 +86,8 @@ private void SaveUsuario(HttpServletRequest request, HttpServletResponse respons
             Usuarios newUsuario = new Usuarios();
             newUsuario.setIdusuario(userId);
             newUsuario.setEstado(1);
-            newUsuario.setNombreCompleto(nombre + " " + apellido);
+            newUsuario.setNombreCompleto(nombre);
+            newUsuario.setApelliodo(apellido);
             newUsuario.setRol(userRol);
             newUsuario.setClave(newUsuario.EncryptarClave(request.getParameter("CedulaUsuario")));
             /*En caso de administrador o RH*/
@@ -82,7 +95,7 @@ private void SaveUsuario(HttpServletRequest request, HttpServletResponse respons
                 try {
                     mensajeUrl = "usuarioguardado";
                     usuarioController.create(newUsuario);
-                    redirectWithMessage(response, urlDeRetorno, mensajeUrl);
+                    enviarRespuestaExito(response, "¡Usuario Registrado correctamente!");
                 } catch (Exception ex) {
                     Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -103,7 +116,7 @@ private void SaveUsuario(HttpServletRequest request, HttpServletResponse respons
                     mensajeUrl = "usuarioguardado";
                     usuarioController.create(newUsuario);
                     controlCoordinador.create(newCoordinado);
-                    redirectWithMessage(response, urlDeRetorno, mensajeUrl);
+                    enviarRespuestaExito(response, "¡Coordinador Registrado correctamente!");
                 } catch (Exception ex) {
                     Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -114,7 +127,7 @@ private void SaveUsuario(HttpServletRequest request, HttpServletResponse respons
                 int idCoordinador = Integer.parseInt(request.getParameter("Coordinador"));
                 Coordinador cordinadorSeleccionado = controlCoordinador.findCoordinador(idCoordinador);
                 String Telefono = request.getParameter("telefono");
-           
+
                 newInstructor.setIdinstructor(userId);
                 newInstructor.setNombres(nombre);
                 newInstructor.setApellidos(apellido);
@@ -123,41 +136,200 @@ private void SaveUsuario(HttpServletRequest request, HttpServletResponse respons
                 newInstructor.setCentroIdcentro(cordinadorSeleccionado.getCentroIdcentro());
                 newInstructor.setCoordinadorIdcoordinador(cordinadorSeleccionado);
                 try {
-                    mensajeUrl = "usuarioguardado";
                     usuarioController.create(newUsuario);
                     ControlInstructor.create(newInstructor);
-                    redirectWithMessage(response, urlDeRetorno, mensajeUrl);
+                    enviarRespuestaExito(response, "¡Instructor Registrado correctamente!");
                 } catch (Exception ex) {
                     Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         } else {
-            mensajeUrl = "usuarioregistrado";
+
             try {
-                redirectWithMessage(response, urlDeRetorno, mensajeUrl);
+                enviarRespuestaError(response, "Usuario Registrado");
             } catch (Exception e) {
                 Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, e);
             }
         }
     }
 
-    private void redirectWithMessage(HttpServletResponse response, String urlDeRetorno, String mensajeUrl) throws IOException {
+    private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UsuariosJpaController usuarioController = new UsuariosJpaController();
+        CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
+        InstructorJpaController controlInstructor = new InstructorJpaController();
+        CentroJpaController controlCentro = new CentroJpaController();
 
-        // Verifica si la URL ya contiene un parámetro de respuesta
-        if (urlDeRetorno.contains("respuesta=")) {
-            // Elimina el parámetro de respuesta existente de la URL
-            urlDeRetorno = urlDeRetorno.replaceAll("[?&]respuesta=.*?(?:&|$)", "");
+        int userId = Integer.parseInt(request.getParameter("CedulaUsuarioOp"));
+        String nombre = request.getParameter("nombreOp");
+        String apellido = request.getParameter("apellidoOp");
+        int userRol = Integer.parseInt(request.getParameter("rolUsuarioOp"));
+
+        Usuarios usuarioEntranda = usuarioController.findUsuarios(userId);
+
+        boolean cambios = false;
+        Usuarios cambiosUsuarios = new Usuarios();
+        if (!usuarioEntranda.getNombreCompleto().equals(nombre)
+                || !usuarioEntranda.getApelliodo().equals(apellido)
+                || usuarioEntranda.getRol() != userRol) {
+            cambios = true;
+
+        }
+        cambiosUsuarios.setIdusuario(userId);
+        cambiosUsuarios.setNombreCompleto(nombre);
+        cambiosUsuarios.setApelliodo(apellido);
+        cambiosUsuarios.setRol(userRol);
+        cambiosUsuarios.setEstado(1);
+        cambiosUsuarios.setClave(cambiosUsuarios.EncryptarClave(request.getParameter("CedulaUsuarioOp")));
+
+        switch (userRol) {
+            case 0:
+            case 3:
+                try {
+                if (cambios) {
+                    usuarioController.edit(cambiosUsuarios);
+                    enviarRespuestaExito(response, "Usuario Modificaco exitosamente");
+                } else {
+                    enviarRespuestaError(response, "Sin Modificaciones");
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case 1:
+                Coordinador coordinadorEntrada = controlCoordinador.findCoordinador(userId);
+                // Coordinador CoordinadorModificar = new Coordinador();
+                String email = request.getParameter("emailOp");
+                int centroId = Integer.parseInt(request.getParameter("centroOp"));
+                Centro centroSeleccionado = controlCentro.findCentro(centroId);
+                if (!coordinadorEntrada.getCorreo().equals(email)
+                        || !coordinadorEntrada.getCentroIdcentro().equals(centroId)) {
+                    cambios = true;
+                }
+                if (cambios) {
+                    coordinadorEntrada.setIdcoordinador(userId);
+                    coordinadorEntrada.setNombres(nombre);
+                    coordinadorEntrada.setApellidos(apellido);
+                    coordinadorEntrada.setCorreo(email);
+                    coordinadorEntrada.setCentroIdcentro(centroSeleccionado);
+                    try {
+                        controlCoordinador.edit(coordinadorEntrada);
+                        usuarioController.edit(cambiosUsuarios);
+                        enviarRespuestaExito(response, "Coordinador modificado exitosamente");
+                    } catch (Exception ex) {
+                        Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                } else {
+                    enviarRespuestaError(response, "Sin Modificaciones");
+                }
+                break;
+            case 2:
+                Instructor instructorEntrada = controlInstructor.findInstructor(userId);
+                String emailInsatructor = request.getParameter("emailOp");
+                int idCoordinador = Integer.parseInt(request.getParameter("CoordinadorOp"));
+                Coordinador cordinadorSeleccionado = controlCoordinador.findCoordinador(idCoordinador);
+                String Telefono = request.getParameter("telefonoOp");
+
+                if (!instructorEntrada.getCorreo().equals(emailInsatructor)
+                        || !instructorEntrada.getCoordinadorIdcoordinador().equals(cordinadorSeleccionado)
+                        || !instructorEntrada.getTelefono().equals(Telefono)) {
+                    cambios = true;
+                }
+
+                if (cambios) {
+                    instructorEntrada.setIdinstructor(userId);
+                    instructorEntrada.setNombres(nombre);
+                    instructorEntrada.setApellidos(apellido);
+                    instructorEntrada.setTelefono(Telefono);
+                    instructorEntrada.setCorreo(emailInsatructor);
+                    instructorEntrada.setCentroIdcentro(cordinadorSeleccionado.getCentroIdcentro());
+                    instructorEntrada.setCoordinadorIdcoordinador(cordinadorSeleccionado);
+                    try {
+                        controlInstructor.edit(instructorEntrada);
+                        usuarioController.edit(cambiosUsuarios);
+                        enviarRespuestaExito(response, "Instructor modificado exitosamente");
+                    } catch (Exception ex) {
+                        Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                } else {
+                    enviarRespuestaError(response, "Sin Modificaciones");
+                }
+                break;
+            default:
+                break;
         }
 
-        // Ahora agrega el nuevo parámetro de respuesta
-        if (urlDeRetorno.contains("?")) {
-            // La URL ya tiene una cadena de consulta, agrega el parámetro adecuadamente
-            response.sendRedirect(urlDeRetorno + "&respuesta=" + mensajeUrl);
-        } else {
-            // La URL no tiene una cadena de consulta, agrega el parámetro con "?"
-            response.sendRedirect(urlDeRetorno + "?respuesta=" + mensajeUrl);
+    }
+
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response) {
+        UsuariosJpaController controlUsuario = new UsuariosJpaController();
+
+        int id = Integer.parseInt(request.getParameter("IdEliminar"));
+        Usuarios usuarioEncontrado = controlUsuario.findUsuarios(id);
+
+        switch (usuarioEncontrado.getRol()) {
+            case 0:
+            case 3: {
+                try {
+                    controlUsuario.destroy(id);
+                    enviarRespuestaExito(response, "Usuario eliminado");
+                } catch (Exception ex) {
+                    Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            break;
+
+            case 1:
+                CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
+                try {
+                    controlCoordinador.destroy(id);
+                    controlUsuario.destroy(id);
+                    enviarRespuestaExito(response, "Coordinador Eliminado");
+                } catch (Exception ex) {
+                    Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            case 2:
+                InstructorJpaController controlIns = new InstructorJpaController();
+
+                try {
+                    controlIns.destroy(id);
+                    controlUsuario.destroy(id);
+                    enviarRespuestaExito(response, "Instructor Eliminado");
+                } catch (Exception ex) {
+                    Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                break;
+            default:
+                break;
         }
+
+    }
+
+    // Método para enviar una respuesta JSON de éxito
+    private void enviarRespuestaExito(HttpServletResponse response, String mensaje) throws IOException {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", "exito");
+        respuesta.put("mensaje", mensaje);
+
+        String json = new Gson().toJson(respuesta);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+    }
+
+    // Método para enviar una respuesta JSON de error
+    private void enviarRespuestaError(HttpServletResponse response, String mensaje) throws IOException {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", "error");
+        respuesta.put("mensaje", mensaje);
+
+        String json = new Gson().toJson(respuesta);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

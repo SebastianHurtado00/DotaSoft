@@ -1,3 +1,7 @@
+<%@page import="Entidades.Coordinador"%>
+<%@page import="Controladores.CoordinadorJpaController"%>
+<%@page import="Entidades.Centro"%>
+<%@page import="Controladores.CentroJpaController"%>
 <%@page import="Entidades.Regional"%>
 <%@page import="Controladores.RegionalJpaController"%>
 <%@page import="Entidades.Red"%>
@@ -251,3 +255,100 @@
     </div>
 </div>
 <!-- MODALES DE ELEMENTOS OPCINES FINAL -->
+<!--  MODALES DE USUARIOS OPCIONES INICIO -->
+
+<div class="modal fade" id="ModalModificarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificacion de usuarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formularioEditarUsuarios" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 mb-2 form-floating">
+                            <input name="CedulaUsuarioOp" type="number" class="form-control" id="CedulaUsuarioOp" readonly>
+                            <label class="text-small text-black mx-2" style="font-size: 15px" for="InputCedula">N° Cedula Usuario</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating">
+                            <input name="nombreOp" type="text" class="form-control mb-2" id="nombreOp" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputNombre">Nombres </label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating">
+                            <input name="apellidoOp" type="text" class="form-control mb-2" id="apellidoOp" required>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputNombre">Apellidos</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating text-center mb-2">
+                            <select name="rolUsuarioOp" class="form-select mx-auto" id="Rolesop" onchange="rolesOpciones()" style="pointer-events: none; opacity: 0.5;">
+                                <option value="" disabled selected hidden></option>
+                                <option value="0">Administrador</option>
+                                <option value="1">Coordinador</option>
+                                <option value="2">Instructor</option>
+                                <option value="3">Recursos Humanos</option>
+                            </select>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="Roles">Rol</label>
+                        </div>
+
+
+                        <%
+                            CentroJpaController controlCentro = new CentroJpaController();
+                            List<Centro> listaCentro = controlCentro.findCentroEntities();
+
+                        %>
+
+                        <div class="col-md-6 col-sm-12 form-floating text-center mb-2" id="RegionalOpciones" style="display: none">
+                            <select name="regionalop" class="form-select mx-auto" id="RegionalSelectOp"  style="pointer-events: none; opacity: 0.5;">
+                                <option value="" disabled selected hidden>Seleccione una regional</option>
+                                <% for (Regional regi : listaRegional) {%>
+                                <option value="<%=regi.getIdregional()%>"><%=regi.getNombre()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2 text-black " style="font-size: 15px" for="Centro">Regional</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating text-center mb-2" id="CentroOpciones" style="display: none">
+                            <select name="centroOp" class="form-select mx-auto" id="CentroSelectOp" " required>
+                                <option value="" disabled selected hidden>Seleccione un centro</option>
+                                <% for (Centro centro : listaCentro) {%>
+                                <option value="<%=centro.getIdcentro()%>" data-fk-centroOp ="<%=centro.getRegionalIdregional()%>" ><%=centro.getNombre()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2 text-black " style="font-size: 15px" for="Centro">Centro</label>
+                        </div>
+                        <%
+                            CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
+                            List<Coordinador> coordinadorList = controlCoordinador.findCoordinadorEntities();
+                        %>
+                        <div class="col-md-12 col-sm-12 form-floating text-center mt-2 mb-2" id="CoordinadorOpciones" style="display: none">
+                            <select name="CoordinadorOp" class="form-select mx-auto" id="CoordinadorSelectOp"  required >
+                                <option value="" disabled selected hidden>Seleccione un coordinador</option>
+                                <% for (Coordinador coordinador : coordinadorList) {%>
+                                <option value="<%=coordinador.getIdcoordinador()%>" data-centro-fk="<%=coordinador.getCentroIdcentro()%>" ><%=coordinador.getNombres() + " " + coordinador.getApellidos()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="EmailOpciones" style="display: none">
+                            <input name="emailOp" type="email" class="form-control mb-2" id="emailOp" >
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Correo</label>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 form-floating mt-2" id="TelefonoOpciones" style="display: none">
+                            <input name="telefonoOp" type="number" class="form-control mb-2" id="TelefonoOp" >
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Telefono</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn botones text-white px-4" id="btnactualizarUser" style="background-color: #018E42;"><b>Actualizar</b></button>
+                    <button type="button" class="btn btn-secondary" id="btnCerrarUser" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--  MODALES DE USUARIOS OPCIONES FINAL -->

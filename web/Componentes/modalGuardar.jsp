@@ -258,7 +258,7 @@
                 <h5 class="modal-title">Registros de usuarios</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" action="<%=request.getContextPath()%>/logica_usuarios">
+            <form id="formularioUsuarios" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-2 form-floating">
@@ -284,7 +284,7 @@
                                 <option value="2">Instructor</option>
                                 <option value="3">Recursos Humanos</option>
                             </select>
-                            <label class="text-small mx-2" style="font-size: 15px" for="Roles">Rol</label>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="Roles">Rol</label>
                         </div>
 
 
@@ -301,7 +301,7 @@
                                 <option value="<%=regi.getIdregional()%>"><%=regi.getNombre()%></option>
                                 <% }%>
                             </select>
-                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Regional</label>
+                            <label class="text-small mx-2 text-black " style="font-size: 15px" for="Centro">Regional</label>
                         </div>
 
 
@@ -312,7 +312,7 @@
                                 <option value="<%=centro.getIdcentro()%>" data-fk="<%=centro.getRegionalIdregional()%>" ><%=centro.getNombre()%></option>
                                 <% }%>
                             </select>
-                            <label class="text-small mx-2 " style="font-size: 15px" for="Centro">Centro</label>
+                            <label class="text-small mx-2 text-black " style="font-size: 15px" for="Centro">Centro</label>
                         </div>
                         <%
                             CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
@@ -325,7 +325,7 @@
                                 <option value="<%=coordinador.getIdcoordinador()%>" data-centro-fk="<%=coordinador.getCentroIdcentro()%>" ><%=coordinador.getNombres() + " " + coordinador.getApellidos()%></option>
                                 <% }%>
                             </select>
-                            <label class="text-small mx-2" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
+                            <label class="text-small mx-2 text-black" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
                         </div>
                         <div class="col-md-12 col-sm-12 form-floating mt-2" id="Email" style="display: none">
                             <input name="email" type="email" class="form-control mb-2" id="InputCorreo" >
@@ -339,7 +339,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button name="action" value="guaradarUsuarios"  class="btn btn-success">Guardar</button>
+                    <button  type="submit" id="saveAdmin" class="btn btn-success" style="background-color: #018E42;">Guardar</button>
                 </div>
             </form>
         </div>

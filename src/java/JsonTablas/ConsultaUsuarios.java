@@ -56,6 +56,7 @@ public class ConsultaUsuarios extends HttpServlet {
             Map<String, String> jsonUsuario = new HashMap<>();
             jsonUsuario.put("NumeroCC", usuario.getIdusuario().toString());
             jsonUsuario.put("NombreCompleto", usuario.getNombreCompleto());
+            jsonUsuario.put("Apellido" , usuario.getApelliodo());
             jsonUsuario.put("Rol", String.valueOf(usuario.getRol()));
             jsonUsuario.put("Estado", String.valueOf(usuario.getEstado()));
             

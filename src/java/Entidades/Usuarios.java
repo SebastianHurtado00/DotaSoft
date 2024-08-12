@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u"),
     @NamedQuery(name = "Usuarios.findByIdusuario", query = "SELECT u FROM Usuarios u WHERE u.idusuario = :idusuario"),
     @NamedQuery(name = "Usuarios.findByNombreCompleto", query = "SELECT u FROM Usuarios u WHERE u.nombreCompleto = :nombreCompleto"),
+    @NamedQuery(name = "Usuarios.findByApelliodo", query = "SELECT u FROM Usuarios u WHERE u.apelliodo = :apelliodo"),
     @NamedQuery(name = "Usuarios.findByClave", query = "SELECT u FROM Usuarios u WHERE u.clave = :clave"),
     @NamedQuery(name = "Usuarios.findByRol", query = "SELECT u FROM Usuarios u WHERE u.rol = :rol"),
     @NamedQuery(name = "Usuarios.findByEstado", query = "SELECT u FROM Usuarios u WHERE u.estado = :estado")})
@@ -40,6 +41,9 @@ public class Usuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "NombreCompleto")
     private String nombreCompleto;
+    @Basic(optional = false)
+    @Column(name = "Apelliodo")
+    private String apelliodo;
     @Basic(optional = false)
     @Column(name = "Clave")
     private String clave;
@@ -56,9 +60,10 @@ public class Usuarios implements Serializable {
         this.idusuario = idusuario;
     }
 
-    public Usuarios(Integer idusuario, String nombreCompleto, String clave, int rol) {
+    public Usuarios(Integer idusuario, String nombreCompleto, String apelliodo, String clave, int rol) {
         this.idusuario = idusuario;
         this.nombreCompleto = nombreCompleto;
+        this.apelliodo = apelliodo;
         this.clave = clave;
         this.rol = rol;
     }
@@ -77,6 +82,14 @@ public class Usuarios implements Serializable {
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public String getApelliodo() {
+        return apelliodo;
+    }
+
+    public void setApelliodo(String apelliodo) {
+        this.apelliodo = apelliodo;
     }
 
     public String getClave() {

@@ -45,7 +45,7 @@ public class Usuarios implements Serializable {
     @Column(name = "Apelliodo")
     private String apelliodo;
     @Basic(optional = false)
-    @Column(name = "Clave")
+    @Column(name = "clave")
     private String clave;
     @Basic(optional = false)
     @Column(name = "Rol")

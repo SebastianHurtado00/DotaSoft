@@ -43,7 +43,7 @@ public class ConsultaAreas extends HttpServlet {
         cargarTabla(request, response);
     }
 
-    protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
+      protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
 

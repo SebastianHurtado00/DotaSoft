@@ -4,10 +4,12 @@
  */
 package JsonTablas;
 
-import Controladores.UsuariosJpaController;
-import Entidades.Usuarios;
+import Controladores.DotacionJpaController;
+import Entidades.Dotacion;
+import Entidades.Sexo;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +19,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
- * @author ASUS
+ * @author Peralta
  */
-@WebServlet(name = "ConsultaUsuarios", urlPatterns = {"/ConsultaUsuarios"})
-public class ConsultaUsuarios extends HttpServlet {
+@WebServlet(name = "ConsultaDotacion", urlPatterns = {"/ConsultaDotacion"})
+public class ConsultaDotacion extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,34 +38,57 @@ public class ConsultaUsuarios extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
-        
+        response.setContentType("text/html;charset=UTF-8");
         cargarTabla(request, response);
+
     }
-    
-    private void cargarTabla(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
+
+   private void cargarTabla(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json;charset=UTF-8");
+
+    DotacionJpaController dotacionController = new DotacionJpaController();
+    List<Dotacion> dotaList = dotacionController.findDotacionEntities();
+
+    // Crear una lista para almacenar los mapas de las dotaciones
+    List<Map<String, String>> dotacionJsonList = new ArrayList<>();
+
+    for (Dotacion dotacion : dotaList) {
+        // Crear un nuevo mapa para almacenar los datos de la dotación
+        Map<String, String> jsonDotacion = new HashMap<>();
+        jsonDotacion.put("idDotacion", dotacion.getIddotacion().toString());
         
-        UsuariosJpaController userController = new UsuariosJpaController();
-        List<Usuarios> userList = userController.findUsuariosEntities();
+        // Agregar ID y nombre de Elementos
+        jsonDotacion.put("elementoId", dotacion.getElementosIdelemento().getIdelemento().toString());
+        jsonDotacion.put("elementoNombre", dotacion.getElementosIdelemento().getNombre());
         
-        List<Map<String, String>> userJsonList = new ArrayList<>();
-        for (Usuarios usuario : userList) {
-            Map<String, String> jsonUsuario = new HashMap<>();
-            jsonUsuario.put("NumeroCC", usuario.getIdusuario().toString());
-            jsonUsuario.put("NombreCompleto", usuario.getNombreCompleto());
-            jsonUsuario.put("Apellido" , usuario.getApelliodo());
-            jsonUsuario.put("Rol", String.valueOf(usuario.getRol()));
-            jsonUsuario.put("Estado", String.valueOf(usuario.getEstado()));
-            
-            userJsonList.add(jsonUsuario);
-        }
+        // Agregar ID y nombre de Sexo
+        jsonDotacion.put("sexoId", dotacion.getSexoIdsexo().getIdsexo().toString());
+        jsonDotacion.put("sexoNombre", dotacion.getSexoIdsexo().getNombre());
         
-        String json = new Gson().toJson(userJsonList);
+        // Agregar ID y nombre de Clima
+        jsonDotacion.put("climaId", dotacion.getClimaIdclima().getIdclima().toString());
+        jsonDotacion.put("climaNombre", dotacion.getClimaIdclima().getNombre());
         
-        response.getWriter().write(json);
+        // Agregar ID y nombre de Área
+        jsonDotacion.put("areaId", dotacion.getAreaIdarea().getIdarea().toString());
+        jsonDotacion.put("areaNombre", dotacion.getAreaIdarea().getNombre());
+        
+        // Agregar la cantidad
+        jsonDotacion.put("cantidad", String.valueOf(dotacion.getCantidad()));
+
+        // Agregar el mapa a la lista de dotaciones JSON
+        dotacionJsonList.add(jsonDotacion);
     }
+
+    // Convertir la lista de mapas a una cadena JSON
+    String json = new Gson().toJson(dotacionJsonList);
+
+    // Imprimir JSON generado para depuración
+    System.out.println("JSON generado: " + json);
+
+    // Enviar la respuesta JSON al cliente
+    response.getWriter().write(json);
+}
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

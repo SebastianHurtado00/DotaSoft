@@ -24,11 +24,10 @@
         <script src="JS/main.js"></script>
     </head>
     <body style="background-color: #f5f5f5;">
-
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100">
-                    <form method="post" action="LogicaIngreso" class="login100-form">
+                    <form method="post" action="Logica_Ingreso" class="login100-form">
                         <div class="d-flex justify-content-end mb-4">
                             <div style="height: 200px; width: 300px;margin-left: 10%">
                                 <img class="img-fluid mx-3 mt-4" src="assests/Logo_DotaSoft_Login.webp" />
@@ -57,10 +56,9 @@
                                 Inicio de sesion
                             </button>
                         </div>
-
                     </form>
                     <div class="login100-more">
-                            <img src="https://elvocerodelaprovincia.com/wp-content/uploads/2021/10/Dotacion.jpg" width="100%" height="800px" alt="Imagen de fondo">
+                        <img src="https://elvocerodelaprovincia.com/wp-content/uploads/2021/10/Dotacion.jpg" width="100%" height="800px" alt="Imagen de fondo">
                     </div>
 
                 </div>
@@ -82,7 +80,7 @@
 
                             <div class="form-floating mb-3">
                                 <input type="number" name="numeroDocumentoCambio" id="numeroDocumentoCambio" class="form-control" max="9999999999" required>
-                                <label for="numeroDocumentoCambio">N° Documento (*)</label>
+                                <label for="numeroDocumentoCambio" class="text-black">N° Documento (*)</label>
                             </div>
 
                         </div>
@@ -95,20 +93,50 @@
         </div>
 
         <jsp:include page="Componentes/footer.jsp"></jsp:include>
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-        <!-- Bootstrap JavaScript Libraries -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+            <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+            <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+            <script src="js/alertas.js"></script>
+            <!-- Bootstrap JavaScript Libraries -->
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-/WfsFq4XLtXJzweC9UJ7o4JvW/2HGM8eNQwuqzoU4llitlLVvc/UnzgZ81gMdd6R" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="JS/IniciarToast.js"></script>
+        <%
+            String respuesta = request.getParameter("respuesta");
+            if (respuesta != null) {
+                switch (respuesta) {
+                    case "No encontrado":
+        %>
+        <script>
+                        mostrarAdvertencia("Usuario no registrado");
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+        <%
+                break;
+            case "Contrasenha incorrecta":
+        %>
+        <script>
+            mostrarAdvertencia("Contraseña Incorrecta");
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-/WfsFq4XLtXJzweC9UJ7o4JvW/2HGM8eNQwuqzoU4llitlLVvc/UnzgZ81gMdd6R" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="JS/IniciarToast.js"></script>
+        <%
+                        break;
+                    default:
+                        break;
+                }
 
+            }
+
+        %>
+
+        <script>
+
+
+
+        </script>>
 
     </body>
 

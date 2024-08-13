@@ -42,7 +42,7 @@ function mostrarError(mensaje) {
 function mostrarAdvertencia(mensaje) {
     const Toast = Swal.mixin({
         toast: true,
-        position: "center",
+        position: "top-end",
         showConfirmButton: false,
         timer: 1500,
         timerProgressBar: true,

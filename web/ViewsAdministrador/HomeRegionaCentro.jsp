@@ -1,5 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+<%
+    response.setHeader("Cache-Control", "no-Cache,no-store,must-revalidate");
+    HttpSession sessionObtenida = request.getSession();
+    if (sessionObtenida.getAttribute("administrador") == null) {
+        response.sendRedirect("../CerradoSession.jsp");
+    } else {
+%>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -223,7 +232,7 @@
                                             '<td>' + centro.codigo + '</td>' +
                                             '<td>' + centro.nombre + '</td>' +
                                             '<td>' + centro.regNombre + '</td>' +
-                                             '<td>' +
+                                            '<td>' +
                                             '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalCentroOpciones" ' +
                                             'onclick="obtenerDatosCentro(' + centro.codigo + ', \'' + centro.nombre + '\', \'' + centro.reglId + '\')">Opciones</button>' +
                                             '</td>' +
@@ -372,3 +381,4 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
 </html>
+<%}%>

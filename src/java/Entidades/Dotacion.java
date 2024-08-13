@@ -135,7 +135,7 @@ public class Dotacion implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Dotacion[ iddotacion=" + iddotacion + " ]";
+        return elementosIdelemento.toString();
     }
     
 }

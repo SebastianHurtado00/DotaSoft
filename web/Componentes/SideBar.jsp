@@ -60,6 +60,12 @@
                     <span class="align-middle">Elementos</span>
                 </a>
             </li> 
+             <li class="sidebar-item">
+                 <a class="sidebar-link" href="../ViewsAdministrador/HomeDotacion.jsp">
+                    <i class="align-middle" data-feather="users"></i> 
+                    <span class="align-middle">Dotacion</span>
+                </a>
+            </li> 
             <li class="sidebar-header">
                 Reportes
             </li>

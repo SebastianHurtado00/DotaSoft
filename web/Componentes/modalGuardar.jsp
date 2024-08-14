@@ -381,25 +381,6 @@
                     </div>
                     <div class="col-12">
                         <div class="input-group">
-                            <div class="input-group-text col-4"><b>Elemento:</b></div>
-                            <select name="ElementoListaGdDo" id="ElementoListaForGdDo"
-                                    class="from-selec col-8"  required>
-                                <option value="" disabled selected hidden>-- Elija --</option>
-                                <%
-                                    ElementosJpaController elem = new ElementosJpaController();
-                                    List listaElementos = elem.findElementosEntities();
-                                    for (int i = 0; i < listaElementos.size(); i++) {
-                                        Elementos obj_cr = (Elementos) listaElementos.get(i);
-                                        out.print("<option value='" + obj_cr.getIdelemento() + "'>");
-                                        out.print((obj_cr.getNombre()));
-                                        out.print("</option>");
-                                    }
-                                %>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="input-group">
                             <div class="input-group-text col-4"><b>Sexo:</b></div>
                             <select name="SexoListaGdDo" id="SexoListaForGdDo"
                                     class="from-selec col-8"  required>
@@ -438,7 +419,26 @@
                     </div>
                     <div class="col-12">
                         <div class="input-group">
-                            <div class="input-group-text col-4"><b>Cantidade:</b></div>
+                            <div class="input-group-text col-4"><b>Elemento:</b></div>
+                            <select name="ElementoListaGdDo" id="ElementoListaForGdDo"
+                                    class="from-selec col-8"  required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                                <%
+                                    ElementosJpaController elem = new ElementosJpaController();
+                                    List listaElementos = elem.findElementosEntities();
+                                    for (int i = 0; i < listaElementos.size(); i++) {
+                                        Elementos obj_cr = (Elementos) listaElementos.get(i);
+                                        out.print("<option value='" + obj_cr.getIdelemento() + "'>");
+                                        out.print((obj_cr.getNombre()));
+                                        out.print("</option>");
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Cantidad:</b></div>
                             <input type="number" class="form-control" id="cantidadGdDo" name="cantidadDo" required min="1" max="2147483647">
                         </div>
                     </div>

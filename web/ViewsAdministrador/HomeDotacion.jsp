@@ -18,6 +18,9 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <%--TRANSICIONES--%>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <%--SELECT2 --%>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <%--ELEMENTOS--%>
         <script>
             $(document).ready(function () {
@@ -29,16 +32,16 @@
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarElm').click(function (event) {
+                $('#btnEliminarDta').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioElementosOpciones').serialize();
+                    var formData = $('#FormularioDotacionOpciones').serialize();
                     formData += '&accion=eliminar';
                     enviarPeticion(formData, handleSuccessEliminar, handleError);
                 });
 
-                $('#btnEditarElm').click(function (event) {
+                $('#btnEditarDta').click(function (event) {
                     event.preventDefault();
-                    var formData = $('#FormularioElementosOpciones').serialize();
+                    var formData = $('#FormularioDotacionOpciones').serialize();
                     formData += '&accion=actualizar';
                     enviarPeticion(formData, handleSuccessActualizar, handleError);
                 });
@@ -73,7 +76,7 @@
 
                 function handleSuccessEliminar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarElm");
+                        var boton = document.getElementById("btnCerrarDta");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -84,7 +87,7 @@
 
                 function handleSuccessActualizar(response) {
                     if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarElm");
+                        var boton = document.getElementById("btnCerrarDta");
                         boton.click();
                         mostrarExito(response.mensaje);
                         cargarTabla();
@@ -110,12 +113,16 @@
                                 $.each(data, function (index, dota) {
                                     var row = '<tr>' +
                                             '<td>' + dota.idDotacion + '</td>' +
-                                            '<td>' + dota.elementoNombre + '</td>' +
+                                            '<td>' + dota.areaNombre + '</td>' +
                                             '<td>' + dota.sexoNombre + '</td>' +
                                             '<td>' + dota.climaNombre + '</td>' +
-                                            '<td>' + dota.areaNombre + '</td>' +
+                                            '<td>' + dota.elementoNombre + '</td>' +
                                             '<td>' + dota.cantidad + '</td>' +
-                                            
+                                            '<td>' +
+                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalDotacionOpciones" ' +
+                                            'onclick="obtenerDatosDotacion(' + dota.idDotacion + ', \'' + dota.areaId + '\', \'' + dota.sexoId + '\'\n\
+                                            , \'' + dota.climaId + '\', \'' + dota.elementoId + '\', \'' + dota.cantidad + '\')">Opciones</button>' +
+                                            '</td>' +
                                             '</tr>';
                                     $('#tablaDotacion tbody').append(row);
                                 });
@@ -129,7 +136,24 @@
                 cargarTabla();
             });
         </script>
+        <%--STILO DE IMPUT FILTRADO--%>
+        <style>
+            .select2-container {
+                width: 66% !important; /* Asegura que el contenedor de Select2 ocupe todo el ancho del contenedor padre */
+            }
+            .select2-container .select2-selection--single {
+                height: calc(2.25rem + 2px); /* Ajusta la altura para coincidir con otros inputs */
 
+            }
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: 2.25rem; /* Alinea el texto verticalmente */
+            }
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: calc(2.25rem + 2px); /* Alinea la flecha verticalmente */
+            }
+        </style>
+
+     
     </head>
     <body>
         <div class="wrapper">
@@ -163,7 +187,7 @@
                                                         <div class="col-md-8 col-sd-12">
                                                             <div class="input-group mb-2">
                                                                 <div class="input-group-text col-4"><b>Buscar:</b></div>
-                                                                <input type="text" class="form-control" id="filtro1">
+                                                                <input type="text" class="form-control" id="filtroDotacionr">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -173,10 +197,10 @@
                                                                 <thead class="sticky-top bg-success-subtle">
                                                                     <tr>
                                                                         <th scope="col">Codigo</th>
-                                                                        <th>Elemento</th>
+                                                                        <th> Área </th>
                                                                         <th>Sexo</th>
                                                                         <th>Clima</th>
-                                                                        <th>Área</th>
+                                                                        <th>Elemento</th>
                                                                         <th>Cantidad</th>
                                                                         <th scope="col" class="text-center" style="width: 100px;">Opciones</th>
                                                                     </tr>
@@ -205,7 +229,7 @@
 
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
-        <script src="../js/DatosTablas.js"></script>
+        <script src="../js/DatosTablaDotacion.js"></script>
         <script src="../js/alertas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"

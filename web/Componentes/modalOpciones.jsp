@@ -1,3 +1,11 @@
+<%@page import="Entidades.Elementos"%>
+<%@page import="Controladores.ElementosJpaController"%>
+<%@page import="Controladores.ClimaJpaController"%>
+<%@page import="Entidades.Clima"%>
+<%@page import="Entidades.Sexo"%>
+<%@page import="Controladores.SexoJpaController"%>
+<%@page import="Entidades.Area"%>
+<%@page import="Controladores.AreaJpaController"%>
 <%@page import="Entidades.Coordinador"%>
 <%@page import="Controladores.CoordinadorJpaController"%>
 <%@page import="Entidades.Centro"%>
@@ -256,7 +264,6 @@
 </div>
 <!-- MODALES DE ELEMENTOS OPCINES FINAL -->
 <!--  MODALES DE USUARIOS OPCIONES INICIO -->
-
 <div class="modal fade" id="ModalModificarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -352,3 +359,110 @@
     </div>
 </div>
 <!--  MODALES DE USUARIOS OPCIONES FINAL -->
+<!-- MODALES DE RED DOTACION INICIO -->
+<div class="modal fade" id="ModalDotacionOpciones" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="FormularioDotacionOpciones" class="row g-2">
+                    <h2 class="pt-3 pb-2 text-center">Opciones Dotacion</h2>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Codigo:</b></div>
+                            <input type="number" class="form-control" id="codigoDotacionOp" name="codigoDotacionElm" required min="1" max="2147483647" readonly>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Area:</b></div>
+                            <select name="AreaListaGdDotacion" id="AreaListaForGdDotacion"
+                                    class="from-selec col-8"  required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                                <%
+                                    AreaJpaController area = new AreaJpaController();
+                                    List listaArea = area.findAreaEntities();
+                                    for (int i = 0; i < listaArea.size(); i++) {
+                                        Area obj_cr = (Area) listaArea.get(i);
+                                        out.print("<option value='" + obj_cr.getIdarea() + "'>");
+                                        out.print((obj_cr.getNombre()));
+                                        out.print("</option>");
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Clima:</b></div>
+                            <select name="ClimaListaGdDotacion" id="ClimaListaForGdDotacion"
+                                    class="from-selec col-8"  required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                                <%
+                                    ClimaJpaController clima = new ClimaJpaController();
+                                    List listaClima = clima.findClimaEntities();
+                                    for (int i = 0; i < listaClima.size(); i++) {
+                                        Clima obj_cr = (Clima) listaClima.get(i);
+                                        out.print("<option value='" + obj_cr.getIdclima() + "'>");
+                                        out.print((obj_cr.getNombre()));
+                                        out.print("</option>");
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                            
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Sexo:</b></div>
+                            <select name="SexoListaGdDotacion" id="SexoListaForGdDotacion"
+                                    class="from-selec col-8"  required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                                <%
+                                    SexoJpaController sexo = new SexoJpaController();
+                                    List listaSexo = sexo.findSexoEntities();
+                                    for (int i = 0; i < listaSexo.size(); i++) {
+                                        Sexo obj_cr = (Sexo) listaSexo.get(i);
+                                        out.print("<option value='" + obj_cr.getIdsexo() + "'>");
+                                        out.print((obj_cr.getNombre()));
+                                        out.print("</option>");
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Elemento:</b></div>
+                            <select name="ElementoListaGdDotacion" id="ElementoListaForGdDotacion"
+                                    class="from-selec col-8"  required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                                <%
+                                    ElementosJpaController elem = new ElementosJpaController();
+                                    List listaElementos = elem.findElementosEntities();
+                                    for (int i = 0; i < listaElementos.size(); i++) {
+                                        Elementos obj_cr = (Elementos) listaElementos.get(i);
+                                        out.print("<option value='" + obj_cr.getIdelemento() + "'>");
+                                        out.print((obj_cr.getNombre()));
+                                        out.print("</option>");
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Cantidad:</b></div>
+                            <input type="number" class="form-control" id="cantidadGdDotacion" name="cantidadDotacionEl" required min="1" max="2147483647">
+                        </div>
+                    </div>
+                    <div class="col-12 text-center py-3 pt-3">
+                        <button type="submit" class="btn botones text-white px-4" id="btnEditarDta" style="background-color: #018E42;"><b>Actualizar</b></button>
+                        <button type="submit" class="btn text-white bg-danger" id="btnEliminarDta" ><b>Eliminar</b></button>
+                        <button type="button" class="btn btn-secondary" id="btnCerrarDta" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALES DE RED DOTACION FINAL -->

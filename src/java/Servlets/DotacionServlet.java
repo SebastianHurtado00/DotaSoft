@@ -50,6 +50,7 @@ public class DotacionServlet extends HttpServlet {
                     botonGuardar(request, response);
                     break;
                 case "actualizar":
+                    botonEditar(request, response);
                     break;
                 case "eliminar":
                     botonElimina(request, response);
@@ -87,8 +88,8 @@ public class DotacionServlet extends HttpServlet {
                 guarda.setSexoIdsexo(sexos);
                 Clima clima = climaControlodor.findClima(ListaClima);
                 guarda.setClimaIdclima(clima);
-                Controlador.create(guarda);
                 guarda.setCantidad(cantidad);
+                Controlador.create(guarda);
                 enviarRespuestaExito(response, "¡Registro guardado exitosamente!");
 
         } catch (Exception e) {
@@ -100,7 +101,7 @@ public class DotacionServlet extends HttpServlet {
     public void botonElimina(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int codigo = Integer.parseInt(request.getParameter("codigoElCent"));
+        int codigo = Integer.parseInt(request.getParameter("codigoDotacionElm"));
         DotacionJpaController Controlador = new DotacionJpaController();
 
         try {
@@ -110,6 +111,44 @@ public class DotacionServlet extends HttpServlet {
             enviarRespuestaError(response, "¡Error!");
         }
 
+    }
+    
+     public void botonEditar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+         
+        int codigo = Integer.parseInt(request.getParameter("codigoDotacionElm")); 
+        int ListaAreas = Integer.parseInt(request.getParameter("AreaListaGdDotacion"));
+        int ListaElementos = Integer.parseInt(request.getParameter("ElementoListaGdDotacion"));
+        int ListaSexo = Integer.parseInt(request.getParameter("SexoListaGdDotacion"));
+        int ListaClima = Integer.parseInt(request.getParameter("ClimaListaGdDotacion"));
+        int cantidad = Integer.parseInt(request.getParameter("cantidadDotacionEl"));
+        
+        DotacionJpaController Controlador = new DotacionJpaController();
+        Dotacion existe = Controlador.findDotacion(codigo);
+        AreaJpaController areaControlador = new AreaJpaController();
+        ElementosJpaController elemControlador = new ElementosJpaController();
+        SexoJpaController sexoControlador = new SexoJpaController();
+        ClimaJpaController climaControlodor = new ClimaJpaController();
+       
+        try {
+            if (existe != null) {
+                Area area = areaControlador.findArea(ListaAreas);
+                existe.setAreaIdarea(area);
+                Elementos elem = elemControlador.findElementos(ListaElementos);
+                existe.setElementosIdelemento(elem);
+                Sexo sexos = sexoControlador.findSexo(ListaSexo);
+                existe.setSexoIdsexo(sexos);
+                Clima clima = climaControlodor.findClima(ListaClima);
+                existe.setClimaIdclima(clima);
+                existe.setCantidad(cantidad);
+               
+                Controlador.edit(existe);
+                
+                enviarRespuestaExito(response, "¡Registro Editado exitosamente!");
+            }
+        } catch (Exception e) {
+            enviarRespuestaError(response, "¡Error!");
+        }
     }
 
     // Método para enviar una respuesta JSON de éxito

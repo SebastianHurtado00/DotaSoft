@@ -1,5 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    response.setHeader("Cache-Control", "no-Cache,no-store,must-revalidate");
+    HttpSession sessionObtenida = request.getSession();
+    if (sessionObtenida.getAttribute("administrador") == null) {
+        response.sendRedirect("../CerradoSession.jsp");
+    } else {
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -108,7 +115,7 @@
                             $('#tablaDotacion tbody').empty();
                             if (data.length === 0) {
                                 // Si no hay datos, agregar una fila indicando que no se encontraron estudiantes
-                                $('#tablaDotacion tbody').append('<tr><td colspan="3" class="text-center">No se encontraron redes de trabajo en la base de datos.</td></tr>');
+                                $('#tablaDotacion tbody').append('<tr><td colspan="7" class="text-center">No se encontraron dotaciones de trabajo en la base de datos.</td></tr>');
                             } else {
                                 $.each(data, function (index, dota) {
                                     var row = '<tr>' +
@@ -229,7 +236,7 @@
 
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
-        <script src="../js/DatosTablaDotacion.js"></script>
+        <script src="../js/DatosTablas.js"></script>
         <script src="../js/alertas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
@@ -242,5 +249,5 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
 </html>
-
+<% }%>
 

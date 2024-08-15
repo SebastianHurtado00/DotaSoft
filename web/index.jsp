@@ -123,6 +123,21 @@
             mostrarAdvertencia("Contraseña Incorrecta");
         </script>
         <%
+                break;
+            case "noIngreso":
+        %>
+        <script>
+            mostrarError("Los instructores no tienen accesso");
+        </script>
+        <%
+                break;
+
+            case "CambioClave":
+        %>
+        <script>
+            mostrarExito("Modificacion de contraseña exitoso")
+        </script>
+        <%
                         break;
                     default:
                         break;
@@ -131,7 +146,6 @@
             }
 
         %>
-
         <script>
 
 

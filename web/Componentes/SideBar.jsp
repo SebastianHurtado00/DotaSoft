@@ -35,7 +35,12 @@
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="../ViewsAdministrador/GestionUsuarios.jsp" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Registro de usuarios</span>
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Gestion de usuarios</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="../ViewsAdministrador/Restablecimientos.jsp" >
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Recuperacion contraseña</span>
                 </a>
             </li>
             <li class="sidebar-item mb-2">
@@ -80,13 +85,13 @@
             <% if (usuarioEntrante.getRol() == 1) { %>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Caracterizacion de instructores</span>
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Asignacion de elementos</span>
                 </a>
             </li>
 
             <li class="sidebar-item">
                 <a class="sidebar-link" href="" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Reporte de dotacion por instructor</span>
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Reporte de dotacion</span>
                 </a>
             </li>
             <%}%>

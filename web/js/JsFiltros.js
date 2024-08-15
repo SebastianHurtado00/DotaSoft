@@ -18,7 +18,7 @@ $(document).ready(function () {
         }
     });
 
-    // Cargar las Áreas en función de la Red seleccionada
+    // Cargar las Áreas en función de la Red seleccionadas
     $('#ListaRedGuardado').on('change', function () {
         var redId = $(this).val(); // Obtiene el ID de la red seleccionada
         console.log("Red seleccionada:", redId); // Muestra el ID de la red seleccionada en la consola para depuración

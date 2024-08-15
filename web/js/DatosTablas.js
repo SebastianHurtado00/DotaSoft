@@ -125,20 +125,10 @@ function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, Regio
 //FILTRADO DOTACION INICIO
 $(document).ready(function () {
     // Inicializa Select2
-    $('#AreaListaForGdDo').select2({
-        placeholder: "-- Elija --",
-        dropdownParent: $('#ModalDotacion'),
-        width: 'resolve'
-    });
-    
+  
       $('#ElementoListaForGdDo').select2({
         placeholder: "-- Elija --",
         dropdownParent: $('#ModalDotacion'),
-        width: 'resolve'
-    });
-
-    $('#AreaListaForGdDotacion').select2({
-        dropdownParent: $('#ModalDotacionOpciones'),
         width: 'resolve'
     });
     

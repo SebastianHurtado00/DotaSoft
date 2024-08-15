@@ -43,42 +43,60 @@ public class ConsultaAreas extends HttpServlet {
         cargarTabla(request, response);
     }
 
-      protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
+   protected void cargarTabla(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    // Establece el tipo de contenido de la respuesta como JSON y codificación UTF-8
+    response.setContentType("application/json;charset=UTF-8");
 
-// Lógica para consultar los datos de las áreas
-        AreaJpaController areaController = new AreaJpaController();
-        List<Area> areaList = areaController.findAreaEntities();
-        RedJpaController redController = new RedJpaController();
+    // Obtiene el parámetro 'redId' de la solicitud HTTP
+    String redIdParam = request.getParameter("redId");
+    List<Area> areaList;
 
-// Crear una lista para almacenar los mapas de las áreas
-        List<Map<String, String>> areaJsonList = new ArrayList<>();
+    // Crea instancias de los controladores JPA para las entidades Area y Red
+    AreaJpaController areaController = new AreaJpaController();
+    RedJpaController redController = new RedJpaController();
+    
+    // Verifica si el parámetro 'redId' está presente y no está vacío
+    if (redIdParam != null && !redIdParam.isEmpty()) {
+        // Convierte el parámetro 'redId' a un entero
+        int redId = Integer.parseInt(redIdParam);
+        // Obtiene la lista de áreas filtradas por 'redId' usando el controlador JPA
+        areaList = areaController.findAreasByRedId(redId);
+    } else {
+        // Si 'redId' no está presente, obtiene todas las áreas
+        areaList = areaController.findAreaEntities();
+    }
 
-        for (Area area : areaList) {
-            // Crear un nuevo mapa para almacenar los datos del área
-            Map<String, String> jsonArea = new HashMap<>();
-            jsonArea.put("codigo", area.getIdarea().toString());
-            jsonArea.put("nombre", area.getNombre());
+    // Crea una lista para almacenar los datos de áreas en formato JSON
+    List<Map<String, String>> areaJsonList = new ArrayList<>();
+    
+    // Itera sobre cada área obtenida
+    for (Area area : areaList) {
+        // Crea un mapa para almacenar los datos de cada área
+        Map<String, String> jsonArea = new HashMap<>();
+        // Agrega el código del área al mapa
+        jsonArea.put("codigo", area.getIdarea().toString());
+        // Agrega el nombre del área al mapa
+        jsonArea.put("nombre", area.getNombre());
 
-            // Obtener la red asociada al área y agregar sus datos al mapa si existe
-            Red red = redController.findRed(area.getRedIdred().getIdred());
-            if (red != null) {
-                jsonArea.put("redId", red.getIdred().toString());
-                jsonArea.put("redNombre", red.getNombre());
-            }
-
-            // Agregar el mapa a la lista de áreas JSON
-            areaJsonList.add(jsonArea);
+        // Obtiene la red asociada al área usando el controlador JPA
+        Red red = redController.findRed(area.getRedIdred().getIdred());
+        if (red != null) {
+            // Agrega el ID de la red al mapa
+            jsonArea.put("redId", red.getIdred().toString());
+            // Agrega el nombre de la red al mapa
+            jsonArea.put("redNombre", red.getNombre());
         }
 
-        // Convertir la lista de mapas a una cadena JSON
-        String json = new Gson().toJson(areaJsonList);
-
-        // Enviar la respuesta JSON al cliente
-        response.getWriter().write(json);
-
+        // Agrega el mapa con los datos del área a la lista de áreas JSON
+        areaJsonList.add(jsonArea);
     }
+
+    // Convierte la lista de mapas a una cadena JSON
+    String json = new Gson().toJson(areaJsonList);
+    // Escribe la cadena JSON en la respuesta HTTP
+    response.getWriter().write(json);
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

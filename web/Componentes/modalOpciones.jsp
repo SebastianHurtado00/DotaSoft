@@ -374,20 +374,18 @@
                     </div>
                     <div class="col-12">
                         <div class="input-group">
+                            <div class="input-group-text col-4"><b>Red:</b></div>
+                            <select name="Red2ListaGdDo" id="ListaRedDotacion" class="from-selec col-8" required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
                             <div class="input-group-text col-4"><b>Area:</b></div>
                             <select name="AreaListaGdDotacion" id="AreaListaForGdDotacion"
                                     class="from-selec col-8"  required>
                                 <option value="" disabled selected hidden>-- Elija --</option>
-                                <%
-                                    AreaJpaController area = new AreaJpaController();
-                                    List listaArea = area.findAreaEntities();
-                                    for (int i = 0; i < listaArea.size(); i++) {
-                                        Area obj_cr = (Area) listaArea.get(i);
-                                        out.print("<option value='" + obj_cr.getIdarea() + "'>");
-                                        out.print((obj_cr.getNombre()));
-                                        out.print("</option>");
-                                    }
-                                %>
                             </select>
                         </div>
                     </div>

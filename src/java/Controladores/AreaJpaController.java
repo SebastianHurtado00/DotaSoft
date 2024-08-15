@@ -289,5 +289,18 @@ public class AreaJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public List<Area> findAreasByRedId(int redId) {
+        // Consulta para encontrar las áreas que pertenecen a la red con redId
+        EntityManager em = getEntityManager(); // Obtiene el EntityManager para realizar la consulta
+        try {
+            // Crea y ejecuta una consulta JPQL (Java Persistence Query Language) para encontrar áreas
+            return em.createQuery("SELECT a FROM Area a WHERE a.redIdred.idred = :redId", Area.class)
+                    .setParameter("redId", redId) // Establece el parámetro redId en la consulta
+                    .getResultList(); // Ejecuta la consulta y obtiene una lista de resultados
+        } finally {
+            em.close(); // Asegura que el EntityManager se cierre para liberar recursos
+        }
+    }
+
 }

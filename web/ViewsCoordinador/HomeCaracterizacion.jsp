@@ -1,16 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%
-    response.setHeader("Cache-Control", "no-Cache,no-store,must-revalidate");
-    HttpSession sessionObtenida = request.getSession();
-    if (sessionObtenida.getAttribute("administrador") == null) {
-        response.sendRedirect("../CerradoSession.jsp");
-    } else {
-%>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Dotacion</title>
+        <title>Caracterizacion</title>
         <%--BOOTSTRAP--%>
         <link href= "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" >
@@ -159,6 +153,7 @@
                 height: calc(2.25rem + 2px); /* Alinea la flecha verticalmente */
             }
         </style>
+
     </head>
     <body>
         <div class="wrapper">
@@ -236,7 +231,6 @@
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/DatosTablas.js"></script>
         <script src="../js/alertas.js"></script>
-        <script src="../js/JsFiltros.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -248,5 +242,5 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
 </html>
-<% }%>
+
 

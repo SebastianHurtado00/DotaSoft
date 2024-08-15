@@ -353,7 +353,7 @@
     </div>
 </div>
 <!-- MODAL REGISTRO USUARIOS FINAL -->
-<!-- MODALES DE RED DOTACION INICIO -->
+<!-- MODALES DE DOTACION INICIO -->
 <div class="modal fade" id="ModalDotacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -362,39 +362,17 @@
                     <h2 class="pt-3 pb-2 text-center">Registrar Dotacion</h2>
                     <div class="col-12">
                         <div class="input-group">
-                            <div class="input-group-text col-4"><b>Area:</b></div>
-                            <select name="AreaListaGdDo" id="AreaListaForGdDo"
-                                    class="from-selec col-8"  required>
+                            <div class="input-group-text col-4"><b>Red:</b></div>
+                            <select name="Red2ListaGdDo" id="ListaRedGuardado" class="from-selec col-8" required>
                                 <option value="" disabled selected hidden>-- Elija --</option>
-                                <%
-                                    AreaJpaController area = new AreaJpaController();
-                                    List listaArea = area.findAreaEntities();
-                                    for (int i = 0; i < listaArea.size(); i++) {
-                                        Area obj_cr = (Area) listaArea.get(i);
-                                        out.print("<option value='" + obj_cr.getIdarea() + "'>");
-                                        out.print((obj_cr.getNombre()));
-                                        out.print("</option>");
-                                    }
-                                %>
                             </select>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="input-group">
-                            <div class="input-group-text col-4"><b>Elemento:</b></div>
-                            <select name="ElementoListaGdDo" id="ElementoListaForGdDo"
-                                    class="from-selec col-8"  required>
+                            <div class="input-group-text col-4"><b>Area:</b></div>
+                            <select name="AreaListaGdDo" id="AreaListaForGdDo" class="from-selec col-8" required>
                                 <option value="" disabled selected hidden>-- Elija --</option>
-                                <%
-                                    ElementosJpaController elem = new ElementosJpaController();
-                                    List listaElementos = elem.findElementosEntities();
-                                    for (int i = 0; i < listaElementos.size(); i++) {
-                                        Elementos obj_cr = (Elementos) listaElementos.get(i);
-                                        out.print("<option value='" + obj_cr.getIdelemento() + "'>");
-                                        out.print((obj_cr.getNombre()));
-                                        out.print("</option>");
-                                    }
-                                %>
                             </select>
                         </div>
                     </div>
@@ -438,7 +416,26 @@
                     </div>
                     <div class="col-12">
                         <div class="input-group">
-                            <div class="input-group-text col-4"><b>Cantidade:</b></div>
+                            <div class="input-group-text col-4"><b>Elemento:</b></div>
+                            <select name="ElementoListaGdDo" id="ElementoListaForGdDo"
+                                    class="from-selec col-8"  required>
+                                <option value="" disabled selected hidden>-- Elija --</option>
+                                <%
+                                    ElementosJpaController elem = new ElementosJpaController();
+                                    List listaElementos = elem.findElementosEntities();
+                                    for (int i = 0; i < listaElementos.size(); i++) {
+                                        Elementos obj_cr = (Elementos) listaElementos.get(i);
+                                        out.print("<option value='" + obj_cr.getIdelemento() + "'>");
+                                        out.print((obj_cr.getNombre()));
+                                        out.print("</option>");
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Cantidad:</b></div>
                             <input type="number" class="form-control" id="cantidadGdDo" name="cantidadDo" required min="1" max="2147483647">
                         </div>
                     </div>
@@ -451,5 +448,5 @@
         </div>
     </div>
 </div>
-<!-- MODALES DE RED DOTACION FINAL -->
+<!-- MODALES DE DOTACION FINAL -->
 

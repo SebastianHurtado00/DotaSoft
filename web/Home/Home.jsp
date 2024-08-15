@@ -1,12 +1,15 @@
+<%@page import="Controladores.UsuariosJpaController"%>
 <%@page import="Entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     response.setHeader("Cache-Control", "no-Cache,no-store,must-revalidate");
     HttpSession sessionObtenida = request.getSession();
+    Usuarios usuarioEntrante = new Usuarios();
     if (sessionObtenida.getAttribute("user") == null) {
         response.sendRedirect("../index.jsp");
     } else {
+        usuarioEntrante = (Usuarios) sessionObtenida.getAttribute("user");
 
 
 %>
@@ -30,6 +33,54 @@
     </head>
     <body>
 
+
+        <%            String DocStr = String.valueOf(usuarioEntrante.getIdusuario());
+            if (usuarioEntrante.DencryptarClave(usuarioEntrante.getClave(), DocStr)) {
+        %>
+
+        <script>
+            $(document).ready(function () {
+                $('#ModalCambioPassword').modal('show');
+            });
+        </script>
+        <%}%>
+        <!-- Modal de Cambio de contraseña si el la contraseña es el mismo numero de documento del usuario -->
+        <div class="modal" id="ModalCambioPassword" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+            <form action="<%=request.getContextPath()%>/Restablecimientos" method="post">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Por seguridad cambie su contraseña</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="numeroDocumentoCambio" id="numeroDocumentoCambio" value="<%=usuarioEntrante.getIdusuario()%>" class="form-control" readonly max="99999999999">
+                                    <label  class="text-black" for="numeroDocumentoCambio">N° Documento</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="password" name="PasswordNueva" id="PasswordNueva" class="form-control" maxlength="50" required>
+                                    <label class="text-black" for="PasswordNueva">Contraseña nueva</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="password" id="ConfirmacionPassword" name="ConfirmacionPassword" class="form-control" maxlength="50" required>
+                                    <label class="text-black" for="ConfirmacionPassword">Confirmación de contraseña</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button value="RestablcerPasswordHome" name="BtnRestablecer" class="btn text-white" style="background-color: #018E42">Cambiar contraseña</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+
         <div class="wrapper">
             <jsp:include page="../Componentes/SideBar.jsp" ></jsp:include>
                 <div class="main">
@@ -44,6 +95,7 @@
 
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
+        <script src="../js/alertas.js"></script>
         <%--BOOTSTRAP--%>
         <!-- Bootstrap JavaScript Libraries 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -58,6 +110,24 @@
         <script>AOS.init();</script>
         <%--ALERTAS--%>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+        <%
+            String respuesta = request.getParameter("respuesta");
+            if (respuesta != null) {
+                switch (respuesta) {
+                    case "confirmacionFallida":
+        %>
+        <script>
+            mostrarAdvertencia("Confirmacion Incorrecta");
+        </script>
+        <%
+                        break;
+                    default:
+                        break;
+                }
+            }
+        %>
     </body>
 </html>
 <% }%>

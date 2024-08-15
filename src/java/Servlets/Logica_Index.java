@@ -67,9 +67,7 @@ public class Logica_Index extends HttpServlet {
                         break;
     
                     case 2:
-                        sessionAdmin.setAttribute("Instructor", usuarioEntrante);
-                        sessionAdmin.setAttribute("user", usuarioEntrante);
-                        response.sendRedirect("Home/Home.jsp");
+                        response.sendRedirect("index.jsp?respuesta=noIngreso");
                         break;
                     case 3:
                         sessionAdmin.setAttribute("RecursosHumanos", usuarioEntrante);

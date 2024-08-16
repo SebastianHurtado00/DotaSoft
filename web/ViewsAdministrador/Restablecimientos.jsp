@@ -1,5 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    response.setHeader("Cache-Control", "no-Cache,no-store,must-revalidate");
+    HttpSession sessionObtenida = request.getSession();
+    if (sessionObtenida.getAttribute("administrador") == null) {
+        response.sendRedirect("../CerradoSession.jsp");
+    } else {
+
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -145,3 +153,4 @@
 
     </body>
 </html>
+<% }%>

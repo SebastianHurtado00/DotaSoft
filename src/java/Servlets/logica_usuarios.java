@@ -77,6 +77,7 @@ public class logica_usuarios extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         int userRol = Integer.parseInt(request.getParameter("rolUsuario"));
+        String email = request.getParameter("email");
 
         existenceValid = usuarioController.findUsuarios(userId);
         String urlDeRetorno = request.getHeader("referer");
@@ -89,6 +90,7 @@ public class logica_usuarios extends HttpServlet {
             newUsuario.setNombreCompleto(nombre);
             newUsuario.setApelliodo(apellido);
             newUsuario.setRol(userRol);
+            newUsuario.setEmail(email);
             newUsuario.setClave(newUsuario.EncryptarClave(request.getParameter("CedulaUsuario")));
             /*En caso de administrador o RH*/
             if (userRol == 0 || userRol == 3) {
@@ -102,7 +104,6 @@ public class logica_usuarios extends HttpServlet {
             } else if (userRol == 1) {
                 Coordinador newCoordinado = new Coordinador();
 
-                String email = request.getParameter("email");
                 int centroId = Integer.parseInt(request.getParameter("centro"));
                 Centro centroSeleccionado = controlCentro.findCentro(centroId);
 
@@ -122,8 +123,6 @@ public class logica_usuarios extends HttpServlet {
                 }
             } else if (userRol == 2) {
                 Instructor newInstructor = new Instructor();
-
-                String email = request.getParameter("email");
                 int idCoordinador = Integer.parseInt(request.getParameter("Coordinador"));
                 Coordinador cordinadorSeleccionado = controlCoordinador.findCoordinador(idCoordinador);
                 String Telefono = request.getParameter("telefono");
@@ -163,6 +162,7 @@ public class logica_usuarios extends HttpServlet {
         String nombre = request.getParameter("nombreOp");
         String apellido = request.getParameter("apellidoOp");
         int userRol = Integer.parseInt(request.getParameter("rolUsuarioOp"));
+        String email = request.getParameter("emailOp");
 
         Usuarios usuarioEntranda = usuarioController.findUsuarios(userId);
 
@@ -170,7 +170,7 @@ public class logica_usuarios extends HttpServlet {
         Usuarios cambiosUsuarios = new Usuarios();
         if (!usuarioEntranda.getNombreCompleto().equals(nombre)
                 || !usuarioEntranda.getApelliodo().equals(apellido)
-                || usuarioEntranda.getRol() != userRol) {
+                || usuarioEntranda.getRol() != userRol || usuarioEntranda.getEmail() != email) {
             cambios = true;
 
         }
@@ -178,6 +178,7 @@ public class logica_usuarios extends HttpServlet {
         cambiosUsuarios.setNombreCompleto(nombre);
         cambiosUsuarios.setApelliodo(apellido);
         cambiosUsuarios.setRol(userRol);
+        cambiosUsuarios.setEmail(email);
         cambiosUsuarios.setEstado(1);
         cambiosUsuarios.setClave(cambiosUsuarios.EncryptarClave(request.getParameter("CedulaUsuarioOp")));
 
@@ -198,7 +199,7 @@ public class logica_usuarios extends HttpServlet {
             case 1:
                 Coordinador coordinadorEntrada = controlCoordinador.findCoordinador(userId);
                 // Coordinador CoordinadorModificar = new Coordinador();
-                String email = request.getParameter("emailOp");
+
                 int centroId = Integer.parseInt(request.getParameter("centroOp"));
                 Centro centroSeleccionado = controlCentro.findCentro(centroId);
                 if (!coordinadorEntrada.getCorreo().equals(email)
@@ -225,12 +226,12 @@ public class logica_usuarios extends HttpServlet {
                 break;
             case 2:
                 Instructor instructorEntrada = controlInstructor.findInstructor(userId);
-                String emailInsatructor = request.getParameter("emailOp");
+
                 int idCoordinador = Integer.parseInt(request.getParameter("CoordinadorOp"));
                 Coordinador cordinadorSeleccionado = controlCoordinador.findCoordinador(idCoordinador);
                 String Telefono = request.getParameter("telefonoOp");
 
-                if (!instructorEntrada.getCorreo().equals(emailInsatructor)
+                if (!instructorEntrada.getCorreo().equals(email)
                         || !instructorEntrada.getCoordinadorIdcoordinador().equals(cordinadorSeleccionado)
                         || !instructorEntrada.getTelefono().equals(Telefono)) {
                     cambios = true;
@@ -241,7 +242,7 @@ public class logica_usuarios extends HttpServlet {
                     instructorEntrada.setNombres(nombre);
                     instructorEntrada.setApellidos(apellido);
                     instructorEntrada.setTelefono(Telefono);
-                    instructorEntrada.setCorreo(emailInsatructor);
+                    instructorEntrada.setCorreo(email);
                     instructorEntrada.setCentroIdcentro(cordinadorSeleccionado.getCentroIdcentro());
                     instructorEntrada.setCoordinadorIdcoordinador(cordinadorSeleccionado);
                     try {

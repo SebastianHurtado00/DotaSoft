@@ -334,7 +334,7 @@
                             </select>
                             <label class="text-small mx-2 text-black" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
                         </div>
-                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="Email" style="display: none">
+                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="Email">
                             <input name="email" type="email" class="form-control mb-2" id="InputCorreo" >
                             <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Correo</label>
                         </div>

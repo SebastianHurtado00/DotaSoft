@@ -57,10 +57,11 @@ function obtenerDatosElem(codigoElem, nombreElem, cantidadElem) {
     $('#nombreElementoOp').val(nombreElem);
     $('#cantidadElementoOp').val(cantidadElem);
 }
-function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, Regional) {
+function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, correo) {
     $('#CedulaUsuarioOp').val(cedulaUsuario);
     $('#nombreOp').val(nombreUsuario);
     $('#apellidoOp').val(apellido);
+    $('#emailOp').val(correo);
 
     // Asignar el valor al select de rol y activar el cambio
     $('#Rolesop').val(Rol.toString()).change();
@@ -77,13 +78,11 @@ function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, Regio
         success: function (data) {
             let regional = (data.Regional != null) ? data.Regional : "";
             let centro = (data.Centro != null) ? data.Centro : "";
-            let correo = (data.Correo != null) ? data.Correo : "";
+         
             let telefono = (data.Telefono != null) ? data.Telefono : "";
             let coordinador = (data.Coordinador != null) ? data.Coordinador : "";
-
             // Asignar valores a los campos
             $('#RegionalSelectOp').val(regional).change(); // Activar el cambio para aplicar el filtrado
-            $('#emailOp').val(correo);
             $('#TelefonoOp').val(telefono);
             
             // Esperar a que el filtrado se complete antes de asignar los valores

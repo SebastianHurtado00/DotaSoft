@@ -137,7 +137,7 @@ $(document).ready(function () {
                                 '<td>' + estado + '</td>' +
                                 '<td>' +
                                 '<li type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" data-bs-toggle="modal" data-bs-target="#ModalModificarUsuario" ' +
-                                'onclick="obtenerDatosUsuarios(\'' + usuario.NumeroCC + '\', \'' + usuario.NombreCompleto + '\', \'' + usuario.Apellido + '\', \'' + usuario.Rol + '\')"></li>' +
+                               'onclick="obtenerDatosUsuarios(\'' + usuario.NumeroCC + '\', \'' + usuario.NombreCompleto + '\', \'' + usuario.Apellido + '\', \'' + usuario.Rol + '\', \'' + usuario.Email + '\')"></li>' +
                                 '<li type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" data-id="' + usuario.NumeroCC + '"></li>' +
                                 '</td>' +
                                 '</tr>';

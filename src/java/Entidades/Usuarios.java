@@ -33,6 +33,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Usuarios.findByEstado", query = "SELECT u FROM Usuarios u WHERE u.estado = :estado")})
 public class Usuarios implements Serializable {
 
+
+    @Basic(optional = false)
+    @Column(name = "email")
+    private String email;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -149,6 +154,15 @@ public class Usuarios implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Usuarios[ idusuario=" + idusuario + " ]";
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

@@ -1,6 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
+
+<%
+    response.setHeader("Cache-Control", "no-Cache,no-store,must-revalidate");
+    HttpSession sessionObtenida = request.getSession();
+    if (sessionObtenida.getAttribute("coordinador") == null) {
+        response.sendRedirect("../CerradoSession.jsp");
+    } else {
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -23,136 +31,7 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <%--ELEMENTOS--%>
-        <script>
-            $(document).ready(function () {
-                // Manejador de evento para el botón de guardar en el formulario
-                $('#btnGuardarDotacion').click(function (event) {
-                    event.preventDefault();
-                    var formData = $('#FormularioDotacion').serialize();
-                    formData += '&accion=guardar';
-                    enviarPeticion(formData, handleSuccessGuardar, handleError);
-                });
-
-                $('#btnEliminarDta').click(function (event) {
-                    event.preventDefault();
-                    var formData = $('#FormularioDotacionOpciones').serialize();
-                    formData += '&accion=eliminar';
-                    enviarPeticion(formData, handleSuccessEliminar, handleError);
-                });
-
-                $('#btnEditarDta').click(function (event) {
-                    event.preventDefault();
-                    var formData = $('#FormularioDotacionOpciones').serialize();
-                    formData += '&accion=actualizar';
-                    enviarPeticion(formData, handleSuccessActualizar, handleError);
-                });
-
-                function enviarPeticion(formData, successCallback, errorCallback) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '../DotacionServlet',
-                        data: formData,
-                        success: function (response) {
-                            successCallback(response);
-                        },
-                        error: function (xhr, status, error) {
-                            errorCallback('Error al conectar con el servlet: ' + error);
-                        }
-                    });
-                }
-
-                function limpiarFormulario(formularioId) {
-                    $('#' + formularioId)[0].reset();
-                }
-
-                function handleSuccessGuardar(response) {
-                    if (response.estado === "exito") {
-                        mostrarExito(response.mensaje);
-                        limpiarFormulario('FormularioDotacion');
-                        cargarTabla();
-                    } else {
-                        mostrarError(response.mensaje);
-                    }
-                }
-
-                function handleSuccessEliminar(response) {
-                    if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarDta");
-                        boton.click();
-                        mostrarExito(response.mensaje);
-                        cargarTabla();
-                    } else {
-                        mostrarError(response.mensaje);
-                    }
-                }
-
-                function handleSuccessActualizar(response) {
-                    if (response.estado === "exito") {
-                        var boton = document.getElementById("btnCerrarDta");
-                        boton.click();
-                        mostrarExito(response.mensaje);
-                        cargarTabla();
-                    } else {
-                        mostrarError(response.mensaje);
-                    }
-                }
-
-                function handleError(errorMessage) {
-                    mostrarError(errorMessage);
-                }
-                function cargarTabla() {
-                    $.ajax({
-                        type: 'GET',
-                        url: '../ConsultaDotacion',
-                        dataType: 'json',
-                        success: function (data) {
-                            $('#tablaDotacion tbody').empty();
-                            if (data.length === 0) {
-                                // Si no hay datos, agregar una fila indicando que no se encontraron estudiantes
-                                $('#tablaDotacion tbody').append('<tr><td colspan="7" class="text-center">No se encontraron dotaciones de trabajo en la base de datos.</td></tr>');
-                            } else {
-                                $.each(data, function (index, dota) {
-                                    var row = '<tr>' +
-                                            '<td>' + dota.idDotacion + '</td>' +
-                                            '<td>' + dota.areaNombre + '</td>' +
-                                            '<td>' + dota.sexoNombre + '</td>' +
-                                            '<td>' + dota.climaNombre + '</td>' +
-                                            '<td>' + dota.elementoNombre + '</td>' +
-                                            '<td>' + dota.cantidad + '</td>' +
-                                            '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalDotacionOpciones" ' +
-                                            'onclick="obtenerDatosDotacion(' + dota.idDotacion + ', \'' + dota.areaId + '\', \'' + dota.sexoId + '\'\n\
-                                            , \'' + dota.climaId + '\', \'' + dota.elementoId + '\', \'' + dota.cantidad + '\')">Opciones</button>' +
-                                            '</td>' +
-                                            '</tr>';
-                                    $('#tablaDotacion tbody').append(row);
-                                });
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            handleError('Error al obtener los datos: ' + error);
-                        }
-                    });
-                }
-                cargarTabla();
-            });
-        </script>
-        <%--STILO DE IMPUT FILTRADO--%>
-        <style>
-            .select2-container {
-                width: 66% !important; /* Asegura que el contenedor de Select2 ocupe todo el ancho del contenedor padre */
-            }
-            .select2-container .select2-selection--single {
-                height: calc(2.25rem + 2px); /* Ajusta la altura para coincidir con otros inputs */
-
-            }
-            .select2-container--default .select2-selection--single .select2-selection__rendered {
-                line-height: 2.25rem; /* Alinea el texto verticalmente */
-            }
-            .select2-container--default .select2-selection--single .select2-selection__arrow {
-                height: calc(2.25rem + 2px); /* Alinea la flecha verticalmente */
-            }
-        </style>
+        <script src="../js/JsCaracterizaciones.js"></script>
 
     </head>
     <body>
@@ -178,15 +57,9 @@
                                             <div class="card flex-fill w-100">
                                                 <div class="card-body px-4" style="min-height: 200px; max-height: 500px; overflow: auto;">
                                                     <div class="input-group mb-3 mt-2 p-2">
-                                                        <div class="col-md-4 col-sd-12">
+                                                        <div class="col-md-12 col-sd-12">
                                                             <div class="input-group mb-2">
-                                                                <div class="input-group-text col-md-6 col-8"><b>Nueva Dotacion:</b> </div>
-                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalDotacion"><b>Formulario</b></button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-8 col-sd-12">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-text col-4"><b>Buscar:</b></div>
+                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalDotacion"><b>Nueva Dotacion</b></button>                           
                                                                 <input type="text" class="form-control" id="filtroDotacionr">
                                                             </div>
                                                         </div>
@@ -231,6 +104,7 @@
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/DatosTablas.js"></script>
         <script src="../js/alertas.js"></script>
+        <script src="../js/JsContainer.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -242,5 +116,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
 </html>
-
-
+<%
+    }
+%>

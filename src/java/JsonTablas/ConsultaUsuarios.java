@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author ASUS
@@ -37,33 +38,32 @@ public class ConsultaUsuarios extends HttpServlet {
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        
+
         cargarTabla(request, response);
     }
-    
+
     private void cargarTabla(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        
+
         UsuariosJpaController userController = new UsuariosJpaController();
         List<Usuarios> userList = userController.findUsuariosEntities();
-        
+
         List<Map<String, String>> userJsonList = new ArrayList<>();
         for (Usuarios usuario : userList) {
             Map<String, String> jsonUsuario = new HashMap<>();
             jsonUsuario.put("NumeroCC", usuario.getIdusuario().toString());
             jsonUsuario.put("NombreCompleto", usuario.getNombreCompleto());
-            jsonUsuario.put("Apellido" , usuario.getApelliodo());
+            jsonUsuario.put("Apellido", usuario.getApelliodo());
             jsonUsuario.put("Rol", String.valueOf(usuario.getRol()));
             jsonUsuario.put("Estado", String.valueOf(usuario.getEstado()));
-            
+            jsonUsuario.put("Email", String.valueOf(usuario.getEmail()));
             userJsonList.add(jsonUsuario);
         }
-        
+
         String json = new Gson().toJson(userJsonList);
-        
+
         response.getWriter().write(json);
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -10,7 +10,7 @@ function roles() {
     let cajaCentro = document.getElementById("Centro");
     let cajaRegional = document.getElementById("Regional");
     let cajaCoordinador = document.getElementById("Coordinador");
-    let cajaEmail = document.getElementById("Email");
+   
     let cajaTelefono = document.getElementById("Telefono");
 
     if (selectedValue == 1) {
@@ -20,15 +20,12 @@ function roles() {
         cajaCoordinador.style.display = "none";
         cajaTelefono.style.display = "none";
 
-        cajaEmail.classList.remove("col-md-6");
-        cajaEmail.classList.add("col-md-12");
+       
 
         // Hacer que Centro y Regional sean obligatorios
         cajaCentro.querySelector('select').required = true;
         cajaRegional.querySelector('select').required = true;
-
-        // Hacer que Email sea obligatorio y Teléfono no
-        cajaEmail.querySelector('input').required = true;
+    
         cajaTelefono.querySelector('input').required = false;
 
         // Quitar el requisito de Coordinador
@@ -36,18 +33,16 @@ function roles() {
 
     } else if (selectedValue == 2) {
         cajaCoordinador.style.display = "block";
-        cajaEmail.style.display = "block";
+      
         cajaTelefono.style.display = "block";
 
         cajaCentro.style.display = "block";
         cajaRegional.style.display = "block";
 
-        cajaEmail.classList.remove("col-md-12");
-        cajaEmail.classList.add("col-md-6");
 
         // Hacer que Coordinador, Email y Teléfono sean obligatorios
         cajaCoordinador.querySelector('select').required = true;
-        cajaEmail.querySelector('input').required = true;
+       
         cajaTelefono.querySelector('input').required = true;
         cajaCentro.querySelector('select').required = true;
         cajaRegional.querySelector('select').required = true;
@@ -56,14 +51,14 @@ function roles() {
         cajaCoordinador.style.display = "none";
         cajaCentro.style.display = "none";
         cajaRegional.style.display = "none";
-        cajaEmail.style.display = "none";
+        
         cajaTelefono.style.display = "none";
 
         // Quitar el requisito de todos los campos
         cajaCentro.querySelector('select').required = false;
         cajaRegional.querySelector('select').required = false;
         cajaCoordinador.querySelector('select').required = false;
-        cajaEmail.querySelector('input').required = false;
+       
         cajaTelefono.querySelector('input').required = false;
     }
 }
@@ -74,25 +69,22 @@ function rolesOpciones() {
     let cajaCentro = document.getElementById("CentroOpciones");
     let cajaRegional = document.getElementById("RegionalOpciones");
     let cajaCoordinador = document.getElementById("CoordinadorOpciones");
-    let cajaEmail = document.getElementById("EmailOpciones");
+   
     let cajaTelefono = document.getElementById("TelefonoOpciones");
 
     if (selectedValue == 1) {
         cajaCentro.style.display = "block";
         cajaRegional.style.display = "block";
-        cajaEmail.style.display = "block";
+     
         cajaCoordinador.style.display = "none";
         cajaTelefono.style.display = "none";
-
-        cajaEmail.classList.remove("col-md-6");
-        cajaEmail.classList.add("col-md-12");
 
         // Hacer que Centro y Regional sean obligatorios
         cajaCentro.querySelector('select').required = true;
         cajaRegional.querySelector('select').required = true;
 
         // Hacer que Email sea obligatorio y Teléfono no
-        cajaEmail.querySelector('input').required = true;
+      
         cajaTelefono.querySelector('input').required = false;
 
         // Quitar el requisito de Coordinador
@@ -100,18 +92,16 @@ function rolesOpciones() {
 
     } else if (selectedValue == 2) {
         cajaCoordinador.style.display = "block";
-        cajaEmail.style.display = "block";
+        
         cajaTelefono.style.display = "block";
 
         cajaCentro.style.display = "block";
         cajaRegional.style.display = "block";
 
-        cajaEmail.classList.remove("col-md-12");
-        cajaEmail.classList.add("col-md-6");
-
+       
         // Hacer que Coordinador, Email y Teléfono sean obligatorios
         cajaCoordinador.querySelector('select').required = true;
-        cajaEmail.querySelector('input').required = true;
+       
         cajaTelefono.querySelector('input').required = true;
         cajaCentro.querySelector('select').required = true;
         cajaRegional.querySelector('select').required = true;
@@ -120,14 +110,14 @@ function rolesOpciones() {
         cajaCoordinador.style.display = "none";
         cajaCentro.style.display = "none";
         cajaRegional.style.display = "none";
-        cajaEmail.style.display = "none";
+     
         cajaTelefono.style.display = "none";
 
         // Quitar el requisito de todos los campos
         cajaCentro.querySelector('select').required = false;
         cajaRegional.querySelector('select').required = false;
         cajaCoordinador.querySelector('select').required = false;
-        cajaEmail.querySelector('input').required = false;
+        
         cajaTelefono.querySelector('input').required = false;
     }
 }

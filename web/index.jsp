@@ -17,11 +17,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&family=Carlito:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/Login.css"/>
-        <link rel="stylesheet" href="CSS/Footer.css"/>
+        <link rel="stylesheet" href="css/loader.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <script src="JS/main.js"></script>
     </head>
     <body style="background-color: #f5f5f5;">
         <div class="limiter">
@@ -68,7 +67,7 @@
         <!-- Modal -->
         <div class="modal fade" id="ModalOlvidoContrasenha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <form action="<%=request.getContextPath()%>/RestablecimientosContrase_as">
+                <form id="email-form" action="<%=request.getContextPath()%>/Restablecimientos">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel" >Ingrese su numero de documento</h1>
@@ -92,6 +91,17 @@
             </div>
         </div>
 
+        <div id="loading-spinner" class="d-none text-center loading-overlay">
+            <div class="spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
         <jsp:include page="Componentes/footer.jsp"></jsp:include>
             <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
             <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -105,7 +115,7 @@
             </script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-/WfsFq4XLtXJzweC9UJ7o4JvW/2HGM8eNQwuqzoU4llitlLVvc/UnzgZ81gMdd6R" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="JS/IniciarToast.js"></script>
+
         <%
             String respuesta = request.getParameter("respuesta");
             if (respuesta != null) {
@@ -135,7 +145,28 @@
             case "CambioClave":
         %>
         <script>
-            mostrarExito("Modificacion de contraseña exitoso")
+            mostrarExito("Modificacion de contraseña exitoso");
+        </script>
+        <%
+            case "UserNoExistente":
+
+        %>
+        <script>
+            mostrarError("Usuario no registrado");
+        </script>
+        <%                                    break;
+
+            case "correoEnviado":
+        %>
+        <script>
+            mostrarExito("Correo de recuperacion enviado");
+        </script>
+        <%
+                break;
+            case "ContrasehaModificada":
+        %>
+        <script>
+            mostrarExito("Contraseña Modificada exitosamente");
         </script>
         <%
                         break;
@@ -146,12 +177,7 @@
             }
 
         %>
-        <script>
-
-
-
-        </script>>
 
     </body>
-
+    <script src="js/ShowLoadingSnniper.js"></script>
 </html>

@@ -90,7 +90,7 @@
             <!--Links de Coordinadores -->
             <% if (usuarioEntrante.getRol() == 1) { %>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="" >
+                <a class="sidebar-link" href="../ViewsCoordinador/HomeCaracterizacion.jsp" >
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Asignacion de elementos</span>
                 </a>
             </li>

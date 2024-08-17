@@ -339,12 +339,12 @@
                             </select>
                             <label class="text-small mx-2 text-black" style="font-size: 15px" for="Centro">Coordinador a cargo</label>
                         </div>
-                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="EmailOpciones" style="display: none">
+                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="EmailOpciones">
                             <input name="emailOp" type="email" class="form-control mb-2" id="emailOp" >
                             <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Correo</label>
                         </div>
 
-                        <div class="col-md-6 col-sm-12 form-floating mt-2" id="TelefonoOpciones" style="display: none">
+                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="TelefonoOpciones" style="display: none">
                             <input name="telefonoOp" type="number" class="form-control mb-2" id="TelefonoOp" >
                             <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Telefono</label>
                         </div>

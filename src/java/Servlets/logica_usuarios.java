@@ -135,7 +135,7 @@ public class logica_usuarios extends HttpServlet {
                 newInstructor.setCentroIdcentro(cordinadorSeleccionado.getCentroIdcentro());
                 newInstructor.setCoordinadorIdcoordinador(cordinadorSeleccionado);
                 try {
-                    /* usuarioController.create(newUsuario);*/
+                    usuarioController.create(newUsuario);
                     ControlInstructor.create(newInstructor);
                     enviarRespuestaExito(response, "¡Instructor Registrado correctamente!");
                 } catch (Exception ex) {

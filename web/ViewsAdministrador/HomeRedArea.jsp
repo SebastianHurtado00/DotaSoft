@@ -16,7 +16,7 @@
               integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" >
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
         <%--ESTILO-MAQUETA--%>
-       <link rel="stylesheet" href="../css/app.css"/>
+        <link rel="stylesheet" href="../css/app.css"/>
         <%--TIPOS-LETRAS--%>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,12 +36,50 @@
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarRed').click(function (event) {
-                    event.preventDefault();
-                    var formData = $('#FormularioRedOpciones').serialize();
-                    formData += '&accion=eliminar';
-                    enviarPeticion(formData, handleSuccessEliminar, handleError);
+                function eliminar(id) {
+                    Swal.fire({
+                        title: "Confirmación de eliminación",
+                        text: "¿Está seguro de eliminar este registro?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sí, Eliminar!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Preparar datos para la solicitud AJAX
+                            var formData = {
+                                accion: 'eliminar',
+                                codigoElRe: id
+                            };
+
+                            // Realizar la solicitud AJAX
+                            $.ajax({
+                                url: '../RedServlet',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                success: function (response) {
+                                    // Llamar a la función handleSuccessEliminar con la respuesta del servidor
+                                    handleSuccessEliminar(response);
+                                },
+                                error: function (xhr, status, error) {
+                                    // Llamar a la función handleError con un mensaje de error
+                                    handleError('Error al realizar la operación de eliminación.');
+                                }
+                            });
+                        }
+                    });
+                }
+
+
+                // Activa el boton eliminar
+                $('#tablaRed').on('click', '.btn-outline-danger', function () {
+                    // Obtener el ID del usuario desde el atributo data del botón
+                    var id = $(this).data('id');
+                    eliminar(id);
                 });
+
 
                 $('#btnEditarRed').click(function (event) {
                     event.preventDefault();
@@ -119,9 +157,10 @@
                                     var row = '<tr>' +
                                             '<td>' + red.codigo + '</td>' +
                                             '<td>' + red.nombre + '</td>' +
-                                            '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalRedOpciones" ' +
-                                            'onclick="obtenerDatosRed(' + red.codigo + ', \'' + red.nombre + '\')">Opciones</button>' +
+                                            '<td class="d-flex align-items-center">' +
+                                            '<li type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" data-bs-toggle="modal" data-bs-target="#ModalRedOpciones" ' +
+                                            'onclick="obtenerDatosRed(' + red.codigo + ', \'' + red.nombre + '\')"></li>' +
+                                            '<li type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" data-id="' + red.codigo + '"></li>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaRed tbody').append(row);
@@ -146,12 +185,51 @@
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarArea').click(function (event) {
-                    event.preventDefault();
-                    var formData = $('#FormularioAreaOpciones').serialize();
-                    formData += '&accion=eliminar';
-                    enviarPeticion(formData, handleSuccessEliminar, handleError);
+
+                function eliminar(id) {
+                    Swal.fire({
+                        title: "Confirmación de eliminación",
+                        text: "¿Está seguro de eliminar este registro?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sí, Eliminar!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Preparar datos para la solicitud AJAX
+                            var formData = {
+                                accion: 'eliminar',
+                                codigoElArea: id
+                            };
+
+                            // Realizar la solicitud AJAX
+                            $.ajax({
+                                url: '../AreaServlet',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                success: function (response) {
+                                    // Llamar a la función handleSuccessEliminar con la respuesta del servidor
+                                    handleSuccessEliminar(response);
+                                },
+                                error: function (xhr, status, error) {
+                                    // Llamar a la función handleError con un mensaje de error
+                                    handleError('Error al realizar la operación de eliminación.');
+                                }
+                            });
+                        }
+                    });
+                }
+
+
+                // Activa el boton eliminar
+                $('#tablaArea').on('click', '.btn-outline-danger', function () {
+                    // Obtener el ID del usuario desde el atributo data del botón
+                    var id = $(this).data('id');
+                    eliminar(id);
                 });
+
 
                 $('#btnEditarArea').click(function (event) {
                     event.preventDefault();
@@ -226,18 +304,21 @@
                                 $('#tablaArea tbody').append('<tr><td colspan="3" class="text-center">No se encontraron areas de trabajo en la base de datos.</td></tr>');
                             } else {
                                 $.each(data, function (index, areas) {
+                                    console.log("Id Areas:" + areas.redId);
                                     var row = '<tr>' +
                                             '<td>' + areas.codigo + '</td>' +
                                             '<td>' + areas.nombre + '</td>' +
                                             '<td>' + areas.redNombre + '</td>' +
-                                            '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAreaOpciones" ' +
-                                            'onclick="obtenerDatosArea(' + areas.codigo + ', \'' + areas.nombre + '\', \'' + areas.redlId + '\')">Opciones</button>' +
+                                            '<td class="d-flex align-items-center">' +
+                                            '<li type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" data-bs-toggle="modal" data-bs-target="#ModalAreaOpciones" ' +
+                                            'onclick="obtenerDatosArea(' + areas.codigo + ', \'' + areas.nombre + '\', \'' + areas.redId + '\')"></li>' +
+                                            '<li type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" data-id="' + areas.codigo + '"></li>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaArea tbody').append(row);
                                 });
                             }
+
                         },
                         error: function (xhr, status, error) {
                             handleError('Error al obtener los datos: ' + error);
@@ -261,7 +342,7 @@
                             <div class="col-12">  
                                 <div class="container">
                                     <section class="section-0 d-flex justify-content-between">
-                                        <h2 class="letra py-3">Informacion de Red</h2>
+                                        <h2 class="letra py-3">Gestiones de redes y areas</h2>
                                         <img src="../assests/LogoSena.webp" width="150px" height="150px" class="align-self-end  img-fluid" style="margin-top: -45px"/> 
                                     </section>
                                 </div>
@@ -269,20 +350,18 @@
                                     <div class="row">
                                         <div class="col-12 col-md-12 col-xxl-12 d-flex order-3 order-xxl-2">
                                             <div class="card flex-fill w-100">
+                                                <div class="card-header">
+                                                    <h5 class="card-title mb-0">Redes Registradas</h5>
+                                                </div>
                                                 <div class="card-body px-4" style="min-height: 200px; max-height: 500px; overflow: auto;">
                                                     <div class="input-group mb-3 mt-2 p-2">
-                                                        <div class="col-md-4 col-sd-12">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-text col-md-6 col-8"><b>Nueva Red:</b> </div>
-                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalRed"><b>Formulario</b></button>
+                                                        <div class="col-12">
+                                                            <div class="input-group">                                        
+                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalRed"><b>Nueva Red</b></button>
+                                                                <input type="text" class="form-control" id="filtro1" oninput="filtrarTabla(this.value ,  'tablaRed')">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-8 col-sd-12">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-text col-4"><b>Buscar:</b></div>
-                                                                <input type="text" class="form-control" id="filtro1">
-                                                            </div>
-                                                        </div>
+
                                                     </div>
                                                     <div class="table-responsive">
                                                         <div class="table-wrapper-scroll-y my-custom-scrollbar p-2">
@@ -309,26 +388,18 @@
                             <%--CONTENIDO AREA INICIO --%>   
                             <div class="col-12">  
                                 <div class="container">
-                                    <section class="section-0 d-flex justify-content-between">
-                                        <h2 class="letra py-3">Informacion de Area</h2>
-                                    </section>
-                                </div>
-                                <div class="container">
                                     <div class="row">
                                         <div class="col-12 col-md-12 col-xxl-12 d-flex order-3 order-xxl-2">
                                             <div class="card flex-fill w-100">
+                                                <div class="card-header">
+                                                    <h5 class="card-title mb-0">Areas Registradas</h5>
+                                                </div>
                                                 <div class="card-body px-4" style="min-height: 200px; max-height: 500px; overflow: auto;">
                                                     <div class="input-group mb-3 mt-2 p-2">
-                                                        <div class="col-md-4 col-sd-12">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-text col-md-6 col-8"><b>Nueva Area:</b> </div>
-                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalArea"><b>Formulario</b></button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-8 col-sd-12">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-text col-4"><b>Buscar:</b></div>
-                                                                <input type="text" class="form-control" id="filtro1">
+                                                        <div class="col-12">
+                                                            <div class="input-group">
+                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalArea"><b>Nueva Area</b></button>
+                                                                <input type="text" class="form-control" id="filtro1" oninput="filtrarTabla(this.value , 'tablaArea')">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -369,6 +440,7 @@
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/DatosTablas.js"></script>
         <script src="../js/alertas.js"></script>
+        <script src="../js/FiltroTablas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
@@ -380,4 +452,4 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
 </html>
-<% } %>
+<% }%>

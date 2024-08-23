@@ -91,8 +91,12 @@ public class ClimaServlet extends HttpServlet {
             ClimaJpaController climaController = new ClimaJpaController();
             climaController.destroy(codigo);
             enviarRespuestaExito(response, "¡Registro Eliminado exitosamente!");
+        } catch (Controladores.exceptions.IllegalOrphanException e) {
+            // Captura específica de la excepción IllegalOrphanException
+            enviarRespuestaError(response, "¡No se puede eliminar este registro porque tiene dependencias asociadas!");
         } catch (Exception e) {
             enviarRespuestaError(response, "¡Error!");
+            e.printStackTrace();
         }
 
     }

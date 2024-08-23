@@ -38,12 +38,50 @@
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarReg').click(function (event) {
-                    event.preventDefault();
-                    var formData = $('#FormularioRegionalOpciones').serialize();
-                    formData += '&accion=eliminar';
-                    enviarPeticion(formData, handleSuccessEliminar, handleError);
+                function eliminar(id) {
+                    Swal.fire({
+                        title: "Confirmación de eliminación",
+                        text: "¿Está seguro de eliminar este registro?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sí, Eliminar!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Preparar datos para la solicitud AJAX
+                            var formData = {
+                                accion: 'eliminar',
+                                codigoElReg: id
+                            };
+
+                            // Realizar la solicitud AJAX
+                            $.ajax({
+                                url: '../RegionalServlet',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                success: function (response) {
+                                    // Llamar a la función handleSuccessEliminar con la respuesta del servidor
+                                    handleSuccessEliminar(response);
+                                },
+                                error: function (xhr, status, error) {
+                                    // Llamar a la función handleError con un mensaje de error
+                                    handleError('Error al realizar la operación de eliminación.');
+                                }
+                            });
+                        }
+                    });
+                }
+
+
+                // Activa el boton eliminar
+                $('#tablaRegional').on('click', '.btn-outline-danger', function () {
+                    // Obtener el ID del usuario desde el atributo data del botón
+                    var id = $(this).data('id');
+                    eliminar(id);
                 });
+
 
                 $('#btnEditarReg').click(function (event) {
                     event.preventDefault();
@@ -121,9 +159,10 @@
                                     var row = '<tr>' +
                                             '<td>' + regio.codigo + '</td>' +
                                             '<td>' + regio.nombre + '</td>' +
-                                            '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalRegionalOpciones" ' +
-                                            'onclick="obtenerDatosRegional(' + regio.codigo + ', \'' + regio.nombre + '\')">Opciones</button>' +
+                                            '<td class="d-flex align-items-center">' +
+                                            '<li type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" data-bs-toggle="modal" data-bs-target="#ModalRegionalOpciones" ' +
+                                            'onclick="obtenerDatosRegional(' + regio.codigo + ', \'' + regio.nombre + '\')"></li>' +
+                                            '<li type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" data-id="' + regio.codigo + '"></li>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaRegional tbody').append(row);
@@ -149,13 +188,49 @@
                     enviarPeticion(formData, handleSuccessGuardar, handleError);
                 });
 
-                $('#btnEliminarCent').click(function (event) {
-                    event.preventDefault();
-                    var formData = $('#FormularioCentroOpciones').serialize();
-                    formData += '&accion=eliminar';
-                    enviarPeticion(formData, handleSuccessEliminar, handleError);
-                });
+                function eliminar(id) {
+                    Swal.fire({
+                        title: "Confirmación de eliminación",
+                        text: "¿Está seguro de eliminar este registro?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sí, Eliminar!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Preparar datos para la solicitud AJAX
+                            var formData = {
+                                accion: 'eliminar',
+                                codigoElCent: id
+                            };
 
+                            // Realizar la solicitud AJAX
+                            $.ajax({
+                                url: '../CentroServlet',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                success: function (response) {
+                                    // Llamar a la función handleSuccessEliminar con la respuesta del servidor
+                                    handleSuccessEliminar(response);
+                                },
+                                error: function (xhr, status, error) {
+                                    // Llamar a la función handleError con un mensaje de error
+                                    handleError('Error al realizar la operación de eliminación.');
+                                }
+                            });
+                        }
+                    });
+                }
+
+
+                // Activa el boton eliminar
+                $('#tablaCentro').on('click', '.btn-outline-danger', function () {
+                    // Obtener el ID del usuario desde el atributo data del botón
+                    var id = $(this).data('id');
+                    eliminar(id);
+                });
                 $('#btnEditarCent').click(function (event) {
                     event.preventDefault();
                     var formData = $('#FormularioCentroOpciones').serialize();
@@ -232,9 +307,10 @@
                                             '<td>' + centro.codigo + '</td>' +
                                             '<td>' + centro.nombre + '</td>' +
                                             '<td>' + centro.regNombre + '</td>' +
-                                            '<td>' +
-                                            '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalCentroOpciones" ' +
-                                            'onclick="obtenerDatosCentro(' + centro.codigo + ', \'' + centro.nombre + '\', \'' + centro.reglId + '\')">Opciones</button>' +
+                                            '<td class="d-flex align-items-center">' +
+                                            '<li type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" data-bs-toggle="modal" data-bs-target="#ModalCentroOpciones" ' +
+                                            'onclick="obtenerDatosCentro(' + centro.codigo + ', \'' + centro.nombre + '\', \'' + centro.reglId + '\')"></li>' +
+                                            '<li type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" data-id="' + centro.codigo + '"></li>' +
                                             '</td>' +
                                             '</tr>';
                                     $('#tablaCentro tbody').append(row);
@@ -263,7 +339,7 @@
                             <div class="col-12">  
                                 <div class="container">
                                     <section class="section-0 d-flex justify-content-between">
-                                        <h2 class="letra py-3">Informacion de Regional</h2>
+                                        <h2 class="letra py-3"><strong>Gestion de regionales y centro</strong></h2>
                                         <img src="../assests/LogoSena.webp" width="150px" height="150px" class="align-self-end  img-fluid" style="margin-top: -45px"/> 
                                     </section>
                                 </div>
@@ -271,20 +347,18 @@
                                     <div class="row">
                                         <div class="col-12 col-md-12 col-xxl-12 d-flex order-3 order-xxl-2">
                                             <div class="card flex-fill w-100">
+                                                <div class="card-header">
+                                                    <h5 class="card-title mb-0">Regionales Registradas</h5>
+                                                </div>
                                                 <div class="card-body px-4" style="min-height: 200px; max-height: 500px; overflow: auto;">
                                                     <div class="input-group mb-3 mt-2 p-2">
-                                                        <div class="col-md-4 col-sd-12">
+                                                        <div class="col-12">
                                                             <div class="input-group mb-2">
-                                                                <div class="input-group-text col-md-6 col-8"><b>Nueva Regional:</b></div>
-                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalRegional"><b>Formulario</b></button>
+                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalRegional"><b>Nueva regional</b></button>
+                                                                <input type="text" class="form-control" id="filtro1" oninput="filtrarTabla(this.value, 'tablaRegional')" >
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-8 col-sd-12">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-text col-4"><b>Buscar:</b></div>
-                                                                <input type="text" class="form-control" id="filtro1">
-                                                            </div>
-                                                        </div>
+
                                                     </div>
                                                     <div class="table-responsive">
                                                         <div class="table-wrapper-scroll-y my-custom-scrollbar p-2">
@@ -310,27 +384,20 @@
                             <%--CONTENIDO RED FINAL --%> 
                             <%--CONTENIDO CENTRO INICIO --%> 
                             <div class="col-12">  
-                                <div class="container">
-                                    <section class="section-0 d-flex justify-content-between">
-                                        <h2 class="letra py-3">Informacion de Centro</h2>
-                                    </section>
-                                </div>
+
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-12 col-md-12 col-xxl-12 d-flex order-3 order-xxl-2">
                                             <div class="card flex-fill w-100">
+                                                <div class="card-header mb-0">
+                                                    <h5 class="card-title mb-0">Centros Registrados: </h5>
+                                                </div>
                                                 <div class="card-body px-4" style="min-height: 200px; max-height: 500px; overflow: auto;">
                                                     <div class="input-group mb-3 mt-2 p-2">
-                                                        <div class="col-md-4 col-sd-12">
+                                                        <div class="col-12 col-sd-12">
                                                             <div class="input-group mb-2">
-                                                                <div class="input-group-text col-md-6 col-8"><b>Nuevo Centro:</b></div>
-                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalCentro"><b>Formulario</b></button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-8 col-sd-12">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-text col-4"><b>Buscar:</b></div>
-                                                                <input type="text" class="form-control" id="filtro1">
+                                                                <button type="button" class="btn text-white" style="background-color: #018E42;" data-bs-toggle="modal" data-bs-target="#ModalCentro"><b>Nuevo Centro</b></button>
+                                                                <input type="text" class="form-control" id="filtro2" oninput="filtrarTabla(this.value, 'tablaCentro')">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -341,7 +408,7 @@
                                                                     <tr>
                                                                         <th scope="col">Codigo</th>
                                                                         <th>Nombre</th>
-                                                                        <th>Red</th>
+                                                                        <th>Regional</th>
                                                                         <th scope="col" class="text-center" style="width: 100px;">Opciones</th>
                                                                     </tr>
                                                                 </thead>
@@ -370,6 +437,7 @@
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/DatosTablas.js"></script>
         <script src="../js/alertas.js"></script>
+        <script src="../js/FiltroTablas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

@@ -374,9 +374,21 @@
                             <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Correo</label>
                         </div>
 
-                        <div class="col-md-12 col-sm-12 form-floating mt-2" id="Telefono" style="display: none">
+                        <div class="col-md-6 col-sm-12 form-floating mt-2" id="Telefono" style="display: none">
                             <input name="telefono" type="number" class="form-control mb-2" id="InputTelefono" >
                             <label class="text-small mx-2 text-black" style="font-size: 15px" for="InputCorreo">Telefono</label>
+                        </div>
+                        <div class="col-md-6 col-sm-12 form-floating mt-2" id="Sexo" style="display: none">
+                            <select name="sexoInstructor" class="form-select mx-auto" id="sexo">
+                                <option value="" disabled selected hidden></option>
+                                <%
+                                    SexoJpaController sexoController = new SexoJpaController();
+                                    List<Sexo> sexList = sexoController.findSexoEntities();
+                                    for (Sexo sex : sexList) {%>
+                                <option value="<%=sex.getIdsexo()%>" ><%=sex.getNombre()%></option>
+                                <% }%>
+                            </select>
+                            <label class="text-small mx-2 text-black " style="font-size: 15px" for="Centro">Sexo</label>                
                         </div>
                     </div>
                 </div>

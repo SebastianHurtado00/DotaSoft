@@ -12,11 +12,9 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Entidades.Elementos;
-import Entidades.Instructor;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
@@ -24,8 +22,8 @@ import javax.persistence.Persistence;
  */
 public class DescuentoJpaController implements Serializable {
 
-    public DescuentoJpaController() {
-       this.emf = Persistence.createEntityManagerFactory("Dotacion_SenaPU");
+    public DescuentoJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
@@ -43,19 +41,10 @@ public class DescuentoJpaController implements Serializable {
                 elementosIdelemento = em.getReference(elementosIdelemento.getClass(), elementosIdelemento.getIdelemento());
                 descuento.setElementosIdelemento(elementosIdelemento);
             }
-            Instructor instructoridInstructor = descuento.getInstructoridInstructor();
-            if (instructoridInstructor != null) {
-                instructoridInstructor = em.getReference(instructoridInstructor.getClass(), instructoridInstructor.getIdinstructor());
-                descuento.setInstructoridInstructor(instructoridInstructor);
-            }
             em.persist(descuento);
             if (elementosIdelemento != null) {
                 elementosIdelemento.getDescuentoCollection().add(descuento);
                 elementosIdelemento = em.merge(elementosIdelemento);
-            }
-            if (instructoridInstructor != null) {
-                instructoridInstructor.getDescuentoCollection().add(descuento);
-                instructoridInstructor = em.merge(instructoridInstructor);
             }
             em.getTransaction().commit();
         } finally {
@@ -73,15 +62,9 @@ public class DescuentoJpaController implements Serializable {
             Descuento persistentDescuento = em.find(Descuento.class, descuento.getIddescuento());
             Elementos elementosIdelementoOld = persistentDescuento.getElementosIdelemento();
             Elementos elementosIdelementoNew = descuento.getElementosIdelemento();
-            Instructor instructoridInstructorOld = persistentDescuento.getInstructoridInstructor();
-            Instructor instructoridInstructorNew = descuento.getInstructoridInstructor();
             if (elementosIdelementoNew != null) {
                 elementosIdelementoNew = em.getReference(elementosIdelementoNew.getClass(), elementosIdelementoNew.getIdelemento());
                 descuento.setElementosIdelemento(elementosIdelementoNew);
-            }
-            if (instructoridInstructorNew != null) {
-                instructoridInstructorNew = em.getReference(instructoridInstructorNew.getClass(), instructoridInstructorNew.getIdinstructor());
-                descuento.setInstructoridInstructor(instructoridInstructorNew);
             }
             descuento = em.merge(descuento);
             if (elementosIdelementoOld != null && !elementosIdelementoOld.equals(elementosIdelementoNew)) {
@@ -91,14 +74,6 @@ public class DescuentoJpaController implements Serializable {
             if (elementosIdelementoNew != null && !elementosIdelementoNew.equals(elementosIdelementoOld)) {
                 elementosIdelementoNew.getDescuentoCollection().add(descuento);
                 elementosIdelementoNew = em.merge(elementosIdelementoNew);
-            }
-            if (instructoridInstructorOld != null && !instructoridInstructorOld.equals(instructoridInstructorNew)) {
-                instructoridInstructorOld.getDescuentoCollection().remove(descuento);
-                instructoridInstructorOld = em.merge(instructoridInstructorOld);
-            }
-            if (instructoridInstructorNew != null && !instructoridInstructorNew.equals(instructoridInstructorOld)) {
-                instructoridInstructorNew.getDescuentoCollection().add(descuento);
-                instructoridInstructorNew = em.merge(instructoridInstructorNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -133,11 +108,6 @@ public class DescuentoJpaController implements Serializable {
             if (elementosIdelemento != null) {
                 elementosIdelemento.getDescuentoCollection().remove(descuento);
                 elementosIdelemento = em.merge(elementosIdelemento);
-            }
-            Instructor instructoridInstructor = descuento.getInstructoridInstructor();
-            if (instructoridInstructor != null) {
-                instructoridInstructor.getDescuentoCollection().remove(descuento);
-                instructoridInstructor = em.merge(instructoridInstructor);
             }
             em.remove(descuento);
             em.getTransaction().commit();

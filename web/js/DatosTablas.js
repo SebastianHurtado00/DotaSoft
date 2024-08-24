@@ -32,7 +32,7 @@ function obtenerDatosCentro(codigoCen, nombreCen, ListaRegio) {
     $('#nombreOpCent').val(nombreCen);
     $("#CentroListaEl").val(ListaRegio);
     $("#CentroListaEl").select(ListaRegio);
- 
+
 }
 
 
@@ -62,18 +62,21 @@ function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, corre
         success: function (data) {
             let regional = (data.Regional != null) ? data.Regional : "";
             let centro = (data.Centro != null) ? data.Centro : "";
-
+            let sexo = (data.Sexo != null) ? data.Sexo : "";
             let telefono = (data.Telefono != null) ? data.Telefono : "";
             let coordinador = (data.Coordinador != null) ? data.Coordinador : "";
+            console.log(data);
+            
             // Asignar valores a los campos
             $('#RegionalSelectOp').val(regional).change(); // Activar el cambio para aplicar el filtrado
-            $('#TelefonoOp').val(telefono);
-
+           
             // Esperar a que el filtrado se complete antes de asignar los valores
             setTimeout(function () {
                 $('#CentroSelectOp').val(centro).change(); // Activar el cambio para aplicar el filtrado de Coordinador
                 $('#CoordinadorSelectOp').val(coordinador);
             }, 100); // Ajusta el tiempo según el comportamiento del filtrado
+            $('#TelefonoOp').val(telefono);
+            $('#SexoOp').val(sexo)
         },
         error: function (xhr, status, error) {
             console.error('Error al obtener los datos: ', error);

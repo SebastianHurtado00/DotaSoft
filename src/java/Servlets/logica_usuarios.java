@@ -7,12 +7,14 @@ package Servlets;
 import Controladores.CentroJpaController;
 import Controladores.CoordinadorJpaController;
 import Controladores.InstructorJpaController;
+import Controladores.SexoJpaController;
 import Controladores.UsuariosJpaController;
 import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Entidades.Centro;
 import Entidades.Coordinador;
 import Entidades.Instructor;
+import Entidades.Sexo;
 import Entidades.Usuarios;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class logica_usuarios extends HttpServlet {
             throws ServletException, IOException {
         String button = request.getParameter("accion");
         PrintWriter n = response.getWriter();
-
+        
         switch (button) {
             case "guaradarUsuarios":
                 SaveUsuario(request, response);
@@ -55,34 +57,34 @@ public class logica_usuarios extends HttpServlet {
             case "actualizar":
                 actualizarUsuario(request, response);
                 break;
-
+            
             case "eliminar":
                 deleteUser(request, response);
                 break;
             default:
                 break;
         }
-
+        
     }
-
+    
     private void SaveUsuario(HttpServletRequest request, HttpServletResponse response) {
         UsuariosJpaController usuarioController = new UsuariosJpaController();
         CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
         InstructorJpaController ControlInstructor = new InstructorJpaController();
         CentroJpaController controlCentro = new CentroJpaController();
-
+        SexoJpaController controlSexo = new SexoJpaController();
         Usuarios existenceValid;
-
+        
         int userId = Integer.parseInt(request.getParameter("CedulaUsuario"));
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         int userRol = Integer.parseInt(request.getParameter("rolUsuario"));
         String email = request.getParameter("email");
-
+        
         existenceValid = usuarioController.findUsuarios(userId);
         String urlDeRetorno = request.getHeader("referer");
         String mensajeUrl;
-
+        
         if (existenceValid == null) {
             Usuarios newUsuario = new Usuarios();
             newUsuario.setIdusuario(userId);
@@ -103,16 +105,16 @@ public class logica_usuarios extends HttpServlet {
                 }
             } else if (userRol == 1) {
                 Coordinador newCoordinado = new Coordinador();
-
+                
                 int centroId = Integer.parseInt(request.getParameter("centro"));
                 Centro centroSeleccionado = controlCentro.findCentro(centroId);
-
+                
                 newCoordinado.setIdcoordinador(userId);
                 newCoordinado.setNombres(nombre);
                 newCoordinado.setApellidos(apellido);
                 newCoordinado.setCorreo(email);
                 newCoordinado.setCentroIdcentro(centroSeleccionado);
-
+                
                 try {
                     mensajeUrl = "usuarioguardado";
                     usuarioController.create(newUsuario);
@@ -124,12 +126,15 @@ public class logica_usuarios extends HttpServlet {
             } else if (userRol == 2) {
                 Instructor newInstructor = new Instructor();
                 int idCoordinador = Integer.parseInt(request.getParameter("Coordinador"));
+                int idSexo = Integer.parseInt(request.getParameter("sexoInstructor"));
                 Coordinador cordinadorSeleccionado = controlCoordinador.findCoordinador(idCoordinador);
+                Sexo sexoSeleccionado = controlSexo.findSexo(idSexo);
                 String Telefono = request.getParameter("telefono");
-
+                
                 newInstructor.setIdinstructor(userId);
                 newInstructor.setNombres(nombre);
                 newInstructor.setApellidos(apellido);
+                newInstructor.setSexo(sexoSeleccionado);
                 newInstructor.setTelefono(Telefono);
                 newInstructor.setCorreo(email);
                 newInstructor.setCentroIdcentro(cordinadorSeleccionado.getCentroIdcentro());
@@ -143,7 +148,7 @@ public class logica_usuarios extends HttpServlet {
                 }
             }
         } else {
-
+            
             try {
                 enviarRespuestaError(response, "Usuario Registrado");
             } catch (Exception e) {
@@ -151,28 +156,29 @@ public class logica_usuarios extends HttpServlet {
             }
         }
     }
-
+    
     private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
         UsuariosJpaController usuarioController = new UsuariosJpaController();
         CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
         InstructorJpaController controlInstructor = new InstructorJpaController();
         CentroJpaController controlCentro = new CentroJpaController();
-
+        SexoJpaController controlSexo = new SexoJpaController();
+        
         int userId = Integer.parseInt(request.getParameter("CedulaUsuarioOp"));
         String nombre = request.getParameter("nombreOp");
         String apellido = request.getParameter("apellidoOp");
         int userRol = Integer.parseInt(request.getParameter("rolUsuarioOp"));
         String email = request.getParameter("emailOp");
-
+        
         Usuarios usuarioEntranda = usuarioController.findUsuarios(userId);
-
+        
         boolean cambios = false;
         Usuarios cambiosUsuarios = new Usuarios();
         if (!usuarioEntranda.getNombreCompleto().equals(nombre)
                 || !usuarioEntranda.getApelliodo().equals(apellido)
                 || usuarioEntranda.getRol() != userRol || usuarioEntranda.getEmail() != email) {
             cambios = true;
-
+            
         }
         cambiosUsuarios.setIdusuario(userId);
         cambiosUsuarios.setNombreCompleto(nombre);
@@ -181,7 +187,7 @@ public class logica_usuarios extends HttpServlet {
         cambiosUsuarios.setEmail(email);
         cambiosUsuarios.setEstado(1);
         cambiosUsuarios.setClave(cambiosUsuarios.EncryptarClave(request.getParameter("CedulaUsuarioOp")));
-
+        
         switch (userRol) {
             case 0:
             case 3:
@@ -219,29 +225,31 @@ public class logica_usuarios extends HttpServlet {
                     } catch (Exception ex) {
                         Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    
                 } else {
                     enviarRespuestaError(response, "Sin Modificaciones");
                 }
                 break;
             case 2:
                 Instructor instructorEntrada = controlInstructor.findInstructor(userId);
-
                 int idCoordinador = Integer.parseInt(request.getParameter("CoordinadorOp"));
                 Coordinador cordinadorSeleccionado = controlCoordinador.findCoordinador(idCoordinador);
+                int idSexo = Integer.parseInt(request.getParameter("sexoOp"));
+                Sexo sexoSeleccionado = controlSexo.findSexo(idSexo);
                 String Telefono = request.getParameter("telefonoOp");
-
+                
                 if (!instructorEntrada.getCorreo().equals(email)
                         || !instructorEntrada.getCoordinadorIdcoordinador().equals(cordinadorSeleccionado)
-                        || !instructorEntrada.getTelefono().equals(Telefono)) {
+                        || !instructorEntrada.getTelefono().equals(Telefono) || !instructorEntrada.getSexo().equals(sexoSeleccionado)) {
                     cambios = true;
                 }
-
+                
                 if (cambios) {
                     instructorEntrada.setIdinstructor(userId);
                     instructorEntrada.setNombres(nombre);
                     instructorEntrada.setApellidos(apellido);
                     instructorEntrada.setTelefono(Telefono);
+                    instructorEntrada.setSexo(sexoSeleccionado);
                     instructorEntrada.setCorreo(email);
                     instructorEntrada.setCentroIdcentro(cordinadorSeleccionado.getCentroIdcentro());
                     instructorEntrada.setCoordinadorIdcoordinador(cordinadorSeleccionado);
@@ -252,7 +260,7 @@ public class logica_usuarios extends HttpServlet {
                     } catch (Exception ex) {
                         Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    
                 } else {
                     enviarRespuestaError(response, "Sin Modificaciones");
                 }
@@ -260,15 +268,15 @@ public class logica_usuarios extends HttpServlet {
             default:
                 break;
         }
-
+        
     }
-
+    
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) {
         UsuariosJpaController controlUsuario = new UsuariosJpaController();
-
+        
         int id = Integer.parseInt(request.getParameter("IdEliminar"));
         Usuarios usuarioEncontrado = controlUsuario.findUsuarios(id);
-
+        
         switch (usuarioEncontrado.getRol()) {
             case 0:
             case 3: {
@@ -280,7 +288,7 @@ public class logica_usuarios extends HttpServlet {
                 }
             }
             break;
-
+            
             case 1:
                 CoordinadorJpaController controlCoordinador = new CoordinadorJpaController();
                 try {
@@ -293,7 +301,7 @@ public class logica_usuarios extends HttpServlet {
                 break;
             case 2:
                 InstructorJpaController controlIns = new InstructorJpaController();
-
+                
                 try {
                     controlIns.destroy(id);
                     controlUsuario.destroy(id);
@@ -301,12 +309,12 @@ public class logica_usuarios extends HttpServlet {
                 } catch (Exception ex) {
                     Logger.getLogger(logica_usuarios.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                
                 break;
             default:
                 break;
         }
-
+        
     }
 
     // Método para enviar una respuesta JSON de éxito
@@ -314,7 +322,7 @@ public class logica_usuarios extends HttpServlet {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put("estado", "exito");
         respuesta.put("mensaje", mensaje);
-
+        
         String json = new Gson().toJson(respuesta);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -326,7 +334,7 @@ public class logica_usuarios extends HttpServlet {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put("estado", "error");
         respuesta.put("mensaje", mensaje);
-
+        
         String json = new Gson().toJson(respuesta);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

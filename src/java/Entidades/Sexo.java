@@ -6,6 +6,7 @@ package Entidades;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,6 +31,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sexo.findByIdsexo", query = "SELECT s FROM Sexo s WHERE s.idsexo = :idsexo"),
     @NamedQuery(name = "Sexo.findByNombre", query = "SELECT s FROM Sexo s WHERE s.nombre = :nombre")})
 public class Sexo implements Serializable {
+
+    @OneToMany(mappedBy = "sexo")
+    private List<Instructor> instructorList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -113,6 +117,15 @@ public class Sexo implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Sexo[ idsexo=" + idsexo + " ]";
+    }
+
+    @XmlTransient
+    public List<Instructor> getInstructorList() {
+        return instructorList;
+    }
+
+    public void setInstructorList(List<Instructor> instructorList) {
+        this.instructorList = instructorList;
     }
     
 }

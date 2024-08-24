@@ -57,13 +57,13 @@
                             <div class="col-12 col-md-12 col-xxl-12 d-flex order-3 order-xxl-2">
                                 <div class="card flex-fill w-100">
                                     <div class="card-header">
-                                        <h5 class="card-title mb-0">Usuarios Registrados: </h5>
+                                        <h5 class="card-title mb-0">Usuarios Registrados</h5>
                                     </div>
                                     <div class="card-body px-4">
                                         <div class="input-group mb-3 mt-2 p-2">
-                                            <button class="btn btn-success hover py-2" style="background: #018E42 ; font-size: 12px" data-bs-toggle="modal" data-bs-target="#ModalGuardarUsuario"><a>Añadir Usuario </a></button>
+                                            <button class="btn btn-success hover py-2" style="background: #018E42" data-bs-toggle="modal" data-bs-target="#ModalGuardarUsuario"><b>Nuevo Usuario </b></button>
                                             <input type="text" class="form-control" placeholder="Busqueda de Registros"
-                                                   name="Dato_User" id="filtro" style="font-size: 13px">
+                                                   name="Dato_User" id="filtro" style="font-size: 13px" oninput="filtrarTabla(this.value , 'tablaUsuarios')">
                                         </div>
                                         <div class="table-responsive" >
                                             <div class="table-wrapper-scroll-y my-custom-scrollbar p-2" style="height: 400px">
@@ -98,6 +98,7 @@
         <script src="../js/DatosTablas.js"></script>
         <script src="../js/JsContainer.js"></script>
         <script src="../js/alertas.js"></script>
+        <script src="../js/FiltroTablas.js"></script>
         <%--BOOTSTRAP--%>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

@@ -148,6 +148,7 @@
             mostrarExito("Modificacion de contraseña exitoso");
         </script>
         <%
+            break;
             case "UserNoExistente":
 
         %>

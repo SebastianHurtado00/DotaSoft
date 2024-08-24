@@ -5,9 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,10 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +32,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Instructor.findByCorreo", query = "SELECT i FROM Instructor i WHERE i.correo = :correo")})
 public class Instructor implements Serializable {
 
+    @JoinColumn(name = "Centro_Idcentro", referencedColumnName = "Idcentro")
+    @ManyToOne(optional = false)
+    private Centro centroIdcentro;
+    @JoinColumn(name = "Coordinador_Idcoordinador", referencedColumnName = "Idcoordinador")
+    @ManyToOne(optional = false)
+    private Coordinador coordinadorIdcoordinador;
+    @JoinColumn(name = "Sexo", referencedColumnName = "Idsexo")
+    @ManyToOne
+    private Sexo sexo;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -51,16 +57,6 @@ public class Instructor implements Serializable {
     private String telefono;
     @Column(name = "Correo")
     private String correo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "instructoridInstructor")
-    private Collection<Descuento> descuentoCollection;
-    @JoinColumn(name = "Centro_Idcentro", referencedColumnName = "Idcentro")
-    @ManyToOne(optional = false)
-    private Centro centroIdcentro;
-    @JoinColumn(name = "Coordinador_Idcoordinador", referencedColumnName = "Idcoordinador")
-    @ManyToOne(optional = false)
-    private Coordinador coordinadorIdcoordinador;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "instructorIdinstructor")
-    private Collection<CaracterizarInstructor> caracterizarInstructorCollection;
 
     public Instructor() {
     }
@@ -115,40 +111,6 @@ public class Instructor implements Serializable {
         this.correo = correo;
     }
 
-    @XmlTransient
-    public Collection<Descuento> getDescuentoCollection() {
-        return descuentoCollection;
-    }
-
-    public void setDescuentoCollection(Collection<Descuento> descuentoCollection) {
-        this.descuentoCollection = descuentoCollection;
-    }
-
-    public Centro getCentroIdcentro() {
-        return centroIdcentro;
-    }
-
-    public void setCentroIdcentro(Centro centroIdcentro) {
-        this.centroIdcentro = centroIdcentro;
-    }
-
-    public Coordinador getCoordinadorIdcoordinador() {
-        return coordinadorIdcoordinador;
-    }
-
-    public void setCoordinadorIdcoordinador(Coordinador coordinadorIdcoordinador) {
-        this.coordinadorIdcoordinador = coordinadorIdcoordinador;
-    }
-
-    @XmlTransient
-    public Collection<CaracterizarInstructor> getCaracterizarInstructorCollection() {
-        return caracterizarInstructorCollection;
-    }
-
-    public void setCaracterizarInstructorCollection(Collection<CaracterizarInstructor> caracterizarInstructorCollection) {
-        this.caracterizarInstructorCollection = caracterizarInstructorCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -171,7 +133,31 @@ public class Instructor implements Serializable {
 
     @Override
     public String toString() {
-        return "" + idinstructor;
+        return "Entidades.Instructor[ idinstructor=" + idinstructor + " ]";
+    }
+
+    public Centro getCentroIdcentro() {
+        return centroIdcentro;
+    }
+
+    public void setCentroIdcentro(Centro centroIdcentro) {
+        this.centroIdcentro = centroIdcentro;
+    }
+
+    public Coordinador getCoordinadorIdcoordinador() {
+        return coordinadorIdcoordinador;
+    }
+
+    public void setCoordinadorIdcoordinador(Coordinador coordinadorIdcoordinador) {
+        this.coordinadorIdcoordinador = coordinadorIdcoordinador;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
     
 }

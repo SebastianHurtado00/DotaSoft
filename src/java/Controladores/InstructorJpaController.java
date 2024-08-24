@@ -4,7 +4,6 @@
  */
 package Controladores;
 
-import Controladores.exceptions.IllegalOrphanException;
 import Controladores.exceptions.NonexistentEntityException;
 import Controladores.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -14,11 +13,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Entidades.Centro;
 import Entidades.Coordinador;
-import Entidades.Descuento;
-import java.util.ArrayList;
-import java.util.Collection;
-import Entidades.CaracterizarInstructor;
 import Entidades.Instructor;
+import Entidades.Sexo;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,7 +27,7 @@ import javax.persistence.Persistence;
 public class InstructorJpaController implements Serializable {
 
     public InstructorJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("Dotacion_SenaPU");
+       this.emf = Persistence.createEntityManagerFactory("Dotacion_SenaPU");
     }
     private EntityManagerFactory emf = null;
 
@@ -40,12 +36,6 @@ public class InstructorJpaController implements Serializable {
     }
 
     public void create(Instructor instructor) throws PreexistingEntityException, Exception {
-        if (instructor.getDescuentoCollection() == null) {
-            instructor.setDescuentoCollection(new ArrayList<Descuento>());
-        }
-        if (instructor.getCaracterizarInstructorCollection() == null) {
-            instructor.setCaracterizarInstructorCollection(new ArrayList<CaracterizarInstructor>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -60,18 +50,11 @@ public class InstructorJpaController implements Serializable {
                 coordinadorIdcoordinador = em.getReference(coordinadorIdcoordinador.getClass(), coordinadorIdcoordinador.getIdcoordinador());
                 instructor.setCoordinadorIdcoordinador(coordinadorIdcoordinador);
             }
-            Collection<Descuento> attachedDescuentoCollection = new ArrayList<Descuento>();
-            for (Descuento descuentoCollectionDescuentoToAttach : instructor.getDescuentoCollection()) {
-                descuentoCollectionDescuentoToAttach = em.getReference(descuentoCollectionDescuentoToAttach.getClass(), descuentoCollectionDescuentoToAttach.getIddescuento());
-                attachedDescuentoCollection.add(descuentoCollectionDescuentoToAttach);
+            Sexo sexo = instructor.getSexo();
+            if (sexo != null) {
+                sexo = em.getReference(sexo.getClass(), sexo.getIdsexo());
+                instructor.setSexo(sexo);
             }
-            instructor.setDescuentoCollection(attachedDescuentoCollection);
-            Collection<CaracterizarInstructor> attachedCaracterizarInstructorCollection = new ArrayList<CaracterizarInstructor>();
-            for (CaracterizarInstructor caracterizarInstructorCollectionCaracterizarInstructorToAttach : instructor.getCaracterizarInstructorCollection()) {
-                caracterizarInstructorCollectionCaracterizarInstructorToAttach = em.getReference(caracterizarInstructorCollectionCaracterizarInstructorToAttach.getClass(), caracterizarInstructorCollectionCaracterizarInstructorToAttach.getIdCaracterizarInstructor());
-                attachedCaracterizarInstructorCollection.add(caracterizarInstructorCollectionCaracterizarInstructorToAttach);
-            }
-            instructor.setCaracterizarInstructorCollection(attachedCaracterizarInstructorCollection);
             em.persist(instructor);
             if (centroIdcentro != null) {
                 centroIdcentro.getInstructorCollection().add(instructor);
@@ -81,23 +64,9 @@ public class InstructorJpaController implements Serializable {
                 coordinadorIdcoordinador.getInstructorCollection().add(instructor);
                 coordinadorIdcoordinador = em.merge(coordinadorIdcoordinador);
             }
-            for (Descuento descuentoCollectionDescuento : instructor.getDescuentoCollection()) {
-                Instructor oldInstructoridInstructorOfDescuentoCollectionDescuento = descuentoCollectionDescuento.getInstructoridInstructor();
-                descuentoCollectionDescuento.setInstructoridInstructor(instructor);
-                descuentoCollectionDescuento = em.merge(descuentoCollectionDescuento);
-                if (oldInstructoridInstructorOfDescuentoCollectionDescuento != null) {
-                    oldInstructoridInstructorOfDescuentoCollectionDescuento.getDescuentoCollection().remove(descuentoCollectionDescuento);
-                    oldInstructoridInstructorOfDescuentoCollectionDescuento = em.merge(oldInstructoridInstructorOfDescuentoCollectionDescuento);
-                }
-            }
-            for (CaracterizarInstructor caracterizarInstructorCollectionCaracterizarInstructor : instructor.getCaracterizarInstructorCollection()) {
-                Instructor oldInstructorIdinstructorOfCaracterizarInstructorCollectionCaracterizarInstructor = caracterizarInstructorCollectionCaracterizarInstructor.getInstructorIdinstructor();
-                caracterizarInstructorCollectionCaracterizarInstructor.setInstructorIdinstructor(instructor);
-                caracterizarInstructorCollectionCaracterizarInstructor = em.merge(caracterizarInstructorCollectionCaracterizarInstructor);
-                if (oldInstructorIdinstructorOfCaracterizarInstructorCollectionCaracterizarInstructor != null) {
-                    oldInstructorIdinstructorOfCaracterizarInstructorCollectionCaracterizarInstructor.getCaracterizarInstructorCollection().remove(caracterizarInstructorCollectionCaracterizarInstructor);
-                    oldInstructorIdinstructorOfCaracterizarInstructorCollectionCaracterizarInstructor = em.merge(oldInstructorIdinstructorOfCaracterizarInstructorCollectionCaracterizarInstructor);
-                }
+            if (sexo != null) {
+                sexo.getInstructorList().add(instructor);
+                sexo = em.merge(sexo);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -112,7 +81,7 @@ public class InstructorJpaController implements Serializable {
         }
     }
 
-    public void edit(Instructor instructor) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Instructor instructor) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -122,30 +91,8 @@ public class InstructorJpaController implements Serializable {
             Centro centroIdcentroNew = instructor.getCentroIdcentro();
             Coordinador coordinadorIdcoordinadorOld = persistentInstructor.getCoordinadorIdcoordinador();
             Coordinador coordinadorIdcoordinadorNew = instructor.getCoordinadorIdcoordinador();
-            Collection<Descuento> descuentoCollectionOld = persistentInstructor.getDescuentoCollection();
-            Collection<Descuento> descuentoCollectionNew = instructor.getDescuentoCollection();
-            Collection<CaracterizarInstructor> caracterizarInstructorCollectionOld = persistentInstructor.getCaracterizarInstructorCollection();
-            Collection<CaracterizarInstructor> caracterizarInstructorCollectionNew = instructor.getCaracterizarInstructorCollection();
-            List<String> illegalOrphanMessages = null;
-            for (Descuento descuentoCollectionOldDescuento : descuentoCollectionOld) {
-                if (!descuentoCollectionNew.contains(descuentoCollectionOldDescuento)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Descuento " + descuentoCollectionOldDescuento + " since its instructoridInstructor field is not nullable.");
-                }
-            }
-            for (CaracterizarInstructor caracterizarInstructorCollectionOldCaracterizarInstructor : caracterizarInstructorCollectionOld) {
-                if (!caracterizarInstructorCollectionNew.contains(caracterizarInstructorCollectionOldCaracterizarInstructor)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain CaracterizarInstructor " + caracterizarInstructorCollectionOldCaracterizarInstructor + " since its instructorIdinstructor field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
+            Sexo sexoOld = persistentInstructor.getSexo();
+            Sexo sexoNew = instructor.getSexo();
             if (centroIdcentroNew != null) {
                 centroIdcentroNew = em.getReference(centroIdcentroNew.getClass(), centroIdcentroNew.getIdcentro());
                 instructor.setCentroIdcentro(centroIdcentroNew);
@@ -154,20 +101,10 @@ public class InstructorJpaController implements Serializable {
                 coordinadorIdcoordinadorNew = em.getReference(coordinadorIdcoordinadorNew.getClass(), coordinadorIdcoordinadorNew.getIdcoordinador());
                 instructor.setCoordinadorIdcoordinador(coordinadorIdcoordinadorNew);
             }
-            Collection<Descuento> attachedDescuentoCollectionNew = new ArrayList<Descuento>();
-            for (Descuento descuentoCollectionNewDescuentoToAttach : descuentoCollectionNew) {
-                descuentoCollectionNewDescuentoToAttach = em.getReference(descuentoCollectionNewDescuentoToAttach.getClass(), descuentoCollectionNewDescuentoToAttach.getIddescuento());
-                attachedDescuentoCollectionNew.add(descuentoCollectionNewDescuentoToAttach);
+            if (sexoNew != null) {
+                sexoNew = em.getReference(sexoNew.getClass(), sexoNew.getIdsexo());
+                instructor.setSexo(sexoNew);
             }
-            descuentoCollectionNew = attachedDescuentoCollectionNew;
-            instructor.setDescuentoCollection(descuentoCollectionNew);
-            Collection<CaracterizarInstructor> attachedCaracterizarInstructorCollectionNew = new ArrayList<CaracterizarInstructor>();
-            for (CaracterizarInstructor caracterizarInstructorCollectionNewCaracterizarInstructorToAttach : caracterizarInstructorCollectionNew) {
-                caracterizarInstructorCollectionNewCaracterizarInstructorToAttach = em.getReference(caracterizarInstructorCollectionNewCaracterizarInstructorToAttach.getClass(), caracterizarInstructorCollectionNewCaracterizarInstructorToAttach.getIdCaracterizarInstructor());
-                attachedCaracterizarInstructorCollectionNew.add(caracterizarInstructorCollectionNewCaracterizarInstructorToAttach);
-            }
-            caracterizarInstructorCollectionNew = attachedCaracterizarInstructorCollectionNew;
-            instructor.setCaracterizarInstructorCollection(caracterizarInstructorCollectionNew);
             instructor = em.merge(instructor);
             if (centroIdcentroOld != null && !centroIdcentroOld.equals(centroIdcentroNew)) {
                 centroIdcentroOld.getInstructorCollection().remove(instructor);
@@ -185,27 +122,13 @@ public class InstructorJpaController implements Serializable {
                 coordinadorIdcoordinadorNew.getInstructorCollection().add(instructor);
                 coordinadorIdcoordinadorNew = em.merge(coordinadorIdcoordinadorNew);
             }
-            for (Descuento descuentoCollectionNewDescuento : descuentoCollectionNew) {
-                if (!descuentoCollectionOld.contains(descuentoCollectionNewDescuento)) {
-                    Instructor oldInstructoridInstructorOfDescuentoCollectionNewDescuento = descuentoCollectionNewDescuento.getInstructoridInstructor();
-                    descuentoCollectionNewDescuento.setInstructoridInstructor(instructor);
-                    descuentoCollectionNewDescuento = em.merge(descuentoCollectionNewDescuento);
-                    if (oldInstructoridInstructorOfDescuentoCollectionNewDescuento != null && !oldInstructoridInstructorOfDescuentoCollectionNewDescuento.equals(instructor)) {
-                        oldInstructoridInstructorOfDescuentoCollectionNewDescuento.getDescuentoCollection().remove(descuentoCollectionNewDescuento);
-                        oldInstructoridInstructorOfDescuentoCollectionNewDescuento = em.merge(oldInstructoridInstructorOfDescuentoCollectionNewDescuento);
-                    }
-                }
+            if (sexoOld != null && !sexoOld.equals(sexoNew)) {
+                sexoOld.getInstructorList().remove(instructor);
+                sexoOld = em.merge(sexoOld);
             }
-            for (CaracterizarInstructor caracterizarInstructorCollectionNewCaracterizarInstructor : caracterizarInstructorCollectionNew) {
-                if (!caracterizarInstructorCollectionOld.contains(caracterizarInstructorCollectionNewCaracterizarInstructor)) {
-                    Instructor oldInstructorIdinstructorOfCaracterizarInstructorCollectionNewCaracterizarInstructor = caracterizarInstructorCollectionNewCaracterizarInstructor.getInstructorIdinstructor();
-                    caracterizarInstructorCollectionNewCaracterizarInstructor.setInstructorIdinstructor(instructor);
-                    caracterizarInstructorCollectionNewCaracterizarInstructor = em.merge(caracterizarInstructorCollectionNewCaracterizarInstructor);
-                    if (oldInstructorIdinstructorOfCaracterizarInstructorCollectionNewCaracterizarInstructor != null && !oldInstructorIdinstructorOfCaracterizarInstructorCollectionNewCaracterizarInstructor.equals(instructor)) {
-                        oldInstructorIdinstructorOfCaracterizarInstructorCollectionNewCaracterizarInstructor.getCaracterizarInstructorCollection().remove(caracterizarInstructorCollectionNewCaracterizarInstructor);
-                        oldInstructorIdinstructorOfCaracterizarInstructorCollectionNewCaracterizarInstructor = em.merge(oldInstructorIdinstructorOfCaracterizarInstructorCollectionNewCaracterizarInstructor);
-                    }
-                }
+            if (sexoNew != null && !sexoNew.equals(sexoOld)) {
+                sexoNew.getInstructorList().add(instructor);
+                sexoNew = em.merge(sexoNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -224,7 +147,7 @@ public class InstructorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -236,24 +159,6 @@ public class InstructorJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The instructor with id " + id + " no longer exists.", enfe);
             }
-            List<String> illegalOrphanMessages = null;
-            Collection<Descuento> descuentoCollectionOrphanCheck = instructor.getDescuentoCollection();
-            for (Descuento descuentoCollectionOrphanCheckDescuento : descuentoCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Instructor (" + instructor + ") cannot be destroyed since the Descuento " + descuentoCollectionOrphanCheckDescuento + " in its descuentoCollection field has a non-nullable instructoridInstructor field.");
-            }
-            Collection<CaracterizarInstructor> caracterizarInstructorCollectionOrphanCheck = instructor.getCaracterizarInstructorCollection();
-            for (CaracterizarInstructor caracterizarInstructorCollectionOrphanCheckCaracterizarInstructor : caracterizarInstructorCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Instructor (" + instructor + ") cannot be destroyed since the CaracterizarInstructor " + caracterizarInstructorCollectionOrphanCheckCaracterizarInstructor + " in its caracterizarInstructorCollection field has a non-nullable instructorIdinstructor field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             Centro centroIdcentro = instructor.getCentroIdcentro();
             if (centroIdcentro != null) {
                 centroIdcentro.getInstructorCollection().remove(instructor);
@@ -263,6 +168,11 @@ public class InstructorJpaController implements Serializable {
             if (coordinadorIdcoordinador != null) {
                 coordinadorIdcoordinador.getInstructorCollection().remove(instructor);
                 coordinadorIdcoordinador = em.merge(coordinadorIdcoordinador);
+            }
+            Sexo sexo = instructor.getSexo();
+            if (sexo != null) {
+                sexo.getInstructorList().remove(instructor);
+                sexo = em.merge(sexo);
             }
             em.remove(instructor);
             em.getTransaction().commit();

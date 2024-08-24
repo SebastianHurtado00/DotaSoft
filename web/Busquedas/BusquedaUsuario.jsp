@@ -44,6 +44,11 @@
                     datos.put("Correo", instructor.getCorreo());
                     datos.put("Telefono", instructor.getTelefono());
                     datos.put("Coordinador", instructor.getCoordinadorIdcoordinador().getIdcoordinador()); // Asegúrate de que solo se obtengan datos simples
+                    if (instructor.getSexo() != null) {
+                        datos.put("Sexo", instructor.getSexo().getIdsexo());
+                    } else {
+                        datos.put("Sexo", "N/A"); // O algún valor por defecto si es null
+                    }
                 } else {
                     datos.put("error", "Instructor no encontrado");
                 }
@@ -65,5 +70,6 @@
         error.put("error", "Error en el procesamiento: " + e.getMessage());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         response.getWriter().write(gson.toJson(error));
+        e.printStackTrace();
     }
 %>

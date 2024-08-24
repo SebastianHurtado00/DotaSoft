@@ -17,16 +17,8 @@ function obtenerDatosArea(codigoAre, nombreAre, ListaReds) {
     $('#codigoOpArea').val(codigoAre);
     $('#nombreOpArea').val(nombreAre);
     $("#RedesListaEl").val(ListaReds);
-
-    $.ajax({
-        type: "POST",
-        url: "../Busquedas/obtenerRed.jsp",
-        data: {red: ListaReds},
-        dataType: "html",
-        success: function (data) {
-            $("#RedesListaEl").empty().append(data);
-        }
-    });
+    /*Se seleccion automaticamnete el la red a la que corresponde centro*/
+    $("#RedesListaEl").select(ListaReds);
 }
 
 function obtenerDatosRegional(codigoRegi, nombreRegi) {
@@ -39,16 +31,8 @@ function obtenerDatosCentro(codigoCen, nombreCen, ListaRegio) {
     $('#codigoOpCent').val(codigoCen);
     $('#nombreOpCent').val(nombreCen);
     $("#CentroListaEl").val(ListaRegio);
+    $("#CentroListaEl").select(ListaRegio);
 
-    $.ajax({
-        type: "POST",
-        url: "../Busquedas/obtenerCentro.jsp",
-        data: {centro: ListaRegio},
-        dataType: "html",
-        success: function (data) {
-            $("#CentroListaEl").empty().append(data);
-        }
-    });
 }
 
 
@@ -78,18 +62,21 @@ function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, corre
         success: function (data) {
             let regional = (data.Regional != null) ? data.Regional : "";
             let centro = (data.Centro != null) ? data.Centro : "";
-         
+            let sexo = (data.Sexo != null) ? data.Sexo : "";
             let telefono = (data.Telefono != null) ? data.Telefono : "";
             let coordinador = (data.Coordinador != null) ? data.Coordinador : "";
+            console.log(data);
+            
             // Asignar valores a los campos
             $('#RegionalSelectOp').val(regional).change(); // Activar el cambio para aplicar el filtrado
-            $('#TelefonoOp').val(telefono);
-            
+           
             // Esperar a que el filtrado se complete antes de asignar los valores
-            setTimeout(function() {
+            setTimeout(function () {
                 $('#CentroSelectOp').val(centro).change(); // Activar el cambio para aplicar el filtrado de Coordinador
                 $('#CoordinadorSelectOp').val(coordinador);
             }, 100); // Ajusta el tiempo según el comportamiento del filtrado
+            $('#TelefonoOp').val(telefono);
+            $('#SexoOp').val(sexo)
         },
         error: function (xhr, status, error) {
             console.error('Error al obtener los datos: ', error);
@@ -97,20 +84,20 @@ function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, corre
     });
 
     // Activar el cambio en el select de Regional para ajustar el filtrado
-    $('#RegionalSelectOp').change(function() {
+    $('#RegionalSelectOp').change(function () {
         filtradoEntreDosSelects('RegionalSelectOp', 'CentroSelectOp', 'data-fk-centroOp');
     });
 
     // Activar el cambio en el select de Centro para ajustar el filtrado
-    $('#CentroSelectOp').change(function() {
+    $('#CentroSelectOp').change(function () {
         filtradoEntreDosSelects('CentroSelectOp', 'CoordinadorSelectOp', 'data-centro-fk');
-        
+
         // Asegurarse de que la opción correcta esté seleccionada en CoordinadorSelectOp
         let coordinadorSelect = document.getElementById('CoordinadorSelectOp');
         let coordinadorValue = $('#CoordinadorSelectOp').val();
-        
+
         // Esperar a que se actualicen las opciones visibles
-        setTimeout(function() {
+        setTimeout(function () {
             for (let i = 0; i < coordinadorSelect.options.length; i++) {
                 let option = coordinadorSelect.options[i];
                 if (option.value === coordinadorValue && option.style.display !== 'none') {
@@ -124,14 +111,14 @@ function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, corre
 //FILTRADO DOTACION INICIO
 $(document).ready(function () {
     // Inicializa Select2
-  
-      $('#ElementoListaForGdDo').select2({
+
+    $('#ElementoListaForGdDo').select2({
         placeholder: "-- Elija --",
         dropdownParent: $('#ModalDotacion'),
         width: 'resolve'
     });
-    
-     $('#ElementoListaForGdDotacion').select2({
+
+    $('#ElementoListaForGdDotacion').select2({
         dropdownParent: $('#ModalDotacionOpciones'),
         width: 'resolve'
     });

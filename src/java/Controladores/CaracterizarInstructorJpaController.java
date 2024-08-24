@@ -13,12 +13,10 @@ import javax.persistence.criteria.Root;
 import Entidades.Area;
 import Entidades.CaracterizarInstructor;
 import Entidades.Clima;
-import Entidades.Instructor;
 import Entidades.Sexo;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
@@ -26,8 +24,8 @@ import javax.persistence.Persistence;
  */
 public class CaracterizarInstructorJpaController implements Serializable {
 
-    public CaracterizarInstructorJpaController() {
-       this.emf = Persistence.createEntityManagerFactory("Dotacion_SenaPU");
+    public CaracterizarInstructorJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
     }
     private EntityManagerFactory emf = null;
 
@@ -50,11 +48,6 @@ public class CaracterizarInstructorJpaController implements Serializable {
                 climaIdclima = em.getReference(climaIdclima.getClass(), climaIdclima.getIdclima());
                 caracterizarInstructor.setClimaIdclima(climaIdclima);
             }
-            Instructor instructorIdinstructor = caracterizarInstructor.getInstructorIdinstructor();
-            if (instructorIdinstructor != null) {
-                instructorIdinstructor = em.getReference(instructorIdinstructor.getClass(), instructorIdinstructor.getIdinstructor());
-                caracterizarInstructor.setInstructorIdinstructor(instructorIdinstructor);
-            }
             Sexo sexoIdsexo = caracterizarInstructor.getSexoIdsexo();
             if (sexoIdsexo != null) {
                 sexoIdsexo = em.getReference(sexoIdsexo.getClass(), sexoIdsexo.getIdsexo());
@@ -68,10 +61,6 @@ public class CaracterizarInstructorJpaController implements Serializable {
             if (climaIdclima != null) {
                 climaIdclima.getCaracterizarInstructorCollection().add(caracterizarInstructor);
                 climaIdclima = em.merge(climaIdclima);
-            }
-            if (instructorIdinstructor != null) {
-                instructorIdinstructor.getCaracterizarInstructorCollection().add(caracterizarInstructor);
-                instructorIdinstructor = em.merge(instructorIdinstructor);
             }
             if (sexoIdsexo != null) {
                 sexoIdsexo.getCaracterizarInstructorCollection().add(caracterizarInstructor);
@@ -95,8 +84,6 @@ public class CaracterizarInstructorJpaController implements Serializable {
             Area areaIdareaNew = caracterizarInstructor.getAreaIdarea();
             Clima climaIdclimaOld = persistentCaracterizarInstructor.getClimaIdclima();
             Clima climaIdclimaNew = caracterizarInstructor.getClimaIdclima();
-            Instructor instructorIdinstructorOld = persistentCaracterizarInstructor.getInstructorIdinstructor();
-            Instructor instructorIdinstructorNew = caracterizarInstructor.getInstructorIdinstructor();
             Sexo sexoIdsexoOld = persistentCaracterizarInstructor.getSexoIdsexo();
             Sexo sexoIdsexoNew = caracterizarInstructor.getSexoIdsexo();
             if (areaIdareaNew != null) {
@@ -106,10 +93,6 @@ public class CaracterizarInstructorJpaController implements Serializable {
             if (climaIdclimaNew != null) {
                 climaIdclimaNew = em.getReference(climaIdclimaNew.getClass(), climaIdclimaNew.getIdclima());
                 caracterizarInstructor.setClimaIdclima(climaIdclimaNew);
-            }
-            if (instructorIdinstructorNew != null) {
-                instructorIdinstructorNew = em.getReference(instructorIdinstructorNew.getClass(), instructorIdinstructorNew.getIdinstructor());
-                caracterizarInstructor.setInstructorIdinstructor(instructorIdinstructorNew);
             }
             if (sexoIdsexoNew != null) {
                 sexoIdsexoNew = em.getReference(sexoIdsexoNew.getClass(), sexoIdsexoNew.getIdsexo());
@@ -131,14 +114,6 @@ public class CaracterizarInstructorJpaController implements Serializable {
             if (climaIdclimaNew != null && !climaIdclimaNew.equals(climaIdclimaOld)) {
                 climaIdclimaNew.getCaracterizarInstructorCollection().add(caracterizarInstructor);
                 climaIdclimaNew = em.merge(climaIdclimaNew);
-            }
-            if (instructorIdinstructorOld != null && !instructorIdinstructorOld.equals(instructorIdinstructorNew)) {
-                instructorIdinstructorOld.getCaracterizarInstructorCollection().remove(caracterizarInstructor);
-                instructorIdinstructorOld = em.merge(instructorIdinstructorOld);
-            }
-            if (instructorIdinstructorNew != null && !instructorIdinstructorNew.equals(instructorIdinstructorOld)) {
-                instructorIdinstructorNew.getCaracterizarInstructorCollection().add(caracterizarInstructor);
-                instructorIdinstructorNew = em.merge(instructorIdinstructorNew);
             }
             if (sexoIdsexoOld != null && !sexoIdsexoOld.equals(sexoIdsexoNew)) {
                 sexoIdsexoOld.getCaracterizarInstructorCollection().remove(caracterizarInstructor);
@@ -186,11 +161,6 @@ public class CaracterizarInstructorJpaController implements Serializable {
             if (climaIdclima != null) {
                 climaIdclima.getCaracterizarInstructorCollection().remove(caracterizarInstructor);
                 climaIdclima = em.merge(climaIdclima);
-            }
-            Instructor instructorIdinstructor = caracterizarInstructor.getInstructorIdinstructor();
-            if (instructorIdinstructor != null) {
-                instructorIdinstructor.getCaracterizarInstructorCollection().remove(caracterizarInstructor);
-                instructorIdinstructor = em.merge(instructorIdinstructor);
             }
             Sexo sexoIdsexo = caracterizarInstructor.getSexoIdsexo();
             if (sexoIdsexo != null) {

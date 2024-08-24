@@ -99,6 +99,8 @@ public class AreaServlet extends HttpServlet {
         try {
             fo.destroy(codigo);
             enviarRespuestaExito(response, "¡Registro Eliminado exitosamente!");
+        } catch (Controladores.exceptions.IllegalOrphanException e) {
+            enviarRespuestaError(response, "¡No se puede eliminar este registro porque tiene dependencias asociadas!");
         } catch (Exception e) {
             enviarRespuestaError(response, "¡Error!");
         }

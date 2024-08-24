@@ -54,7 +54,7 @@ public class RegionalServlet extends HttpServlet {
             }
         }
     }
-    
+
     public void botonGuardar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -91,8 +91,12 @@ public class RegionalServlet extends HttpServlet {
             RegionalJpaController Controller = new RegionalJpaController();
             Controller.destroy(codigo);
             enviarRespuestaExito(response, "¡Registro Eliminado exitosamente!");
+        } catch (Controladores.exceptions.IllegalOrphanException e) {
+            // Captura específica de la excepción IllegalOrphanException
+            enviarRespuestaError(response, "¡No se puede eliminar este registro porque tiene dependencias asociadas!");
         } catch (Exception e) {
             enviarRespuestaError(response, "¡Error!");
+
         }
 
     }
@@ -142,7 +146,6 @@ public class RegionalServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

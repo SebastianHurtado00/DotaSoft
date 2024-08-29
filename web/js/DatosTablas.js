@@ -31,6 +31,7 @@ function obtenerDatosCentro(codigoCen, nombreCen, ListaRegio) {
     $('#codigoOpCent').val(codigoCen);
     $('#nombreOpCent').val(nombreCen);
     $("#CentroListaEl").val(ListaRegio);
+    /*Aqui es para que los selects se asignen*/
     $("#CentroListaEl").select(ListaRegio);
 
 }

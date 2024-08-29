@@ -6,7 +6,6 @@ package JsonTablas;
 
 import Controladores.DotacionJpaController;
 import Entidades.Dotacion;
-import Entidades.Sexo;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,10 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Peralta
+ * @author ASUS
  */
-@WebServlet(name = "ConsultaDotacion", urlPatterns = {"/ConsultaDotacion"})
-public class ConsultaDotacion extends HttpServlet {
+@WebServlet(name = "FiltroJsonDotacion", urlPatterns = {"/FiltroJsonDotacion"})
+public class FiltroJsonDotacion extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,59 +37,51 @@ public class ConsultaDotacion extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        cargarTabla(request, response);
-
+        cargarJsonFiltrado(request, response);
     }
 
-    public void cargarTabla(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void cargarJsonFiltrado(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
+        // Obtener los parámetros de filtrado de la solicitud
+        String filtroElementoId = request.getParameter("elementoId");
+        String filtroSexoId = request.getParameter("sexoId");
+        String filtroClimaId = request.getParameter("climaId");
+        String filtroAreaId = request.getParameter("areaId");
 
         DotacionJpaController dotacionController = new DotacionJpaController();
         List<Dotacion> dotaList = dotacionController.findDotacionEntities();
 
-        // Crear una lista para almacenar los mapas de las dotaciones
+        // Crear una lista para almacenar los mapas de las dotaciones filtradas
         List<Map<String, String>> dotacionJsonList = new ArrayList<>();
 
         for (Dotacion dotacion : dotaList) {
-            // Crear un nuevo mapa para almacenar los datos de la dotación
-            Map<String, String> jsonDotacion = new HashMap<>();
-            jsonDotacion.put("idDotacion", dotacion.getIddotacion().toString());
+            // Aplicar los filtros
+            boolean matchesElementoId = (filtroElementoId == null || filtroElementoId.equals(dotacion.getElementosIdelemento().getIdelemento().toString()));
+            boolean matchesSexoId = (filtroSexoId == null || filtroSexoId.equals(dotacion.getSexoIdsexo().getIdsexo().toString()));
+            boolean matchesClimaId = (filtroClimaId == null || filtroClimaId.equals(dotacion.getClimaIdclima().getIdclima().toString()));
+            boolean matchesAreaId = (filtroAreaId == null || filtroAreaId.equals(dotacion.getAreaIdarea().getIdarea().toString()));
 
-            // Agregar ID y nombre de Elementos
-            jsonDotacion.put("elementoId", dotacion.getElementosIdelemento().getIdelemento().toString());
-            jsonDotacion.put("elementoNombre", dotacion.getElementosIdelemento().getNombre());
-
-            // Agregar ID y nombre de Sexo
-            jsonDotacion.put("sexoId", dotacion.getSexoIdsexo().getIdsexo().toString());
-            jsonDotacion.put("sexoNombre", dotacion.getSexoIdsexo().getNombre());
-
-            // Agregar ID y nombre de Clima
-            jsonDotacion.put("climaId", dotacion.getClimaIdclima().getIdclima().toString());
-            jsonDotacion.put("climaNombre", dotacion.getClimaIdclima().getNombre());
-
-            // Agregar ID y nombre de Área
-            jsonDotacion.put("areaId", dotacion.getAreaIdarea().getIdarea().toString());
-            jsonDotacion.put("areaNombre", dotacion.getAreaIdarea().getNombre());
-
-            // Agregar la cantidad
-            jsonDotacion.put("cantidad", String.valueOf(dotacion.getCantidad()));
-
-            // Agregar el mapa a la lista de dotaciones JSON
-            dotacionJsonList.add(jsonDotacion);
+            if (matchesElementoId && matchesSexoId && matchesClimaId && matchesAreaId) {
+                Map<String, String> jsonDotacion = new HashMap<>();
+                jsonDotacion.put("idDotacion", dotacion.getIddotacion().toString());
+                jsonDotacion.put("elementoId", dotacion.getElementosIdelemento().getIdelemento().toString());
+                jsonDotacion.put("elementoNombre", dotacion.getElementosIdelemento().getNombre());
+                jsonDotacion.put("sexoId", dotacion.getSexoIdsexo().getIdsexo().toString());
+                jsonDotacion.put("sexoNombre", dotacion.getSexoIdsexo().getNombre());
+                jsonDotacion.put("climaId", dotacion.getClimaIdclima().getIdclima().toString());
+                jsonDotacion.put("climaNombre", dotacion.getClimaIdclima().getNombre());
+                jsonDotacion.put("areaId", dotacion.getAreaIdarea().getIdarea().toString());
+                jsonDotacion.put("areaNombre", dotacion.getAreaIdarea().getNombre());
+                jsonDotacion.put("cantidad", String.valueOf(dotacion.getCantidad()));
+                dotacionJsonList.add(jsonDotacion);
+            }
         }
 
-        // Convertir la lista de mapas a una cadena JSON
         String json = new Gson().toJson(dotacionJsonList);
-
-        // Imprimir JSON generado para depuración
-        System.out.println("JSON generado: " + json);
-
-        // Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

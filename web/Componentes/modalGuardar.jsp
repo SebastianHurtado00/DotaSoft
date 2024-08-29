@@ -50,7 +50,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal para Registrar Area -->
 <div class="modal fade" id="ModalArea" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -222,7 +221,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal para Registrar Clima -->
 <div class="modal fade" id="ModalClima" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -256,7 +254,6 @@
         </div>
     </div>
 </div>
-
 <!-- Modal para Registrar Elemento -->
 <div class="modal fade" id="ModalElementos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -290,7 +287,6 @@
         </div>
     </div>
 </div>
-
 <!-- MODALES DE ELEMENTOS GUARDAR FINAL -->   
 <!-- MODAL REGISTRO USUARIOS INICIO -->
 <div class="modal fade" id="ModalGuardarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -400,7 +396,8 @@
     </div>
 </div>
 <!-- MODAL REGISTRO USUARIOS FINAL -->
-<div class="modal fade" id="ModalDotacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- MODAL REGISTRO CARACTERIZACION INICIO -->
+<div class="modal fade" id="ModalCaracterizacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -491,3 +488,4 @@
         </div>
     </div>
 </div>
+<!-- MODAL REGISTRO CARACTERIZACION FINAL -->

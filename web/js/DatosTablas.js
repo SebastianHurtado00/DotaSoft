@@ -36,6 +36,16 @@ function obtenerDatosCentro(codigoCen, nombreCen, ListaRegio) {
 
 }
 
+function obtenerDatosCaracterizacion(red, area, sexo, Instructor, Clima, Dotacion) {
+    $('#redEditSelect').val(red).change();
+    $('#AreaEditSelect').val(area);
+    $('#SexoSelectEdit').val(sexo).change();
+    $('#InstructorSelectEdit').val(Instructor);
+    $('#ClimaSelectEdit').val(Clima).change();
+    // Establece el valor del textarea
+    $('#DotacionEdit').val(Dotacion);
+}
+
 
 function obtenerDatosElem(codigoElem, nombreElem, cantidadElem) {
     $('#codigoElementoOp').val(codigoElem);
@@ -67,10 +77,10 @@ function obtenerDatosUsuarios(cedulaUsuario, nombreUsuario, apellido, Rol, corre
             let telefono = (data.Telefono != null) ? data.Telefono : "";
             let coordinador = (data.Coordinador != null) ? data.Coordinador : "";
             console.log(data);
-            
+
             // Asignar valores a los campos
             $('#RegionalSelectOp').val(regional).change(); // Activar el cambio para aplicar el filtrado
-           
+
             // Esperar a que el filtrado se complete antes de asignar los valores
             setTimeout(function () {
                 $('#CentroSelectOp').val(centro).change(); // Activar el cambio para aplicar el filtrado de Coordinador

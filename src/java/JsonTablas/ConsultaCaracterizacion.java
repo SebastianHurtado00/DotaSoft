@@ -4,6 +4,7 @@
  */
 package JsonTablas;
 
+
 import Controladores.CaracterizarInstructorJpaController;
 import Controladores.DotacionJpaController;
 import Entidades.CaracterizarInstructor;
@@ -15,6 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,8 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author ASUS
+
  */
 @WebServlet(name = "ConsultaCaracterizacion", urlPatterns = {"/ConsultaCaracterizacion"})
 public class ConsultaCaracterizacion extends HttpServlet {
@@ -40,6 +44,7 @@ public class ConsultaCaracterizacion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+ Sebastian
         cargarTabla(request, response);
     }
 
@@ -96,6 +101,20 @@ public class ConsultaCaracterizacion extends HttpServlet {
 
         // Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
+
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ConsultaCaracterizacion</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ConsultaCaracterizacion at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+ master
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

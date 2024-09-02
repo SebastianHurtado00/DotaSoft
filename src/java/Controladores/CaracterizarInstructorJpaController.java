@@ -17,6 +17,7 @@ import Entidades.Sexo;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -24,8 +25,8 @@ import javax.persistence.EntityManagerFactory;
  */
 public class CaracterizarInstructorJpaController implements Serializable {
 
-    public CaracterizarInstructorJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public CaracterizarInstructorJpaController() {
+       this.emf = Persistence.createEntityManagerFactory("Dotacion_SenaPU");
     }
     private EntityManagerFactory emf = null;
 

@@ -3,14 +3,52 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
+/* Se debe referenciar por ids ya que como son dos modales que 
+ * usaran el js los id de los select cambian Falta el refenrencaiado y 
+ * Modificar donde se llama el metodo*/
+function consultarDotacion(Idinput, IdSexoSelect, IdClimaSelect, IdAreaSelect) {
+    // Obtener valores de los filtros de los elementos de entrada (input, select, etc.)
+    const sexoId = document.getElementById("SexoSelect").value;
+    const climaId = document.getElementById("ClimaSelect").value;
+    const areaId = document.getElementById("AreaSelect").value;
+
+    // Realizar la petición AJAX
+    $.ajax({
+        url: '../FiltroJsonDotacion',
+        method: 'GET',
+        data: {
+            sexoId: sexoId,
+            climaId: climaId,
+            areaId: areaId
+        },
+        dataType: 'json',
+        success: function (data) {
+            // Limpia el contenido del textarea
+            $('#' + Idinput + '').val('');
+
+            // Iterar sobre cada elemento en el JSON
+            data.forEach(function (element) {
+                // Agregar el texto de 'elementosAsignados' al textarea
+                $('#' + Idinput + '').val(function (index, val) {
+                    return val + element.cantidad + " - " + element.elementoNombre + '\n';
+                });
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la consulta:', error);
+        }
+    });
+}
+
 
 $(document).ready(function () {
     // Manejador de evento para el botón de guardar en el formulario
-    $('#btnGuardarDotacion').click(function (event) {
+    $('#btnGuardarCaracterizacion').click(function (event) {
         event.preventDefault();
-        var formData = $('#FormularioDotacion').serialize();
+        var formData = $('#FormularioCaracterizacion').serialize();
         formData += '&accion=guardar';
         enviarPeticion(formData, handleSuccessGuardar, handleError);
+
     });
 
     $('#btnEliminarDta').click(function (event) {
@@ -30,13 +68,13 @@ $(document).ready(function () {
     function enviarPeticion(formData, successCallback, errorCallback) {
         $.ajax({
             type: 'POST',
-            url: '../DotacionServlet',
+            url: '../CaracterizacionServlet',
             data: formData,
             success: function (response) {
                 successCallback(response);
             },
             error: function (xhr, status, error) {
-                errorCallback('Error al conectar con el servlet: ' + error);
+                errorCallback('Verifique que todos los campos hayan sido diligenciados');
             }
         });
     }
@@ -48,7 +86,7 @@ $(document).ready(function () {
     function handleSuccessGuardar(response) {
         if (response.estado === "exito") {
             mostrarExito(response.mensaje);
-            limpiarFormulario('FormularioDotacion');
+            limpiarFormulario('FormularioCaracterizacion');
             cargarTabla();
         } else {
             mostrarError(response.mensaje);
@@ -83,29 +121,36 @@ $(document).ready(function () {
     function cargarTabla() {
         $.ajax({
             type: 'GET',
-            url: '../ConsultaDotacion',
+            url: '../ConsultaCaracterizacion',
             dataType: 'json',
             success: function (data) {
-                $('#tablaDotacion tbody').empty();
+                $('#tablaCaracterizacion tbody').empty();
                 if (data.length === 0) {
                     // Si no hay datos, agregar una fila indicando que no se encontraron estudiantes
-                    $('#tablaDotacion tbody').append('<tr><td colspan="7" class="text-center">No se encontraron dotaciones de trabajo en la base de datos.</td></tr>');
+                    $('#tablaCaracterizacion tbody').append('<tr><td colspan="7" class="text-center">No se encontraron Caracterizaciones en la base de datos.</td></tr>');
                 } else {
-                    $.each(data, function (index, dota) {
+                    $.each(data, function (index, caract) {
                         var row = '<tr>' +
-                                '<td>' + dota.idDotacion + '</td>' +
-                                '<td>' + dota.areaNombre + '</td>' +
-                                '<td>' + dota.sexoNombre + '</td>' +
-                                '<td>' + dota.climaNombre + '</td>' +
-                                '<td>' + dota.elementoNombre + '</td>' +
-                                '<td>' + dota.cantidad + '</td>' +
-                                '<td>' +
-                                '<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#ModalDotacionOpciones" ' +
-                                'onclick="obtenerDatosDotacion(' + dota.idDotacion + ', \'' + dota.areaId + '\', \'' + dota.sexoId + '\'\n\
-                                            , \'' + dota.climaId + '\', \'' + dota.elementoId + '\', \'' + dota.cantidad + '\')">Opciones</button>' +
+                                '<td>' + caract.idCaracterizacion + '</td>' +
+                                '<td>' + caract.InstructorNombreApellido + '</td>' +
+                                '<td>' + caract.climaNombre + '</td>' +
+                                '<td>' + caract.SexoNombre + '</td>' +
+                                '<td>' + caract.elementosAsignados + '</td>' +
+                                '<td class="d-flex align-items-center">' +
+                                '<button type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" ' +
+                                'data-bs-toggle="modal" data-bs-target="#ModalEditarCaracterizacion" ' +
+                                'onclick="obtenerDatosCaracterizacion(\'' + caract.redId + '\', ' +
+                                '\'' + caract.areaId + '\', ' +
+                                '\'' + caract.SexoId + '\', ' +
+                                '\'' + caract.idInstructor + '\', ' +
+                                '\'' + caract.climaId + '\', ' +
+                                '\'' + caract.elementosAsignados.replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '\')">' +
+                                '</button>' +
+                                '<button type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" ' +
+                                'data-id="' + caract.idCaracterizacion + '" onclick="eliminarDotacion(' + caract.idCaracterizacion + ')"></button>' +
                                 '</td>' +
                                 '</tr>';
-                        $('#tablaDotacion tbody').append(row);
+                        $('#tablaCaracterizacion tbody').append(row);
                     });
                 }
             },

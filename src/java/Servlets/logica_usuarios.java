@@ -186,7 +186,7 @@ public class logica_usuarios extends HttpServlet {
         cambiosUsuarios.setRol(userRol);
         cambiosUsuarios.setEmail(email);
         cambiosUsuarios.setEstado(1);
-        cambiosUsuarios.setClave(cambiosUsuarios.EncryptarClave(request.getParameter("CedulaUsuarioOp")));
+        cambiosUsuarios.setClave(usuarioEntranda.getClave());
         
         switch (userRol) {
             case 0:

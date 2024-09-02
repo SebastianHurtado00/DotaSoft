@@ -40,10 +40,10 @@ public class FiltroJsonDotacion extends HttpServlet {
         cargarJsonFiltrado(request, response);
     }
 
-    public void cargarJsonFiltrado(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void cargarJsonFiltrado(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
+
         // Obtener los parámetros de filtrado de la solicitud
-        String filtroElementoId = request.getParameter("elementoId");
         String filtroSexoId = request.getParameter("sexoId");
         String filtroClimaId = request.getParameter("climaId");
         String filtroAreaId = request.getParameter("areaId");
@@ -56,12 +56,12 @@ public class FiltroJsonDotacion extends HttpServlet {
 
         for (Dotacion dotacion : dotaList) {
             // Aplicar los filtros
-            boolean matchesElementoId = (filtroElementoId == null || filtroElementoId.equals(dotacion.getElementosIdelemento().getIdelemento().toString()));
+       
             boolean matchesSexoId = (filtroSexoId == null || filtroSexoId.equals(dotacion.getSexoIdsexo().getIdsexo().toString()));
             boolean matchesClimaId = (filtroClimaId == null || filtroClimaId.equals(dotacion.getClimaIdclima().getIdclima().toString()));
             boolean matchesAreaId = (filtroAreaId == null || filtroAreaId.equals(dotacion.getAreaIdarea().getIdarea().toString()));
 
-            if (matchesElementoId && matchesSexoId && matchesClimaId && matchesAreaId) {
+            if (matchesSexoId && matchesClimaId && matchesAreaId) {
                 Map<String, String> jsonDotacion = new HashMap<>();
                 jsonDotacion.put("idDotacion", dotacion.getIddotacion().toString());
                 jsonDotacion.put("elementoId", dotacion.getElementosIdelemento().getIdelemento().toString());

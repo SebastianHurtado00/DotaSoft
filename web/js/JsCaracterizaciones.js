@@ -6,7 +6,7 @@
 /* Se debe referenciar por ids ya que como son dos modales que 
  * usaran el js los id de los select cambian Falta el refenrencaiado y 
  * Modificar donde se llama el metodo*/
-function consultarDotacion(Idinput, IdSexoSelect, IdClimaSelect, IdAreaSelect) {
+function consultarDotacion(Idinput) {
     // Obtener valores de los filtros de los elementos de entrada (input, select, etc.)
     const sexoId = document.getElementById("SexoSelect").value;
     const climaId = document.getElementById("ClimaSelect").value;

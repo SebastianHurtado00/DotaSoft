@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f058b83d-c5ac-48d3-a0e3-8eab0b7cede9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     elementos.`Idelemento` AS elementos_Idelemento,
+     elementos.`Nombre` AS elementos_Nombre,
+     elementos.`cantidades` AS elementos_cantidades
+FROM
+     `elementos` elementos]]>
+	</queryString>
+	<field name="elementos_Idelemento" class="java.lang.Integer"/>
+	<field name="elementos_Nombre" class="java.lang.String"/>
+	<field name="elementos_cantidades" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="450" y="11" width="93" height="19" uuid="28597bc7-c85f-44bd-bd3e-e341b82034b6"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SENA-Sucre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="42" width="539" height="35" uuid="6681c591-130b-4c06-8b04-22052bd49739"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Reporte elementos ropa de trabajo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="12" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="12" width="185" height="20" uuid="c914a900-73f3-4aca-869c-f282a9267b91"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id elemento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="12" width="185" height="20" uuid="5f381458-7896-4566-a89b-b2a748ddd36a"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="12" width="185" height="20" uuid="6f90033b-e534-4ad1-b1e7-f81cb6f79f1b"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="42" width="555" height="1" uuid="195f69c4-0aae-4cf2-a952-12b02498359e"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="52" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="11" width="185" height="20" uuid="216c49a9-7bc8-4e54-a65c-d2cccd6c2ed6"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{elementos_Idelemento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="11" width="185" height="20" uuid="1cc93a5f-677f-407c-9467-ab71a8e6bd68"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{elementos_Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="11" width="185" height="20" uuid="4aa1385f-1d0a-49fa-81db-3fe91a1ffd2f"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{elementos_cantidades}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="181" y="5" width="204" height="49" uuid="a220dcf7-2a75-4249-a9a9-69ed43e8f7db"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[   © Copyright By Isaac Izquierdo.
+    Analisis y desarrollo de software(2619872)
+    Email: isaacizquierdo06@gmail.com
+    Tel.3022796067]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="1041" pageHeight="595" orientation="Landscape" columnWidth="1001" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="53b633f1-820f-4bef-8241-b95bf8719f65">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="bbcf05f8-9dc4-4269-a9dc-4e53a1dafa60"/>
+	<parameter name="num" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     caracterizar_instructor.`Descripcion` AS caracterizar_instructor_Descripcion,
+     caracterizar_instructor.`ano` AS caracterizar_instructor_ano,
+     area.`Nombre` AS area_Nombre,
+     clima.`Nombre` AS clima_Nombre,
+     sexo.`Nombre` AS sexo_Nombre,
+     instructor.`Nombres` AS instructor_Nombres,
+     instructor.`Apellidos` AS instructor_Apellidos,
+     instructor.`Idinstructor` AS instructor_Idinstructor
+FROM
+     `area` area INNER JOIN `caracterizar_instructor` caracterizar_instructor ON area.`Idarea` = caracterizar_instructor.`Area_Idarea`
+     INNER JOIN `clima` clima ON caracterizar_instructor.`Clima_Idclima` = clima.`Idclima`
+     INNER JOIN `sexo` sexo ON caracterizar_instructor.`Sexo_Idsexo` = sexo.`Idsexo`
+     INNER JOIN `instructor` instructor ON caracterizar_instructor.`Instructor_Idinstructor` = instructor.`Idinstructor`
+where caracterizar_instructor.Area_Idarea = $P{num}]]>
+	</queryString>
+	<field name="caracterizar_instructor_Descripcion" class="java.lang.String"/>
+	<field name="caracterizar_instructor_ano" class="java.lang.Integer"/>
+	<field name="area_Nombre" class="java.lang.String"/>
+	<field name="clima_Nombre" class="java.lang.String"/>
+	<field name="sexo_Nombre" class="java.lang.String"/>
+	<field name="instructor_Nombres" class="java.lang.String"/>
+	<field name="instructor_Apellidos" class="java.lang.String"/>
+	<field name="instructor_Idinstructor" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+			<staticText>
+				<reportElement x="816" y="13" width="185" height="19" uuid="b472eb0b-1a99-4281-a65d-715043a6f480"/>
+				<textElement textAlignment="Justified">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SENA-Sucre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="755" y="68" width="127" height="27" uuid="e93e1eea-5e68-48a5-aaaf-4bb9b96e90e2"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Área: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="852" y="46" width="120" height="68" uuid="baa2a109-84cd-4654-bfa6-fbd7fb3ccba3"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{area_Nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="385" y="32" width="257" height="35" uuid="34746e6b-d5bb-4d58-a69a-800aba7aac0b"/>
+				<textElement>
+					<font size="22" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Reporte ropa de trabajo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="17" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="6349e0fd-764b-4e88-9c9d-9d8869e7cd13"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cédula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="0" width="117" height="20" uuid="42aaa1d3-33af-4b18-957a-17aefff601e4"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="0" width="116" height="20" uuid="42331a53-a323-4147-9d49-7aac0faf7254"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="0" width="120" height="20" uuid="50080901-69ec-4862-974e-f3c73d58b40a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Area]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="457" y="0" width="122" height="20" uuid="45190e45-6a41-4116-917a-0b7b564d0334"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sexo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="0" width="122" height="20" uuid="ef2e0d94-9d06-4d26-96bb-e71a79c176cf"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Clima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="703" y="0" width="179" height="20" uuid="aef54dbd-acb2-423d-b2ff-080a256f2581"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dotación]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="32" width="1001" height="1" uuid="ddcafc80-d8a5-4b70-9d1c-149980080cc3"/>
+			</line>
+			<staticText>
+				<reportElement x="883" y="0" width="100" height="20" uuid="32d96e4d-a06b-4d77-8bea-f19d53a045ff"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial Rounded MT Bold" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="117" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="117" uuid="0376d3dc-b8f4-4e05-bbab-f7e59e50e617"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{instructor_Idinstructor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="0" width="116" height="117" uuid="e6163d29-1c06-4eef-b6e1-b170d8606145"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{instructor_Apellidos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="0" width="123" height="117" uuid="478195c7-7474-44cc-80c4-c80d2713aff7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sexo_Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="580" y="0" width="122" height="117" uuid="d69e656b-9987-4ddd-b0da-679a04973ce8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clima_Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="0" width="117" height="117" uuid="0596945f-4f5a-461f-b8a3-ec5b9c533d66"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{instructor_Nombres}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="883" y="0" width="100" height="117" uuid="cacc0556-50d6-4c94-8ccd-0d769fa66e3c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caracterizar_instructor_ano}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="703" y="0" width="179" height="117" uuid="9fd1d7be-2a5d-4caa-a328-416f21772530"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caracterizar_instructor_Descripcion}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="100" y="0" width="1" height="117" uuid="8996d54d-2b68-4e1a-95b6-aab955cc9491"/>
+			</line>
+			<textField>
+				<reportElement x="336" y="0" width="120" height="117" uuid="f4aa1de2-54aa-404e-9fa5-42fe7c685fdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{area_Nombre}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="218" y="0" width="1" height="117" uuid="df030b29-9b2a-4eae-9d13-5e6d5c83ddf2"/>
+			</line>
+			<line>
+				<reportElement x="456" y="0" width="1" height="117" uuid="83966b91-fd3f-415a-a078-189a64ee3449"/>
+			</line>
+			<line>
+				<reportElement x="335" y="0" width="1" height="117" uuid="ce0c97d5-cb97-4b57-bd00-c6c33b627dba"/>
+			</line>
+			<line>
+				<reportElement x="579" y="0" width="1" height="117" uuid="017931a2-af74-405a-b01d-05b9f30048df"/>
+			</line>
+			<line>
+				<reportElement x="702" y="0" width="1" height="117" uuid="26490cdd-1444-47bc-8dc5-0bc12115cccc"/>
+			</line>
+			<line>
+				<reportElement x="882" y="0" width="1" height="117" uuid="9551aeb9-92a7-46a1-9f0b-1d03d8a63872"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="64" splitType="Stretch">
+			<staticText>
+				<reportElement x="421" y="15" width="204" height="49" uuid="4ab52ee5-95ee-435b-92cb-dc2e44d3e151"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[   © Copyright By Isaac Izquierdo.
+    Analisis y desarrollo de software(2619872)
+    Email: isaacizquierdo06@gmail.com
+    Tel.3022796067]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

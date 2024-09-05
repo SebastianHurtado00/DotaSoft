@@ -8,9 +8,9 @@
  * Modificar donde se llama el metodo*/
 function consultarDotacion(Idinput, IdSexoSelect, IdClimaSelect, IdAreaSelect) {
     // Obtener valores de los filtros de los elementos de entrada (input, select, etc.)
-    const sexoId = document.getElementById("SexoSelect").value;
-    const climaId = document.getElementById("ClimaSelect").value;
-    const areaId = document.getElementById("AreaSelect").value;
+    const sexoId = document.getElementById(IdSexoSelect).value;
+    const climaId = document.getElementById(IdClimaSelect).value;
+    const areaId = document.getElementById(IdAreaSelect).value;
 
     // Realizar la petición AJAX
     $.ajax({
@@ -130,12 +130,21 @@ $(document).ready(function () {
                     $('#tablaCaracterizacion tbody').append('<tr><td colspan="7" class="text-center">No se encontraron Caracterizaciones en la base de datos.</td></tr>');
                 } else {
                     $.each(data, function (index, caract) {
+                        // Procesar el contenido del popover si es una cadena de texto
+                        var contenidoPopover = caract.elementosAsignados;
+
                         var row = '<tr>' +
                                 '<td>' + caract.idCaracterizacion + '</td>' +
                                 '<td>' + caract.InstructorNombreApellido + '</td>' +
-                                '<td>' + caract.climaNombre + '</td>' +
                                 '<td>' + caract.SexoNombre + '</td>' +
-                                '<td>' + caract.elementosAsignados + '</td>' +
+                                '<td>' + caract.climaNombre + '</td>' +
+                                '<td class="text-center p-1" style="width: 140px;">' +
+                                '<span tabindex="0" class="d-inline-block" data-bs-toggle="popover" data-bs-trigger="hover focus" ' +
+                                'data-bs-content="' + contenidoPopover.replace(/"/g, '&quot;').replace(/'/g, "&#39;") + '" ' +
+                                'style="white-space: pre-wrap;">' +
+                                '<button class="btn btn-primary btn-sm mx-auto d-block" type="button" style="width: 100px; font-size: 12px; padding: 4px;">Ver Dotación</button>' +
+                                '</span>' +
+                                '</td>' +
                                 '<td class="d-flex align-items-center">' +
                                 '<button type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" ' +
                                 'data-bs-toggle="modal" data-bs-target="#ModalEditarCaracterizacion" ' +
@@ -151,6 +160,12 @@ $(document).ready(function () {
                                 '</td>' +
                                 '</tr>';
                         $('#tablaCaracterizacion tbody').append(row);
+                    });
+
+                    // Inicializar los popovers después de agregar las filas a la tabla
+                    $('[data-bs-toggle="popover"]').popover({
+                        html: true,
+                        placement: 'top'
                     });
                 }
             },

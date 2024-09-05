@@ -55,7 +55,7 @@
         <script src="../js/JsContainer.js"></script>
         <script src="../js/FiltroTablas.js"></script>
         <script>
-     
+
         </script>
     </head>
     <body>
@@ -105,7 +105,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="area" class="form-select mx-auto" id="AreaSelect" onclick="consultarDotacion('Dotacion')">
+                                                    <select name="area" class="form-select mx-auto" id="AreaSelect" onclick="consultarDotacion('Dotacion', 'SexoSelect', 'ClimaSelect', 'AreaSelect')">
                                                         <option value="" disabled selected hidden>Seleccione un area</option>
                                                         <% for (Area area : listaAreas) {%>
                                                         <option value="<%=area.getIdarea()%>" data-fk-red="<%=area.getRedIdred().getIdred()%>"><%=area.getNombre()%></option>
@@ -116,7 +116,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="sexo" class="form-select mx-auto" id="SexoSelect" onclick="consultarDotacion('Dotacion')"onchange="filtradoEntreDosSelects('SexoSelect', 'InstructorSelect', 'data-fk-sexo')">
+                                                    <select name="sexo" class="form-select mx-auto" id="SexoSelect"  onclick="consultarDotacion('Dotacion', 'SexoSelect', 'ClimaSelect', 'AreaSelect')" onchange="filtradoEntreDosSelects('SexoSelect', 'InstructorSelect', 'data-fk-sexo')">
                                                         <option value="" disabled selected hidden>Seleccione un Sexo</option>
                                                         <% for (Sexo sexo : listaSexo) {%>
                                                         <option value="<%=sexo.getIdsexo()%>"><%=sexo.getNombre()%></option>
@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="clima" class="form-select mx-auto" id="ClimaSelect" onclick="consultarDotacion('Dotacion')">
+                                                    <select name="clima" class="form-select mx-auto" id="ClimaSelect"  onclick="consultarDotacion('Dotacion', 'SexoSelect', 'ClimaSelect', 'AreaSelect')">
                                                         <option value="" disabled selected hidden>Seleccione un clima</option>
                                                         <% for (Clima clima : listaClimas) {%>
                                                         <option value="<%=clima.getIdclima()%>"><%=clima.getNombre()%></option>
@@ -190,7 +190,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="areaEdit" class="form-select mx-auto" id="AreaEditSelect" onclick="consultarDotacion('DotacionEdit')">
+                                                    <select name="areaEdit" class="form-select mx-auto" id="AreaEditSelect" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')">
                                                         <option value="" disabled selected hidden>Seleccione un area</option>
                                                         <% for (Area area : listaAreas) {%>
                                                         <option value="<%=area.getIdarea()%>" data-fk-redEdit="<%=area.getRedIdred().getIdred()%>"><%=area.getNombre()%></option>
@@ -201,7 +201,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="sexoEdit" class="form-select mx-auto" id="SexoSelectEdit" onclick="consultarDotacion('DotacionEdit')" onchange="filtradoEntreDosSelects('SexoSelectEdit', 'InstructorSelectEdit', 'data-fk-sexo-Edit')">
+                                                    <select name="sexoEdit" class="form-select mx-auto" id="SexoSelectEdit" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')" onchange="filtradoEntreDosSelects('SexoSelectEdit', 'InstructorSelectEdit', 'data-fk-sexo-Edit')">
                                                         <option value="" disabled selected hidden>Seleccione un Sexo</option>
                                                         <% for (Sexo sexo : listaSexo) {%>
                                                         <option value="<%=sexo.getIdsexo()%>"><%=sexo.getNombre()%></option>
@@ -226,7 +226,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="climaEdit" class="form-select mx-auto" id="ClimaSelectEdit" onclick="consultarDotacion('DotacionEdit')">
+                                                    <select name="climaEdit" class="form-select mx-auto" id="ClimaSelectEdit" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')>
                                                         <option value="" disabled selected hidden>Seleccione un clima</option>
                                                         <% for (Clima clima : listaClimas) {%>
                                                         <option value="<%=clima.getIdclima()%>"><%=clima.getNombre()%></option>

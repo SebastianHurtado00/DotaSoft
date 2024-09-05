@@ -76,8 +76,13 @@
             </li>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="">
-                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Centro por Instructores</span>
+                    <a class="sidebar-link" href="../Reports/Consolidado_Instructores.jsp" target="_blank">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Consolidado Instructores</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="../Reports/Consolidado_elementos.jsp" target="_blank">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Elementos</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

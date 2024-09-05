@@ -402,7 +402,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <form id="FormularioDotacion" class="row g-2">
-                    <h2 class="pt-3 pb-2 text-center">Registrar Dotacion</h2>
+                    <h2 class="pt-3 pb-2 text-center">Registrar Caracterizacion</h2>
                     <div class="col-12">
                         <div class="input-group">
                             <div class="input-group-text col-4"><b>Red:</b></div>
@@ -434,6 +434,15 @@
                                         out.print("</option>");
                                     }
                                 %>
+                            </select>
+                        </div>
+                    </div>
+                            <div class="col-12">
+                        <div class="input-group">
+                            <div class="input-group-text col-4"><b>Instructores:</b></div>
+                            <select name="SexoListaGdDo" id="SexoListaForGdDo" class="form-select col-8" required>
+                                <option value="" disabled selected hidden>Seleccione</option>
+                              
                             </select>
                         </div>
                     </div>

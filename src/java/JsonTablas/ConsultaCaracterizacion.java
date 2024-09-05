@@ -44,7 +44,7 @@ public class ConsultaCaracterizacion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
- Sebastian
+
         cargarTabla(request, response);
     }
 
@@ -114,7 +114,6 @@ public class ConsultaCaracterizacion extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
- master
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

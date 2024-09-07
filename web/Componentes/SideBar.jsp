@@ -65,8 +65,8 @@
                     <span class="align-middle">Elementos</span>
                 </a>
             </li> 
-             <li class="sidebar-item">
-                 <a class="sidebar-link" href="../ViewsAdministrador/HomeDotacion.jsp">
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="../ViewsAdministrador/HomeDotacion.jsp">
                     <i class="align-middle" data-feather="users"></i> 
                     <span class="align-middle">Dotacion</span>
                 </a>
@@ -86,8 +86,9 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="">
-                        <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Regional por Centro</span>
+                    <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteArea">
+                        <i class="align-middle" data-feather="user-plus"></i> 
+                        <span class="align-middle">Red y Area</span>
                     </a>
                 </li>
             </ul>
@@ -131,4 +132,4 @@
         </ul>
     </div>
 </nav>
-
+<jsp:include page="../Componentes/modalReportes.jsp" ></jsp:include> 

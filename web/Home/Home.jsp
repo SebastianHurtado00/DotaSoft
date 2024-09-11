@@ -1,3 +1,8 @@
+<%@page import="Controladores.AreaJpaController"%>
+<%@page import="java.util.List"%>
+<%@page import="Controladores.RedJpaController"%>
+<%@page import="Entidades.Area"%>
+<%@page import="Entidades.Red"%>
 <%@page import="Controladores.UsuariosJpaController"%>
 <%@page import="Entidades.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -80,16 +85,16 @@
 
 
 
-
         <div class="wrapper">
             <jsp:include page="../Componentes/SideBar.jsp" ></jsp:include>
                 <div class="main">
                 <jsp:include page="../Componentes/nav.jsp" ></jsp:include>
                     <main class="content">
-
-                    </main>
+                       
+                </main>
                 <jsp:include page="../Componentes/modalGuardar.jsp" ></jsp:include> 
                 <jsp:include page="../Componentes/footer2.jsp" ></jsp:include>
+                <jsp:include page="../Componentes/modalReportes.jsp" ></jsp:include>
                 </div>
             </div>
 
@@ -120,7 +125,7 @@
                     case "confirmacionFallida":
         %>
         <script>
-            mostrarAdvertencia("Confirmacion Incorrecta");
+    mostrarAdvertencia("Confirmacion Incorrecta");
         </script>
         <%
                         break;

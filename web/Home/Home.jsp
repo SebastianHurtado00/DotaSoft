@@ -96,6 +96,7 @@
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/alertas.js"></script>
+        <script src="../js/JsContainer.js"></script>
         <%--BOOTSTRAP--%>
         <!-- Bootstrap JavaScript Libraries 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

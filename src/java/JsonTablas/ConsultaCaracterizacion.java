@@ -43,13 +43,17 @@ public class ConsultaCaracterizacion extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+response.setContentType("application/json");
+response.setCharacterEncoding("UTF-8");
+
 
         cargarTabla(request, response);
     }
 
     public void cargarTabla(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("application/json");
+response.setCharacterEncoding("UTF-8");
+
 
         CaracterizarInstructorJpaController CaracterizacionController = new CaracterizarInstructorJpaController();
         List<CaracterizarInstructor> CarctList = CaracterizacionController.findCaracterizarInstructorEntities();
@@ -65,7 +69,7 @@ public class ConsultaCaracterizacion extends HttpServlet {
 
             // Id y nombre del instructor
             jsonDotacion.put("idInstructor", caracterizacion.getInstructorIdinstructor().getIdinstructor().toString());
-            jsonDotacion.put("InstructorNombreApellido", caracterizacion.getInstructorIdinstructor().getNombres() + " " + caracterizacion.getInstructorIdinstructor().getApellidos());
+            jsonDotacion.put("InstructorNombreApellido", caracterizacion.getInstructorIdinstructor().getNombres() + "" + caracterizacion.getInstructorIdinstructor().getApellidos());
 
             // Año en que se realiza la caracterizacion
             jsonDotacion.put("anho", caracterizacion.getSexoIdsexo().getIdsexo().toString());
@@ -102,18 +106,7 @@ public class ConsultaCaracterizacion extends HttpServlet {
         // Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
 
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ConsultaCaracterizacion</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ConsultaCaracterizacion at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

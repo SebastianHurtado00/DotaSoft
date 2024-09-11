@@ -39,7 +39,7 @@
                             <select name="AreaReporte" id="ListaAreaReporte" class="form-select col-8" required>
                                 <option value="" disabled selected hidden>Seleccione</option>
                                 <% for (Area area : listaArea) {%>
-                                <option value="<%= area.getIdarea()%>" data-listado-red="<%= area.getRedIdred()%>">
+                                <option value="<%= area.getIdarea()%>" data-listado-red="<%= area.getRedIdred().getIdred() %>">
                                     <%= area.getNombre()%>
                                 </option>
                                 <% }%>
@@ -58,36 +58,4 @@
     </div>
 </div>
 <!-- MODAL REGISTRO AREA FINAL -->
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        function filtradoEntreDosSelects(idFiltrador, idFiltrado, atributoEnFiltrado) {
-        let filtradorSelect = document.getElementById(idFiltrador);
-        let filtradoSelect = document.getElementById(idFiltrado);
-        let idFiltro = filtradorSelect.value;
-
-        console.log("Red seleccionada:", idFiltro);  // Para depuración
-
-        for (let i = 0; i < filtradoSelect.options.length; i++) {
-            let option = filtradoSelect.options[i];
-
-            if (option.value === "") {
-                continue;
-            }
-
-            let idRelacion = option.getAttribute(atributoEnFiltrado);
-            console.log("Opción de área, data-listado-red:", idRelacion);  // Para depuración
-
-            if (idFiltro === "" || idRelacion === idFiltro) {
-                option.style.display = 'block';
-            } else {
-                option.style.display = 'none';
-            }
-        }
-
-        filtradoSelect.selectedIndex = 0;
-    }
-    });
-
-    
-    </script>
+<a href="../../src/java/JsonTablas/ConsultaCaracterizacion.java"></a>

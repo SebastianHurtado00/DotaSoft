@@ -15,11 +15,14 @@ import Entidades.Clima;
 import Entidades.Instructor;
 import Entidades.Sexo;
 import com.google.gson.Gson;
+import groovyjarjarasm.asm.util.Printer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,12 +49,19 @@ public class CaracterizacionServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String btn = request.getParameter("accion");
+
         switch (btn) {
             case "guardar":
                 saveCaracterizacion(request, response);
                 break;
+            case "actualizar":
+                editCaracterizacion(request, response);
+                break;
+            case "eliminar":
+                DeleteCaract(request, response);
+                break;
             default:
-                throw new AssertionError();
+                break;
         }
 
     }
@@ -90,6 +100,66 @@ public class CaracterizacionServlet extends HttpServlet {
 
     }
 
+    public void editCaracterizacion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CaracterizarInstructorJpaController caracterizacionController = new CaracterizarInstructorJpaController();
+        SexoJpaController sexoController = new SexoJpaController();
+        ClimaJpaController climaControlador = new ClimaJpaController();
+        InstructorJpaController instructorControlador = new InstructorJpaController();
+        AreaJpaController areaController = new AreaJpaController();
+
+        /*Obtencion y hallazgo de datos de formulario*/
+        Area areaSeleccionada = areaController.findArea(Integer.parseInt(request.getParameter("areaEdit")));
+        Sexo sexoSeleccionado = sexoController.findSexo(Integer.parseInt(request.getParameter("sexoEdit")));
+        Instructor instructorSeleccionado = instructorControlador.findInstructor(Integer.parseInt(request.getParameter("instructorEdit")));
+        Clima climaSeleccionado = climaControlador.findClima(Integer.parseInt(request.getParameter("climaEdit")));
+        String DotacionCorrespondiente = request.getParameter("dotacionEdit");
+
+        int idCaracterizacion = Integer.parseInt(request.getParameter("IdEdit"));
+        CaracterizarInstructor oldCaract = caracterizacionController.findCaracterizarInstructor(idCaracterizacion);
+
+        boolean cambios = false;
+        if (!oldCaract.getAreaIdarea().getIdarea().equals(areaSeleccionada.getIdarea())
+                || !oldCaract.getSexoIdsexo().getIdsexo().equals(sexoSeleccionado.getIdsexo())
+                || !oldCaract.getInstructorIdinstructor().getIdinstructor().equals(instructorSeleccionado.getIdinstructor())
+                || !oldCaract.getClimaIdclima().getIdclima().equals(climaSeleccionado.getIdclima())
+                || !oldCaract.getDescripcion().equals(DotacionCorrespondiente)) {
+            cambios = true;
+
+        }
+        if (cambios) {
+
+            oldCaract.setAno(oldCaract.getAno());
+            oldCaract.setAreaIdarea(areaSeleccionada);
+            oldCaract.setClimaIdclima(climaSeleccionado);
+            oldCaract.setInstructorIdinstructor(instructorSeleccionado);
+            oldCaract.setSexoIdsexo(sexoSeleccionado);
+            oldCaract.setDescripcion(DotacionCorrespondiente);
+            try {
+                caracterizacionController.edit(oldCaract);
+                enviarRespuestaExito(response, "Caracterizacion Editada");
+            } catch (Exception ex) {
+                enviarRespuestaError(response, "Verifique que los campos esten diligenciados");
+                ex.printStackTrace();
+            }
+        } else {
+            enviarRespuestaError(response, "No existen cambios");
+        }
+
+    }
+
+    public void DeleteCaract(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CaracterizarInstructorJpaController controlCaract = new CaracterizarInstructorJpaController();
+
+        int idEliminar = Integer.parseInt(request.getParameter("IdEliminar"));
+        try {
+            controlCaract.destroy(idEliminar);
+            enviarRespuestaExito(response, "Caracterizacion eliminada exitosamente");
+        } catch (Exception e) {
+            enviarRespuestaError(response, "Error al eliminar la caracterizacion");
+        }
+
+    }
+
     // Método para enviar una respuesta JSON de éxito
     private void enviarRespuestaExito(HttpServletResponse response, String mensaje) throws IOException {
         Map<String, Object> respuesta = new HashMap<>();
@@ -101,8 +171,8 @@ public class CaracterizacionServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
     }
-    
-     // Método para enviar una respuesta JSON de error
+
+    // Método para enviar una respuesta JSON de error
     private void enviarRespuestaError(HttpServletResponse response, String mensaje) throws IOException {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put("estado", "error");

@@ -172,11 +172,13 @@
                                     <!-- Encabezado del modal -->
                                     <div class="modal-header">
                                         <h5 class="modal-title">Editar Caracterizacion</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button id="btnCerrarCaractEdit" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <!-- Cuerpo del modal -->
                                     <div class="modal-body">
-                                        <form id="FormularioCaracterizacion" class="row g-2">
+                                        <form id="FormularioEditarCaracterizacion" class="row g-2">
+                                          
+                                            <input type="hidden" id="IdEdit" name="IdEdit">
                                             <div class="col-12">
                                                 <div class="form-floating">
                                                     <select name="redEdit" class="form-select mx-auto" id="redEditSelect" onchange="filtradoEntreDosSelects('redEditSelect', 'AreaEditSelect', 'data-fk-redEdit')" required>
@@ -210,6 +212,7 @@
                                                     <label class="text-small text-black " style="font-size: 15px" for="Centro">sexo</label>
                                                 </div>
                                             </div>
+                                                    
                                             <div class="col-12">
                                                 <div class="form-floating">
                                                     <select name="instructorEdit" class="form-select mx-auto" id="InstructorSelectEdit">
@@ -224,9 +227,11 @@
                                                     <label class="text-small text-black " style="font-size: 15px" for="Centro">Instructores a su cargo</label>
                                                 </div>
                                             </div>
+                                                    
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="climaEdit" class="form-select mx-auto" id="ClimaSelectEdit" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')>
+                                                   <select name="climaEdit" class="form-select mx-auto" id="ClimaSelectEdit" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')">
+
                                                         <option value="" disabled selected hidden>Seleccione un clima</option>
                                                         <% for (Clima clima : listaClimas) {%>
                                                         <option value="<%=clima.getIdclima()%>"><%=clima.getNombre()%></option>
@@ -235,6 +240,7 @@
                                                     <label class="text-small text-black " style="font-size: 15px" for="Centro">Clima</label>
                                                 </div>
                                             </div>
+                                                    
                                             <div class="col-12">
                                                 <div class="form-floating">
                                                     <textarea name="dotacionEdit" class="form-control" placeholder="" id="DotacionEdit"  readonly style="height: 100px"></textarea>
@@ -245,7 +251,7 @@
                                     </div>
                                     <!-- Pie del modal -->
                                     <div class="modal-footer text-center py-3">
-                                        <button type="submit" class="btn botones text-white px-4" name="accion" id="btnGuardarCaracterizacion" style="background-color: #018E42;">Guardar</button>               
+                                        <button id="btnEditarCarct" type="submit" class="btn botones text-white px-4" name="accion" id="btnGuardarCaracterizacion" style="background-color: #018E42;">Actualizar</button>               
                                     </div>
                                 </div>
                             </div>

@@ -24,7 +24,7 @@
     function verReporte3() {
         // Obtener el valor seleccionado en el select
         var codigo = document.getElementById("ListaAreaReporte").value;
-        // Redirigir al enlace con el ID seleccionado como par·metro
+        // Redirigir al enlace con el ID seleccionado como par√°metro
         window.open("<%= request.getContextPath()%>/Reports/RAreas.jsp?ListaAreaReporte=" + codigo, "_blank");
     }
 </script>
@@ -32,7 +32,7 @@
     function verReporte1() {
         // Obtener el valor seleccionado en el select
         var codigo = document.getElementById("ListaInstruReporte").value;
-        // Redirigir al enlace con el ID seleccionado como par·metro
+        // Redirigir al enlace con el ID seleccionado como par√°metro
         window.open("<%= request.getContextPath()%>/Reports/Consolidado_Instructores.jsp?ListaInstruReporte=" + codigo, "_blank");
     }
 </script>
@@ -62,7 +62,11 @@
                             <select name="ListaAreaReporte" id="ListaAreaReporte" class="form-select col-8" required>
                                 <option value="" disabled selected hidden>Seleccione</option>
                                 <% for (Area area : listaArea) {%>
+
+                                <option value="<%= area.getIdarea()%>" data-listado-red="<%= area.getRedIdred().getIdred() %>">
+
                                 <option value="<%= area.getIdarea()%>" data-listado-red="<%= area.getRedIdred().getIdred()%>">
+
                                     <%= area.getNombre()%>
                                 </option>
                                 <% } %>
@@ -82,6 +86,9 @@
         </div>
     </div>
 </div>
+<!-- MODAL REGISTRO AREA FINAL -->
+<a href="../../src/java/JsonTablas/ConsultaCaracterizacion.java"></a>
+
 <!-- MODAL REPORTE AREA FINAL -->
 
 
@@ -128,3 +135,4 @@
     </div>
 </div>
 <!-- MODAL REGISTRO CARACTERIZACION FINAL -->
+

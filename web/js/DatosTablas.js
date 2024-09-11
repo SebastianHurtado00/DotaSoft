@@ -36,7 +36,8 @@ function obtenerDatosCentro(codigoCen, nombreCen, ListaRegio) {
 
 }
 
-function obtenerDatosCaracterizacion(red, area, sexo, Instructor, Clima, Dotacion) {
+function obtenerDatosCaracterizacion(red, id, area, sexo, Instructor, Clima, Dotacion) {
+    $('#IdEdit').val(id);
     $('#redEditSelect').val(red).change();
     $('#AreaEditSelect').val(area);
     $('#SexoSelectEdit').val(sexo).change();

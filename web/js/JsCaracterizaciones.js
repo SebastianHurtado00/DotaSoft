@@ -6,11 +6,11 @@
 /* Se debe referenciar por ids ya que como son dos modales que 
  * usaran el js los id de los select cambian Falta el refenrencaiado y 
  * Modificar donde se llama el metodo*/
-function consultarDotacion(Idinput) {
+function consultarDotacion(Idinput, IdSexo, IdClima, IdArea) {
     // Obtener valores de los filtros de los elementos de entrada (input, select, etc.)
-    const sexoId = document.getElementById(IdSexoSelect).value;
-    const climaId = document.getElementById(IdClimaSelect).value;
-    const areaId = document.getElementById(IdAreaSelect).value;
+    const sexoId = document.getElementById(IdSexo).value;
+    const climaId = document.getElementById(IdClima).value;
+    const areaId = document.getElementById(IdArea).value;
 
     // Realizar la petición AJAX
     $.ajax({
@@ -51,16 +51,10 @@ $(document).ready(function () {
 
     });
 
-    $('#btnEliminarDta').click(function (event) {
-        event.preventDefault();
-        var formData = $('#FormularioDotacionOpciones').serialize();
-        formData += '&accion=eliminar';
-        enviarPeticion(formData, handleSuccessEliminar, handleError);
-    });
 
-    $('#btnEditarDta').click(function (event) {
+    $('#btnEditarCarct').click(function (event) {
         event.preventDefault();
-        var formData = $('#FormularioDotacionOpciones').serialize();
+        var formData = $('#FormularioEditarCaracterizacion').serialize();
         formData += '&accion=actualizar';
         enviarPeticion(formData, handleSuccessActualizar, handleError);
     });
@@ -93,10 +87,58 @@ $(document).ready(function () {
         }
     }
 
+   function eliminarCaract(id) {
+    Swal.fire({
+        title: "Confirmación de eliminación",
+        text: "¿Está seguro de eliminar este usuario?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, Eliminar!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Preparar datos para la solicitud AJAX
+            var formData = {
+                accion: 'eliminar',
+                IdEliminar: id
+            };
+
+            // Realizar la solicitud AJAX
+            $.ajax({
+                url: '../CaracterizacionServlet',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    // Llamar a la función handleSuccessEliminar con la respuesta del servidor
+                    handleSuccessEliminar(response);
+                },
+                error: function (xhr, status, error) {
+                    // Llamar a la función handleError con un mensaje de error
+                    handleError('Error al realizar la operación de eliminación.');
+                    
+                    // Imprimir detalles del error en la consola
+                    console.error('Error en la solicitud AJAX:', error);
+                    console.log('Estado:', status);
+                    console.log('Respuesta del servidor:', xhr.responseText);
+                }
+            });
+        }
+    });
+}
+    
+      // Activa el boton eliminar
+    $('#tablaCaracterizacion').on('click', '.btn-outline-danger', function () {
+        // Obtener el ID del usuario desde el atributo data del botón
+        var id = $(this).data('id');
+        eliminarCaract(id);
+    });
+
+
+    /*Falta Logica de eliminado*/
     function handleSuccessEliminar(response) {
         if (response.estado === "exito") {
-            var boton = document.getElementById("btnCerrarDta");
-            boton.click();
             mostrarExito(response.mensaje);
             cargarTabla();
         } else {
@@ -106,7 +148,7 @@ $(document).ready(function () {
 
     function handleSuccessActualizar(response) {
         if (response.estado === "exito") {
-            var boton = document.getElementById("btnCerrarDta");
+            var boton = document.getElementById("btnCerrarCaractEdit");
             boton.click();
             mostrarExito(response.mensaje);
             cargarTabla();
@@ -142,13 +184,14 @@ $(document).ready(function () {
                                 '<span tabindex="0" class="d-inline-block" data-bs-toggle="popover" data-bs-trigger="hover focus" ' +
                                 'data-bs-content="' + contenidoPopover.replace(/"/g, '&quot;').replace(/'/g, "&#39;") + '" ' +
                                 'style="white-space: pre-wrap;">' +
-                                '<button class="btn btn-primary btn-sm mx-auto d-block" type="button" style="width: 100px; font-size: 12px; padding: 4px;">Ver Dotación</button>' +
+                                '<button class="btn btn-outline-success btn-sm mx-auto d-block" type="button" style="width: 100px; font-size: 12px; padding: 4px;">Ver Dotación</button>' +
                                 '</span>' +
                                 '</td>' +
                                 '<td class="d-flex align-items-center">' +
                                 '<button type="button" class="btn btn-outline-warning btn-sm bi bi-pencil-fill mx-2" ' +
                                 'data-bs-toggle="modal" data-bs-target="#ModalEditarCaracterizacion" ' +
                                 'onclick="obtenerDatosCaracterizacion(\'' + caract.redId + '\', ' +
+                                '\'' + caract.idCaracterizacion + '\', ' +
                                 '\'' + caract.areaId + '\', ' +
                                 '\'' + caract.SexoId + '\', ' +
                                 '\'' + caract.idInstructor + '\', ' +
@@ -156,7 +199,7 @@ $(document).ready(function () {
                                 '\'' + caract.elementosAsignados.replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '\')">' +
                                 '</button>' +
                                 '<button type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" ' +
-                                'data-id="' + caract.idCaracterizacion + '" onclick="eliminarDotacion(' + caract.idCaracterizacion + ')"></button>' +
+                                'data-id="' + caract.idCaracterizacion + '"></button>' +
                                 '</td>' +
                                 '</tr>';
                         $('#tablaCaracterizacion tbody').append(row);

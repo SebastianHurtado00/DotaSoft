@@ -1,29 +1,53 @@
-<%@page import="Entidades.Usuarios"%>
-<%@page import="net.sf.jasperreports.engine.JasperRunManager"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.io.File"%>
+<%@page import="java.io.OutputStream"%>
+<%@page import="net.sf.jasperreports.engine.JasperRunManager"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
-<%
+<%@page import="javax.servlet.ServletOutputStream"%>
+<%@page import="Entidades.Usuarios"%>
+<%@page import="javax.servlet.http.HttpSession"%>
 
-    response.setHeader("Cache-Control", "no-Cache,no-store,must-revalidate");
+<%
+    // Evitar el caché del navegador para este contenido
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-    response.setHeader("Expires", "0"); // ProxiesS
-    // Obtiene la sesión actual sin crear una nueva si no existe
-    HttpSession cecion = request.getSession(false);
-    Usuarios usu = (Usuarios) cecion.getAttribute("administrador");
-    if (cecion == null || usu == null) {
+    response.setHeader("Expires", "0"); // Para proxies
+
+    // Obtener el parámetro del área
+    String areaParam = request.getParameter("ListaInstruReporte");
+    int areaId = Integer.parseInt(areaParam);
+
+    // Obtener la sesión actual y validar el usuario
+    HttpSession sesion = request.getSession(false);
+    Usuarios usu = (Usuarios) sesion.getAttribute("administrador");
+
+    if (sesion == null || usu == null) {
         response.sendRedirect("../index.jsp");
-        return; // Detiene la ejecución del código restante
+        return; // Detener la ejecución si no hay sesión o usuario
     }
-    Connection coneccion;
-    Class.forName("com.mysql.jdbc.Driver").newInstance();
-    coneccion = DriverManager.getConnection("jdbc:mysql://localhost/dotaciones_sena", "root", "27478426*cP");
+
+    // Parámetros para el reporte
+    Map<String, Object> parametros = new HashMap<>();
+    parametros.put("id", areaId);
+
+    // Conexión a la base de datos
+    Connection conexion;
+    Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+    conexion = DriverManager.getConnection("jdbc:mysql://localhost/dotaciones_sena", "root", "27478426*cP");
+
+    // Generar el archivo PDF del reporte Jasper
     File reportFile = new File(application.getRealPath("Reports/AllInstructores.jasper"));
-    byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), null, coneccion);
+    byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, conexion);
+
+    // Configurar la respuesta HTTP para enviar el PDF
     response.setContentType("application/pdf");
     response.setContentLength(bytes.length);
-    ServletOutputStream ouputStream = response.getOutputStream();
-    ouputStream.write(bytes, 0, bytes.length);
-    ouputStream.flush();
-    ouputStream.close();
-%>   
+
+    // Enviar el contenido PDF al navegador
+    ServletOutputStream outputStream = response.getOutputStream();
+    outputStream.write(bytes, 0, bytes.length);
+    outputStream.flush();
+    outputStream.close();
+%>

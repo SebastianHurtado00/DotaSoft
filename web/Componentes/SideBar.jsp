@@ -76,8 +76,8 @@
             </li>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="../Reports/Consolidado_Instructores.jsp" target="_blank">
-                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Consolidado Instructores</span>
+                    <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteInstructor">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Instructor</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -130,6 +130,6 @@
                 </a>
             </li>
         </ul>
-    </div>
+    </div> 
 </nav>
-<jsp:include page="../Componentes/modalReportes.jsp" ></jsp:include> 
+

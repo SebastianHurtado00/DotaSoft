@@ -7,11 +7,14 @@ package Servlets;
 import Controladores.AreaJpaController;
 import Controladores.CaracterizarInstructorJpaController;
 import Controladores.ClimaJpaController;
+import Controladores.ElementosJpaController;
 import Controladores.InstructorJpaController;
 import Controladores.SexoJpaController;
+import Controladores.exceptions.NonexistentEntityException;
 import Entidades.Area;
 import Entidades.CaracterizarInstructor;
 import Entidades.Clima;
+import Entidades.Elementos;
 import Entidades.Instructor;
 import Entidades.Sexo;
 import com.google.gson.Gson;
@@ -21,8 +24,10 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -74,6 +79,7 @@ public class CaracterizacionServlet extends HttpServlet {
         ClimaJpaController climaControlador = new ClimaJpaController();
         InstructorJpaController instructorControlador = new InstructorJpaController();
         AreaJpaController areaController = new AreaJpaController();
+        ElementosJpaController elementoController = new ElementosJpaController();
 
         /*Obtencion y hallazgo de datos de formulario*/
         Area areaSeleccionada = areaController.findArea(Integer.parseInt(request.getParameter("area")));
@@ -82,6 +88,30 @@ public class CaracterizacionServlet extends HttpServlet {
         Clima climaSeleccionado = climaControlador.findClima(Integer.parseInt(request.getParameter("clima")));
         String DotacionCorrespondiente = request.getParameter("dotacion");
         int year = LocalDate.now().getYear();
+
+        String json = request.getParameter("ListaElementosxCantidad");
+
+        // Usamos GSON para convertir el JSON a un Map<String, String> primero
+        Gson gson = new Gson();
+        Map<String, String> elementosString = gson.fromJson(json, HashMap.class);
+
+        // Convertimos manualmente los valores a Integer
+        Map<String, Integer> elementos = new HashMap<>();
+        elementosString.forEach((key, value) -> {
+            elementos.put(key, Integer.parseInt(value));
+        });
+
+        /* Ciclo encargado de modificar las cantidades de los elementos asignados en la dotación */
+        elementos.forEach((key, value) -> {
+            Elementos elementoEncontrado = elementoController.findElementos(Integer.parseInt(key));
+            int cantidadAntigua = elementoEncontrado.getCantidades();
+            elementoEncontrado.setCantidades(value + cantidadAntigua);
+            try {
+                elementoController.edit(elementoEncontrado);
+            } catch (Exception ex) {
+                Logger.getLogger(CaracterizacionServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
 
         try {
             CaracterizarInstructor nuevaCaracterizacion = new CaracterizarInstructor();
@@ -106,6 +136,7 @@ public class CaracterizacionServlet extends HttpServlet {
         ClimaJpaController climaControlador = new ClimaJpaController();
         InstructorJpaController instructorControlador = new InstructorJpaController();
         AreaJpaController areaController = new AreaJpaController();
+        ElementosJpaController elementoController = new ElementosJpaController();
 
         /*Obtencion y hallazgo de datos de formulario*/
         Area areaSeleccionada = areaController.findArea(Integer.parseInt(request.getParameter("areaEdit")));
@@ -124,9 +155,62 @@ public class CaracterizacionServlet extends HttpServlet {
                 || !oldCaract.getClimaIdclima().getIdclima().equals(climaSeleccionado.getIdclima())
                 || !oldCaract.getDescripcion().equals(DotacionCorrespondiente)) {
             cambios = true;
-
         }
+
         if (cambios) {
+
+            String json = request.getParameter("ListaElementosEdicion");
+            String jsonAntiguos = request.getParameter("ListaElementosEdicionAntiguos");
+
+            // Usamos GSON para convertir el JSON a un Map<String, String> primero 
+            Gson gson = new Gson();
+            Map<String, String> elementosString = gson.fromJson(json, HashMap.class);
+            Map<String, String> elementosAntiguosString = gson.fromJson(jsonAntiguos, HashMap.class);
+
+            // Convertimos manualmente los valores a Integer 
+            Map<String, Integer> elementos = new HashMap<>();
+            elementosString.forEach((key, value) -> {
+                elementos.put(key, Integer.parseInt(value));
+            });
+
+            Map<String, Integer> elementosAntiguos = new HashMap<>();
+            elementosAntiguosString.forEach((key, value) -> {
+                elementosAntiguos.put(key, Integer.parseInt(value));
+            });
+
+            // Elementos que están en 'elementos' pero no en 'elementosAntiguos' (Elementos Nuevos)
+            Set<String> elementosSoloEnActuales = elementos.keySet().stream()
+                    .filter(key -> !elementosAntiguos.containsKey(key))
+                    .collect(Collectors.toSet());
+
+            // Implementa lógica especial para elementos solo en 'elementos'
+            for (String clave : elementosSoloEnActuales) {
+                Elementos elementoEncontrado = elementoController.findElementos(Integer.parseInt(clave));
+                int cantidadAntigua = elementoEncontrado.getCantidades();
+                elementoEncontrado.setCantidades(elementos.get(clave) + cantidadAntigua);
+                try {
+                    elementoController.edit(elementoEncontrado);
+                } catch (Exception ex) {
+                    Logger.getLogger(CaracterizacionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            // 3. Elementos que están en 'elementosAntiguos' pero no en 'elementos'
+            Set<String> elementosSoloEnAntiguos = elementosAntiguos.keySet().stream()
+                    .filter(key -> !elementos.containsKey(key))
+                    .collect(Collectors.toSet());
+
+            // Implementa lógica especial para elementos solo en 'elementosAntiguos'
+            for (String clave : elementosSoloEnAntiguos) {
+                Elementos elementoEncontrado = elementoController.findElementos(Integer.parseInt(clave));
+                int cantidadAntigua = elementoEncontrado.getCantidades();
+                elementoEncontrado.setCantidades(cantidadAntigua - elementosAntiguos.get(clave));
+                try {
+                    elementoController.edit(elementoEncontrado);
+                } catch (Exception ex) {
+                    Logger.getLogger(CaracterizacionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 
             oldCaract.setAno(oldCaract.getAno());
             oldCaract.setAreaIdarea(areaSeleccionada);

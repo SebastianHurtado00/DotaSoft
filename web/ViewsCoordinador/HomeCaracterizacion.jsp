@@ -156,6 +156,7 @@
                                                     <label for="floatingTextarea2">Dotacion Correspondiente</label>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="ListaElementosxCantidad" id="ListaElementosxCantidad">    
                                         </form>
                                     </div>
                                     <!-- Pie del modal -->
@@ -177,7 +178,7 @@
                                     <!-- Cuerpo del modal -->
                                     <div class="modal-body">
                                         <form id="FormularioEditarCaracterizacion" class="row g-2">
-                                          
+
                                             <input type="hidden" id="IdEdit" name="IdEdit">
                                             <div class="col-12">
                                                 <div class="form-floating">
@@ -192,7 +193,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="areaEdit" class="form-select mx-auto" id="AreaEditSelect" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')">
+                                                    <select name="areaEdit" class="form-select mx-auto" id="AreaEditSelect" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect'); consultarElementos('ListaElementosEdicion', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')">
                                                         <option value="" disabled selected hidden>Seleccione un area</option>
                                                         <% for (Area area : listaAreas) {%>
                                                         <option value="<%=area.getIdarea()%>" data-fk-redEdit="<%=area.getRedIdred().getIdred()%>"><%=area.getNombre()%></option>
@@ -203,16 +204,19 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                    <select name="sexoEdit" class="form-select mx-auto" id="SexoSelectEdit" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')" onchange="filtradoEntreDosSelects('SexoSelectEdit', 'InstructorSelectEdit', 'data-fk-sexo-Edit')">
-                                                        <option value="" disabled selected hidden>Seleccione un Sexo</option>
-                                                        <% for (Sexo sexo : listaSexo) {%>
-                                                        <option value="<%=sexo.getIdsexo()%>"><%=sexo.getNombre()%></option>
-                                                        <% }%>
+                                                    <select name="sexoEdit" class="form-select mx-auto" id="SexoSelectEdit"
+                                                            onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect'); consultarElementos('ListaElementosEdicion', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect');"
+                                                            onchange="filtradoEntreDosSelects('SexoSelectEdit', 'InstructorSelectEdit', 'data-fk-sexo-Edit')">
+                                                 
+                                                    <option value="" disabled selected hidden>Seleccione un Sexo</option>
+                                                    <% for (Sexo sexo : listaSexo) {%>
+                                                    <option value="<%=sexo.getIdsexo()%>"><%=sexo.getNombre()%></option>
+                                                    <% }%>
                                                     </select>
                                                     <label class="text-small text-black " style="font-size: 15px" for="Centro">sexo</label>
                                                 </div>
                                             </div>
-                                                    
+
                                             <div class="col-12">
                                                 <div class="form-floating">
                                                     <select name="instructorEdit" class="form-select mx-auto" id="InstructorSelectEdit">
@@ -227,10 +231,10 @@
                                                     <label class="text-small text-black " style="font-size: 15px" for="Centro">Instructores a su cargo</label>
                                                 </div>
                                             </div>
-                                                    
+
                                             <div class="col-12">
                                                 <div class="form-floating">
-                                                   <select name="climaEdit" class="form-select mx-auto" id="ClimaSelectEdit" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')">
+                                                    <select name="climaEdit" class="form-select mx-auto" id="ClimaSelectEdit" onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect'); consultarElementos('ListaElementosEdicion', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect')">
 
                                                         <option value="" disabled selected hidden>Seleccione un clima</option>
                                                         <% for (Clima clima : listaClimas) {%>
@@ -240,13 +244,15 @@
                                                     <label class="text-small text-black " style="font-size: 15px" for="Centro">Clima</label>
                                                 </div>
                                             </div>
-                                                    
+
                                             <div class="col-12">
                                                 <div class="form-floating">
                                                     <textarea name="dotacionEdit" class="form-control" placeholder="" id="DotacionEdit"  readonly style="height: 100px"></textarea>
                                                     <label for="floatingTextarea2">Dotacion Correspondiente</label>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="ListaElementosEdicionAntiguos" id="ListaElementosEdicionAntiguos">    
+                                            <input type="hidden" name="ListaElementosEdicion" id="ListaElementosEdicion">    
                                         </form>
                                     </div>
                                     <!-- Pie del modal -->

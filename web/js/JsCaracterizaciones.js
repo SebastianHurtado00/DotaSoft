@@ -11,6 +11,7 @@ function consultarDotacion(Idinput, IdSexo, IdClima, IdArea) {
     const sexoId = document.getElementById(IdSexo).value;
     const climaId = document.getElementById(IdClima).value;
     const areaId = document.getElementById(IdArea).value;
+    let mapElements = new Map();
 
     // Realizar la petición AJAX
     $.ajax({
@@ -25,14 +26,20 @@ function consultarDotacion(Idinput, IdSexo, IdClima, IdArea) {
         success: function (data) {
             // Limpia el contenido del textarea
             $('#' + Idinput + '').val('');
-
+            mapElements.clear();
             // Iterar sobre cada elemento en el JSON
             data.forEach(function (element) {
+                mapElements.set(element.elementoId, element.cantidad)
                 // Agregar el texto de 'elementosAsignados' al textarea
                 $('#' + Idinput + '').val(function (index, val) {
                     return val + element.cantidad + " - " + element.elementoNombre + '\n';
                 });
             });
+            // Convertir el Map en un objeto JSON (string)
+            const jsonMap = JSON.stringify(Object.fromEntries(mapElements));
+
+            // Asignar el JSON al campo hidden
+            $('#ListaElementosxCantidad').val(jsonMap);
         },
         error: function (xhr, status, error) {
             console.error('Error en la consulta:', error);
@@ -40,6 +47,41 @@ function consultarDotacion(Idinput, IdSexo, IdClima, IdArea) {
     });
 }
 
+function consultarElementos(IdInput, IdSexo, IdClima, IdArea) {
+    // Obtener valores de los filtros de los elementos de entrada (input, select, etc.)
+    const sexoId = document.getElementById(IdSexo).value;
+    const climaId = document.getElementById(IdClima).value;
+    const areaId = document.getElementById(IdArea).value;
+    let mapElements = new Map();
+    const inputField = document.getElementById(IdInput); // Obtén el input de forma directa
+
+    // Realizar la petición AJAX
+    $.ajax({
+        url: '../FiltroJsonDotacion',
+        method: 'GET',
+        data: {
+            sexoId: sexoId,
+            climaId: climaId,
+            areaId: areaId
+        },
+        dataType: 'json',
+        success: function (data) {
+            mapElements.clear();
+             inputField.value = " ";
+            // Convertir el Map en un objeto JSON (string)
+            // Iterar sobre cada elemento en el JSON
+            data.forEach(function (element) {
+                mapElements.set(element.elementoId, element.cantidad)
+            });
+            const jsonMap = JSON.stringify(Object.fromEntries(mapElements));
+            inputField.value = jsonMap;
+            console.log(mapElements)
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la consulta:', error);
+        }
+    });
+}
 
 $(document).ready(function () {
     // Manejador de evento para el botón de guardar en el formulario
@@ -87,48 +129,48 @@ $(document).ready(function () {
         }
     }
 
-   function eliminarCaract(id) {
-    Swal.fire({
-        title: "Confirmación de eliminación",
-        text: "¿Está seguro de eliminar este usuario?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, Eliminar!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Preparar datos para la solicitud AJAX
-            var formData = {
-                accion: 'eliminar',
-                IdEliminar: id
-            };
+    function eliminarCaract(id) {
+        Swal.fire({
+            title: "Confirmación de eliminación",
+            text: "¿Está seguro de eliminar este usuario?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, Eliminar!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Preparar datos para la solicitud AJAX
+                var formData = {
+                    accion: 'eliminar',
+                    IdEliminar: id
+                };
 
-            // Realizar la solicitud AJAX
-            $.ajax({
-                url: '../CaracterizacionServlet',
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                success: function (response) {
-                    // Llamar a la función handleSuccessEliminar con la respuesta del servidor
-                    handleSuccessEliminar(response);
-                },
-                error: function (xhr, status, error) {
-                    // Llamar a la función handleError con un mensaje de error
-                    handleError('Error al realizar la operación de eliminación.');
-                    
-                    // Imprimir detalles del error en la consola
-                    console.error('Error en la solicitud AJAX:', error);
-                    console.log('Estado:', status);
-                    console.log('Respuesta del servidor:', xhr.responseText);
-                }
-            });
-        }
-    });
-}
-    
-      // Activa el boton eliminar
+                // Realizar la solicitud AJAX
+                $.ajax({
+                    url: '../CaracterizacionServlet',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        // Llamar a la función handleSuccessEliminar con la respuesta del servidor
+                        handleSuccessEliminar(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Llamar a la función handleError con un mensaje de error
+                        handleError('Error al realizar la operación de eliminación.');
+
+                        // Imprimir detalles del error en la consola
+                        console.error('Error en la solicitud AJAX:', error);
+                        console.log('Estado:', status);
+                        console.log('Respuesta del servidor:', xhr.responseText);
+                    }
+                });
+            }
+        });
+    }
+
+    // Activa el boton eliminar
     $('#tablaCaracterizacion').on('click', '.btn-outline-danger', function () {
         // Obtener el ID del usuario desde el atributo data del botón
         var id = $(this).data('id');
@@ -196,7 +238,8 @@ $(document).ready(function () {
                                 '\'' + caract.SexoId + '\', ' +
                                 '\'' + caract.idInstructor + '\', ' +
                                 '\'' + caract.climaId + '\', ' +
-                                '\'' + caract.elementosAsignados.replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '\')">' +
+                                '\'' + caract.elementosAsignados.replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '\\r') + '\'); ' +
+                                'consultarElementos(\'ListaElementosEdicionAntiguos\', \'SexoSelectEdit\', \'ClimaSelectEdit\', \'AreaEditSelect\');">' +
                                 '</button>' +
                                 '<button type="button" class="btn btn-outline-danger btn-sm bi bi-trash-fill mx-2" ' +
                                 'data-id="' + caract.idCaracterizacion + '"></button>' +

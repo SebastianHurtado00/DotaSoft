@@ -106,7 +106,7 @@ response.setCharacterEncoding("UTF-8");
         // Enviar la respuesta JSON al cliente
         response.getWriter().write(json);
 
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

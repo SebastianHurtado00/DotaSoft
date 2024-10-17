@@ -7,6 +7,7 @@ package Servlets;
 import Controladores.AreaJpaController;
 import Controladores.CaracterizarInstructorJpaController;
 import Controladores.ClimaJpaController;
+import Controladores.DotacionJpaController;
 import Controladores.ElementosJpaController;
 import Controladores.InstructorJpaController;
 import Controladores.SexoJpaController;
@@ -14,6 +15,7 @@ import Controladores.exceptions.NonexistentEntityException;
 import Entidades.Area;
 import Entidades.CaracterizarInstructor;
 import Entidades.Clima;
+import Entidades.Dotacion;
 import Entidades.Elementos;
 import Entidades.Instructor;
 import Entidades.Sexo;
@@ -21,8 +23,11 @@ import com.google.gson.Gson;
 import groovyjarjarasm.asm.util.Printer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Array;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -233,8 +238,33 @@ public class CaracterizacionServlet extends HttpServlet {
 
     public void DeleteCaract(HttpServletRequest request, HttpServletResponse response) throws IOException {
         CaracterizarInstructorJpaController controlCaract = new CaracterizarInstructorJpaController();
+        ElementosJpaController controlElementos = new ElementosJpaController();
+        DotacionJpaController controlDota = new DotacionJpaController();
+
+        List<Dotacion> ListaDotaciones = controlDota.findDotacionEntities();
+
+        Map<Integer, Integer> elementosDescontar = new HashMap<>();
 
         int idEliminar = Integer.parseInt(request.getParameter("IdEliminar"));
+        CaracterizarInstructor caracterizacionEncontrada = controlCaract.findCaracterizarInstructor(idEliminar);
+
+        for (Dotacion dota : ListaDotaciones) {
+            if (dota.getSexoIdsexo().getIdsexo() == caracterizacionEncontrada.getSexoIdsexo().getIdsexo()
+                    && dota.getClimaIdclima().getIdclima() == caracterizacionEncontrada.getClimaIdclima().getIdclima()
+                    && dota.getAreaIdarea().getIdarea() == caracterizacionEncontrada.getAreaIdarea().getIdarea()) {
+                elementosDescontar.put(dota.getElementosIdelemento().getIdelemento(), dota.getCantidad());
+            }
+        }
+        /*Recorremos el map que contiene los elemento A los que se van a descontar la dotacion*/
+        elementosDescontar.forEach(((key, value) -> {
+            Elementos elemento = controlElementos.findElementos(key);
+            elemento.setCantidades(elemento.getCantidades() - value);
+            try {
+                controlElementos.edit(elemento);
+            } catch (Exception e) {
+                Logger.getLogger(CaracterizacionServlet.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }));
         try {
             controlCaract.destroy(idEliminar);
             enviarRespuestaExito(response, "Caracterizacion eliminada exitosamente");

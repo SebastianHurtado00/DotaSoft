@@ -207,7 +207,7 @@
                                                     <select name="sexoEdit" class="form-select mx-auto" id="SexoSelectEdit"
                                                             onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect'); consultarElementos('ListaElementosEdicion', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect');"
                                                             onchange="filtradoEntreDosSelects('SexoSelectEdit', 'InstructorSelectEdit', 'data-fk-sexo-Edit')">
-                                                 
+                                                 x|
                                                     <option value="" disabled selected hidden>Seleccione un Sexo</option>
                                                     <% for (Sexo sexo : listaSexo) {%>
                                                     <option value="<%=sexo.getIdsexo()%>"><%=sexo.getNombre()%></option>

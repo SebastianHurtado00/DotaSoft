@@ -68,7 +68,7 @@
             <li class="sidebar-item">
                 <a class="sidebar-link" href="../ViewsAdministrador/HomeDotacion.jsp">
                     <i class="align-middle" data-feather="users"></i> 
-                    <span class="align-middle">Dotacion</span>
+                    <span class="align-middle">Manual de Dotacion</span>
                 </a>
             </li> 
             <li class="sidebar-header">

@@ -86,9 +86,9 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteArea">
+                    <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteRegionalCentro">
                         <i class="align-middle" data-feather="user-plus"></i> 
-                        <span class="align-middle">Red y Area</span>
+                        <span class="align-middle">Regional y Centro</span>
                     </a>
                 </li>
             </ul>
@@ -100,36 +100,43 @@
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Asignacion de elementos</span>
                 </a>
             </li>
-
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Reporte de dotacion</span>
-                </a>
+            <li class="sidebar-header">
+                Reportes
             </li>
-            <%}%>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteInstructor">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Dotacion por Instructor</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteInstructorAnno">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Instructor Año Red Area</span>
+                    </a>
+                </li>
+                <%}%>
 
-            <!-- Links RH -->
-            <% if (usuarioEntrante.getRol() == 3) { %>
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Dotacion por Instructor</span>
-                </a>
-            </li>
+                <!-- Links RH -->
+                <% if (usuarioEntrante.getRol() == 3) { %>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteInstructor">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Dotacion por Instructor</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="../Reports/Consolidado_elementos.jsp" target="_blank">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Elementos</span>
+                    </a>
+                </li>
+                    <%}%>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Elementos y cantidades</span>
-                </a>
-            </li>
-            <%}%>
-
-            <li class="sidebar-item mb-2 mt-auto">
-                <a class="sidebar-link" href="../CerradoSession.jsp">
-                    <i class="align-middle" data-feather="log-in"></i> 
-                    <span class="align-middle">Cerrar Sesion</span>
-                </a>
-            </li>
-        </ul>
-    </div> 
-</nav>
+                    <li class="sidebar-item mb-2 mt-auto">
+                        <a class="sidebar-link" href="../CerradoSession.jsp">
+                            <i class="align-middle" data-feather="log-in"></i> 
+                            <span class="align-middle">Cerrar Sesion</span>
+                        </a>
+                    </li>
+                </ul>
+                </div> 
+                </nav>
 

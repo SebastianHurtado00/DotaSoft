@@ -8,12 +8,23 @@
     response.setHeader("Pragma", "no-cache"); // HTTP 1.0
     response.setHeader("Expires", "0"); // ProxiesS
     // Obtiene la sesión actual sin crear una nueva si no existe
-    HttpSession cecion = request.getSession(false);
-    Usuarios usu = (Usuarios) cecion.getAttribute("administrador");
-    if (cecion == null || usu == null) {
+    HttpSession sesion = request.getSession(false);
+    if (sesion == null) {
         response.sendRedirect("../index.jsp");
-        return; // Detiene la ejecución del código restante
+        return;
     }
+    
+    Usuarios administrador = (Usuarios) sesion.getAttribute("administrador");
+    Usuarios recursosHumanos = (Usuarios) sesion.getAttribute("user");
+    
+     
+    // Verificar si al menos uno de los roles está presente
+    if (administrador == null && recursosHumanos == null) {
+        // Redirigir al index si ninguno de los roles está presente
+        response.sendRedirect("../index.jsp");
+        return; // Detener la ejecución si no hay administrador, coordinador ni recursosHumanos
+    }
+    
     Connection coneccion;
     Class.forName("com.mysql.jdbc.Driver").newInstance();
     coneccion = DriverManager.getConnection("jdbc:mysql://localhost/dotaciones_sena", "root", "27478426*cP");

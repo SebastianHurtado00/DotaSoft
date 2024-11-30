@@ -207,11 +207,11 @@
                                                     <select name="sexoEdit" class="form-select mx-auto" id="SexoSelectEdit"
                                                             onclick="consultarDotacion('DotacionEdit', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect'); consultarElementos('ListaElementosEdicion', 'SexoSelectEdit', 'ClimaSelectEdit', 'AreaEditSelect');"
                                                             onchange="filtradoEntreDosSelects('SexoSelectEdit', 'InstructorSelectEdit', 'data-fk-sexo-Edit')">
-                                                 x|
-                                                    <option value="" disabled selected hidden>Seleccione un Sexo</option>
-                                                    <% for (Sexo sexo : listaSexo) {%>
-                                                    <option value="<%=sexo.getIdsexo()%>"><%=sexo.getNombre()%></option>
-                                                    <% }%>
+                                                        x|
+                                                        <option value="" disabled selected hidden>Seleccione un Sexo</option>
+                                                        <% for (Sexo sexo : listaSexo) {%>
+                                                        <option value="<%=sexo.getIdsexo()%>"><%=sexo.getNombre()%></option>
+                                                        <% }%>
                                                     </select>
                                                     <label class="text-small text-black " style="font-size: 15px" for="Centro">sexo</label>
                                                 </div>
@@ -319,9 +319,10 @@
                     <%--CONTENIDO FINAL --%>
                 </main>
                 <jsp:include page="/Componentes/footer2.jsp" ></jsp:include>
+
                 </div>
             </div>
-
+        
         <%--MENU--%>       
         <script src="../js/scriptMenu.js"></script>
         <script src="../js/DatosTablas.js"></script>

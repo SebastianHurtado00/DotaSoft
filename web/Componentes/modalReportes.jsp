@@ -12,12 +12,6 @@
 <%@page import="Entidades.Red"%>
 <%@page import="Entidades.Area"%>
 <%
-    RedJpaController redController = new RedJpaController();
-    List<Red> listaRed = redController.findRedEntities();
-
-    AreaJpaController areaController = new AreaJpaController();
-    List<Area> listaArea = areaController.findAreaEntities();
-    
     RegionalJpaController regionalControlador = new RegionalJpaController();
     List<Regional> listaRegional = regionalControlador.findRegionalEntities();
     

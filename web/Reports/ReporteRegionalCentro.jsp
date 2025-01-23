@@ -17,6 +17,16 @@
 
     // Obtener el parámetro del área
     String areaParam = request.getParameter("ListaCentroReporte");
+
+    if (areaParam == null || areaParam.isEmpty()) {
+        // Si el parámetro no está presente, mostrar alerta y redirigir a la misma página
+        out.println("<script>");
+        out.println("alert('Por favor, seleccione un centro.');");
+        out.println("window.location.href = document.referrer;"); // Redirige a la misma página
+        out.println("</script>");
+        return; // Detener la ejecución si no se ha proporcionado el parámetro
+    }
+
     int areaId = Integer.parseInt(areaParam);
 
     // Obtener la sesión actual y validar el usuario

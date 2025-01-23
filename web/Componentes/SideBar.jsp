@@ -20,11 +20,7 @@
             <li class="sidebar-header">
                 Menu
             </li>
-            <li class="sidebar-item active">
-                <a class="sidebar-link" href="../Home/Home.jsp">
-                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Menu Principal</span>
-                </a>
-            </li>
+           
             <!-- Links de administradores -->
             <% if (usuarioEntrante.getRol() == 0) {
             %>
@@ -95,6 +91,11 @@
             <%  }%>
             <!--Links de Coordinadores -->
             <% if (usuarioEntrante.getRol() == 1) { %>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="../ViewsCoordinador/HomeCoordinador.jsp" >
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Menu Principal</span>
+                </a>
+            </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="../ViewsCoordinador/HomeCaracterizacion.jsp" >
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Asignacion de Elementos</span>

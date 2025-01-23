@@ -4,18 +4,26 @@
  */
 package Servlets;
 
+import Controladores.CoordinadorJpaController;
 import Controladores.ElementosJpaController;
+import Controladores.ElementosanualJpaController;
+import Entidades.Centro;
+import Entidades.Coordinador;
 import Entidades.Elementos;
+import Entidades.Elementosanual;
+import Entidades.Usuarios;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -47,6 +55,9 @@ public class ElementosServlet extends HttpServlet {
                     break;
                 case "eliminar":
                     botonEliminar(request, response);
+                    break;
+                case "eliminarAll":
+                    botonEliminarAll(request, response);
                     break;
                 default:
                     // Acción no válida
@@ -117,6 +128,89 @@ public class ElementosServlet extends HttpServlet {
             }
         } catch (Exception e) {
             enviarRespuestaError(response, "¡Error!");
+        }
+    }
+
+    public void botonEliminarAll(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        ElementosJpaController elementosController = new ElementosJpaController();
+        ElementosanualJpaController elementosAnualController = new ElementosanualJpaController();
+        CoordinadorJpaController coordinadorController = new CoordinadorJpaController();
+
+        HttpSession sessionObtenida = request.getSession();
+
+        // Verificar si la sesión contiene el objeto "coordinador"
+        Usuarios useCoordinador = (Usuarios) sessionObtenida.getAttribute("coordinador");
+        if (useCoordinador == null) {
+            response.sendRedirect("../CerradoSession.jsp");
+            return;
+        }
+
+        // Obtener el idusuario del objeto Usuarios
+        int idUsuario = useCoordinador.getIdusuario();
+        System.out.println("ID del coordinador (usuario): " + idUsuario);
+
+        try {
+            // Buscar el coordinador en la tabla Coordinador utilizando el idUsuario
+            Coordinador coordinador = coordinadorController.findCoordinador(idUsuario);
+            if (coordinador == null) {
+                response.getWriter().write("No se encontró un coordinador con el ID proporcionado.");
+                return;
+            }
+
+            // Obtener el nombre completo del coordinador y el centro asociado
+            String nombreCoordinador = coordinador.getNombres() + " " + coordinador.getApellidos();
+            Centro centro = coordinador.getCentroIdcentro();
+            String nombreCentro = (centro != null) ? centro.getNombre() : "No asociado";
+            System.out.println(nombreCoordinador + centro + nombreCentro);
+            // Operaciones con Elementos y Elementosanual
+            List<Elementos> elementos = elementosController.findElementosEntities();
+
+            // Verificar si la lista de elementos está vacía
+            if (elementos.isEmpty()) {
+                response.getWriter().write("No se encontraron elementos en la base de datos.");
+                return;
+            }
+
+            // Crear una lista de ElementoDTO para almacenar solo los datos necesarios
+            List<Elementos> elementoDTOs = new ArrayList<>();
+            for (Elementos elemento : elementos) {
+                Elementos dto = new Elementos();
+                dto.setIdelemento(elemento.getIdelemento());
+                dto.setNombre(elemento.getNombre());
+                dto.setCantidades(elemento.getCantidades());
+                elementoDTOs.add(dto);
+            }
+
+            // Convertir la lista a JSON
+            Gson gson = new Gson();
+            String elementosJson = gson.toJson(elementoDTOs);
+
+            // Obtener el año actual
+            int anioActual = java.time.Year.now().getValue();
+
+            // Crear y guardar el registro en Elementosanual
+            Elementosanual elementosAnual = new Elementosanual();
+            elementosAnual.setElemento(elementosJson);
+            elementosAnual.setNombreCoordinador(nombreCoordinador);
+            elementosAnual.setCentro(nombreCentro);
+            elementosAnual.setAnio(anioActual);
+            elementosAnualController.create(elementosAnual);
+
+            // Establecer cantidades a 0
+            for (Elementos elemento : elementos) {
+                elemento.setCantidades(0);
+               
+                elementosController.edit(elemento);
+            }
+
+             enviarRespuestaExito(response, "¡Información guardada y cantidades actualizadas a 0!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            enviarRespuestaError(response, "¡Error al guardar información o actualizar cantidades!");
+
         }
     }
 

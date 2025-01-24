@@ -143,3 +143,4 @@
                     
                     <jsp:include page="../Componentes/modalReportes.jsp" ></jsp:include>
 
+ <jsp:include page="../Componentes/modalReportes.jsp" ></jsp:include>

@@ -94,7 +94,7 @@
                 </main>
                 <jsp:include page="../Componentes/modalGuardar.jsp" ></jsp:include> 
                 <jsp:include page="../Componentes/footer2.jsp" ></jsp:include>
-                
+
                 </div>
             </div>
 

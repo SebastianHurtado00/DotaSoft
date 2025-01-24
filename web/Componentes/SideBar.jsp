@@ -20,11 +20,7 @@
             <li class="sidebar-header">
                 Menu
             </li>
-            <li class="sidebar-item active">
-                <a class="sidebar-link" href="../Home/Home.jsp">
-                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Menu Principal</span>
-                </a>
-            </li>
+           
             <!-- Links de administradores -->
             <% if (usuarioEntrante.getRol() == 0) {
             %>
@@ -35,12 +31,12 @@
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="../ViewsAdministrador/GestionUsuarios.jsp" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Gestion de usuarios</span>
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Gestion de Usuarios</span>
                 </a>
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="../ViewsAdministrador/Restablecimientos.jsp" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Recuperacion contraseña</span>
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Recuperacion Contraseña</span>
                 </a>
             </li>
             <li class="sidebar-item mb-2">
@@ -88,7 +84,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#ModalReporteRegionalCentro">
                         <i class="align-middle" data-feather="user-plus"></i> 
-                        <span class="align-middle">Regional y Centro</span>
+                        <span class="align-middle">Instructores por Centro</span>
                     </a>
                 </li>
             </ul>
@@ -96,8 +92,13 @@
             <!--Links de Coordinadores -->
             <% if (usuarioEntrante.getRol() == 1) { %>
             <li class="sidebar-item">
+                <a class="sidebar-link" href="../ViewsCoordinador/HomeCoordinador.jsp" >
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Menu Principal</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a class="sidebar-link" href="../ViewsCoordinador/HomeCaracterizacion.jsp" >
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Asignacion de elementos</span>
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Asignacion de Elementos</span>
                 </a>
             </li>
             <li class="sidebar-header">
@@ -139,5 +140,7 @@
                 </ul>
                 </div> 
                 </nav>
+                    
+                    <jsp:include page="../Componentes/modalReportes.jsp" ></jsp:include>
 
  <jsp:include page="../Componentes/modalReportes.jsp" ></jsp:include>

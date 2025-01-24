@@ -17,6 +17,16 @@
 
     // Obtener el parámetro del área
     String areaParam = request.getParameter("ListaInstruReporte");
+
+    if (areaParam == null || areaParam.isEmpty()) {
+        // Si el parámetro no está presente, mostrar alerta y redirigir a la misma página
+        out.println("<script>");
+        out.println("alert('Por favor, seleccione un instructor.');");
+        out.println("window.location.href = document.referrer;"); // Redirige a la misma página
+        out.println("</script>");
+        return; // Detener la ejecución si no se ha proporcionado el parámetro
+    }
+
     int areaId = Integer.parseInt(areaParam);
 
     // Obtener la sesión actual y validar el usuario
@@ -27,13 +37,13 @@
         return;
     }
 
-// Verificar si el usuario tiene alguno de los roles
+    // Verificar si el usuario tiene alguno de los roles
     // Obtener los atributos de sesión para los diferentes roles
     Usuarios administrador = (Usuarios) sesion.getAttribute("administrador");
     Usuarios coordinador = (Usuarios) sesion.getAttribute("coordinador");
     Usuarios recursosHumanos = (Usuarios) sesion.getAttribute("user");
 
-// Verificar si al menos uno de los roles está presente
+    // Verificar si al menos uno de los roles está presente
     if (administrador == null && coordinador == null && recursosHumanos == null) {
         // Redirigir al index si ninguno de los roles está presente
         response.sendRedirect("../index.jsp");
